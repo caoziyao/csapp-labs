@@ -1,8 +1,8 @@
 # Binaries for programs and plugins
 
-*/frame
 */*.xcodeproj
 **/.idea/*
+**/libs/*
 
 *.exe
 *.exe~
