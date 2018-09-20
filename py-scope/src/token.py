@@ -22,6 +22,8 @@ class Type(Enum):
     number = 8              # 123
     string = 9              # "name"
     var = 10                # var
+    equal = 11              # =
+    identifier = 12         # abc 标志符
 
 
 class Token():
@@ -43,6 +45,6 @@ class Token():
         self.value = value
 
     def __repr__(self):
-        s = 'type: {}, len: {}, value: {}'.format(self.type, len(str(self.value)), self.value)
-        s = '"{}"'.format(self.value)
+        s = '({}: {})'.format(self.value, self.type)
+        # s = '"{}"'.format(self.value)
         return s

@@ -3,11 +3,11 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/20 
+@time: 2018/9/20
 @desc:
 """
 from src.commont.utils import is_space
-from src.token import Token
+from src.token import Token, Type
 
 
 def string_token(current_index, codes):
@@ -20,7 +20,7 @@ def string_token(current_index, codes):
     i = 1
     l = len(codes)
 
-    token = ''
+    value = ''
     while i < l:
         c = codes[i]
         i += 1
@@ -28,7 +28,9 @@ def string_token(current_index, codes):
         if c == '"':
             break
         else:
-            token += c
+            value += c
+
+    token = Token(Type.string, value)
 
     return i + current_index, token
 
@@ -43,7 +45,7 @@ def identify_keyword_token(current_index, codes):
     i = 0
     l = len(codes)
 
-    token = ''
+    value = ''
     while i < l:
         c = codes[i]
         i += 1
@@ -51,7 +53,14 @@ def identify_keyword_token(current_index, codes):
         if is_space(c):
             break
         else:
-            token += c
+            value += c
+
+    m = ['var', 'if', 'while']
+
+    if value in m:
+        token = Token(Type.keyword, value)
+    else:
+        token = Token(Type.identifier, value)
 
     return i + current_index - 1, token
 
@@ -65,7 +74,7 @@ def next_token(current_index, codes):
     i = 0
     l = len(codes)
 
-    token = ''
+    value = ''
     while i < l:
         c = codes[i]
         i += 1
@@ -78,15 +87,20 @@ def next_token(current_index, codes):
             i, token = identify_keyword_token(i - 1, codes)
         elif c.isdigit():
             # number
-            token += c
+            value += c
         elif c == '"':
             # string
             i, token = string_token(i - 1, codes)
         elif c == '=':
-            token = c
+            token = Token(Type.equal, '=')
 
-    if token.isdigit():
-        token = int(token)
+        else:
+            # error
+            pass
+
+    if value.isdigit():
+        value = int(value)
+        token = Token(Type.number, value)
 
     return i + current_index, token
 
@@ -111,15 +125,17 @@ def pase_list(codes):
 
         token_list.append(token)
 
-    print('token_list', token_list)
+    return token_list
 
 
 def lexer():
     # codes = """
     #     var a = "abc"
     #     if a = 3
-    # """
+    # # """
 
     codes = 'var a = "abnd" '
 
     s = pase_list(codes)
+
+    print('token_list', s)
