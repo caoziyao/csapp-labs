@@ -10,5 +10,11 @@
 #define FileManger_hpp
 
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <fstream>
+
+std::string Read(std::string path);
 
 #endif /* FileManger_hpp */

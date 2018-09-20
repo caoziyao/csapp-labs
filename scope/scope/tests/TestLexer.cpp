@@ -7,11 +7,11 @@
 //
 
 #include "TestLexer.hpp"
-
-TEST(FooTest, Positive) {
-    
-    gettok();
-//    EXPECT_EQ(2, Foo(4, 10));
-//    EXPECT_EQ(6, Foo(30, 18));
-}
+//
+//TEST(FooTest, Positive) {
+//    
+//    gettok();
+////    EXPECT_EQ(2, Foo(4, 10));
+////    EXPECT_EQ(6, Foo(30, 18));
+//}
 

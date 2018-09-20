@@ -12,7 +12,10 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include <cassert>
 #include "patch.hpp"
+#include "FileManger.hpp"
+#include "common.hpp"
 
 static std::string IdentifierStr; // Filled in if tok_identifier
 static double NumVal;             // Filled in if tok_number

@@ -26,7 +26,7 @@
 
 #include <iostream>
 #include "gtest/gtest.h"
-#include "TestSample.hpp"
+#include "Lexer.hpp"
 
 // Runs all tests using Google Test.
 int RunTest(int argc,  char ** argv) {
@@ -36,5 +36,8 @@ int RunTest(int argc,  char ** argv) {
 
 int main(int argc,  char ** argv) {
     RunTest(argc, argv);
+    
+    gettok();
+    
     return 0;
 }
