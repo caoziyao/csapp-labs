@@ -65,6 +65,29 @@ def identify_keyword_token(current_index, codes):
     return i + current_index - 1, token
 
 
+def operate_token(current_index, codes):
+    """
+    + - * /
+    :param current_index:
+    :param codes:
+    :return:
+    """
+    value = codes[current_index]
+    i = 1
+
+    m = {
+        '+': Token(Type.add, value),
+        '-': Token(Type.sub, value),
+        '*': Token(Type.times, value),
+        '/': Token(Type.div, value),
+        '=': Token(Type.equal, value),
+    }
+
+    token = m[value]
+
+    return i + current_index, token
+
+
 def next_token(current_index, codes):
     """
     :return:
@@ -91,8 +114,9 @@ def next_token(current_index, codes):
         elif c == '"':
             # string
             i, token = string_token(i - 1, codes)
-        elif c == '=':
-            token = Token(Type.equal, '=')
+        elif c in '+-*/=':
+            i, token = operate_token(i - 1, codes)
+            # token = Token(Type.equal, '=')
 
         else:
             # error
@@ -128,14 +152,15 @@ def pase_list(codes):
     return token_list
 
 
-def lexer():
+def lexer(codes):
     # codes = """
     #     var a = "abc"
     #     if a = 3
     # # """
 
-    codes = 'var a = "abnd" '
+    # codes = 'var a = "abnd" '
 
     s = pase_list(codes)
 
     print('token_list', s)
+    return s

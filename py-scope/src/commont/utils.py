@@ -19,3 +19,11 @@ def is_space(char):
         return True
     else:
         return False
+
+
+def print_tree():
+    """
+
+    :return:
+    """
+    pass

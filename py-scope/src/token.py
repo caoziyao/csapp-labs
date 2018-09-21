@@ -7,9 +7,9 @@
 @desc:
 """
 
-from enum import Enum
+from enum import Enum, unique
 
-
+@unique
 class Type(Enum):
     auto = 0                # auto 的时候, c 是 : , { } [] 其中之一, 要自己判断
     colon = 1               # :
@@ -23,7 +23,11 @@ class Type(Enum):
     string = 9              # "name"
     var = 10                # var
     equal = 11              # =
-    identifier = 12         # abc 标志符
+    sub = 12                # -
+    times = 13              # *
+    div = 14                # /
+    add = 15                # +
+    identifier = 16         # abc 标志符
 
 
 class Token():
