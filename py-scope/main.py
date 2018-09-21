@@ -6,16 +6,40 @@
 @time: 2018/9/20 
 @desc:
 """
+from src.calclex import lexer
+from src.calc_parser import parser
 
-from src.lexer import lexer
-from src.parse import parse
+def lexer_test():
+    data = '''
+        3 + 4 * 10
+          + -20 *2
+        '''
 
+    # Give the lexer some input
+    lexer.input(data)
+
+    for tok in lexer:
+        print(tok)
+
+    # Tokenize
+    # while True:
+    #     tok = lexer.token()
+    #     if not tok:
+    #         break  # No more input
+    #     print(tok)
+
+def parse_test():
+    while True:
+        try:
+            s = input('calc > ')
+        except EOFError:
+            break
+        if not s: continue
+        result = parser.parse(s)
+        print(result)
 
 def main():
-    # codes = '3 + 4 * 5'
-    codes = '3 * 1 - 5 * 2 + 8 + 2 / 2'
-    tokens = lexer(codes)
-    parse(tokens)
+    parse_test()
 
 if __name__ == '__main__':
     main()
