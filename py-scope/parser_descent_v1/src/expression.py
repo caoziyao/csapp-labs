@@ -75,10 +75,3 @@ class ExpDiv(Node):
         self.exp_left = exp_left  # class Exp
         self.exp_right = exp_right  # class Exp
 
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()

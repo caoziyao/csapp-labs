@@ -27,12 +27,12 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','parser.py',18),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','parser.py',22),
-  ('expression -> term','expression',1,'p_expression_term','parser.py',26),
-  ('term -> term TIMES factor','term',3,'p_term_times','parser.py',30),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','parser.py',34),
-  ('term -> factor','term',1,'p_term_factor','parser.py',38),
-  ('factor -> NUMBER','factor',1,'p_factor_num','parser.py',42),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','parser.py',46),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','calc_parser.py',30),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','calc_parser.py',34),
+  ('expression -> term','expression',1,'p_expression_term','calc_parser.py',38),
+  ('term -> term TIMES factor','term',3,'p_term_times','calc_parser.py',42),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','calc_parser.py',46),
+  ('term -> factor','term',1,'p_term_factor','calc_parser.py',50),
+  ('factor -> NUMBER','factor',1,'p_factor_num','calc_parser.py',54),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','calc_parser.py',58),
 ]
