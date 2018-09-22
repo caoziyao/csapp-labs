@@ -6,14 +6,19 @@
 @time: 2018/9/20 
 @desc:
 """
-from src.calclex import lexer
-from src.calc_parser import parser
+from src.lexer import lexer
+from src.parser import parser
 
 def lexer_test():
+    # data = '''
+    #     a_abc if_ if
+    #     3 + 4 * 10
+    #       + -20 *2
+    #     '''
     data = '''
-        3 + 4 * 10
-          + -20 *2
-        '''
+            var a = 2
+            a == false
+            '''
 
     # Give the lexer some input
     lexer.input(data)
@@ -39,7 +44,12 @@ def parse_test():
         print(result)
 
 def main():
-    parse_test()
+    # lexer_test()
+    # parse_test()
+    # s = parser.parse('1+2+4')
+    s = parser.parse('a = 1')
+    print(s)
+    # lexer_test()
 
 if __name__ == '__main__':
     main()

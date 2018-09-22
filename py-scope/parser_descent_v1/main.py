@@ -8,7 +8,7 @@
 """
 
 from src.lexer import lexer
-from src.parse import parse
+from src.parser import parse
 
 
 def main():

@@ -3,26 +3,12 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/22 
+@time: 2018/9/23 
 @desc:
-expression : expression + term
-           | expression - term
-           | term
-
-term       : term * factor
-           | term / factor
-           | factor
-
-factor     : NUMBER
-           | ( expression )
 """
-
-# Yacc example
-
-import ply.yacc as yacc
-from .expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes
+from src.parser.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes
 # Get the token map from the lexer.  This is required.
-from .calclex import tokens
+from src.lexer.lexer import tokens
 
 
 def p_expression_plus(p):
@@ -57,7 +43,8 @@ def p_term_factor(p):
 
 
 def p_factor_num(p):
-    'factor : NUMBER'
+    """factor : NUMBER
+    """
     # p[0] = p[1]
     p[0] = Number(p[1])
 
@@ -69,19 +56,5 @@ def p_factor_expr(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
-
-
-# Build the parser
-parser = yacc.yacc()
-
-
-def parse_test():
-    while True:
-        try:
-            s = input('calc > ')
-        except EOFError:
-            break
-        if not s: continue
-        result = parser.parse(s)
-        print(result)
+    print("Syntax error in input!", p)
+    # raise SyntaxError

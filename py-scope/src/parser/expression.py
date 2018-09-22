@@ -3,7 +3,7 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/22 
+@time: 2018/9/22
 @desc:
 """
 
@@ -13,18 +13,32 @@ from enum import Enum, unique
 # 数据结构
 @unique
 class Kind(Enum):
-    number = 0
-    plus = 1
+    number = 0  # 0-9
+    plus = 1    # +
     times = 2
     minus = 3
     div = 4
-    operator = 5
+    operator = 5  # 操作符 +-*/
+    assignment = 6  # 赋值
+    id = 7  # id
 
 
 class Number(object):
 
     def __init__(self, value):
         self.type = Kind.number  # enum Kind
+        self.value = value
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
+
+class ID(object):
+
+    def __init__(self, value):
+        self.type = Kind.id  # enum Kind
         self.value = value
 
     def __str__(self, level=0):
@@ -78,5 +92,13 @@ class ExprDiv(Node):
 
     def __init__(self, left, right):
         self.type = Kind.div
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprAssignment(Node):
+
+    def __init__(self, left, right):
+        self.type = Kind.assignment
         self.left = left  # class Exp
         self.right = right  # class Exp

@@ -3,28 +3,21 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/20 
+@time: 2018/9/23 
 @desc:
-python3 testmain.py lexer
+python3 testmain.py parse
 """
+from src.parser import parser
 
 import unittest
 from tests.test_case.base import BaseCase
-from src.lexer import lexer
 
 
-class TestLexter(BaseCase):
+class TestParse(BaseCase):
 
-    def test_lexer(self):
-        data = '''
-                var a = 2
-                a == false
-        '''
-        # Give the lexer some input
-        lexer.input(data)
-
-        for tok in lexer:
-            print(tok)
+    def test_parser(self):
+        s = parser.parse('a = 1')
+        print(s)
 
     @unittest.skip("I don't want to run this case.")
     def test_divide(self):

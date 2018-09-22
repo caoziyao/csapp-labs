@@ -1,9 +1,8 @@
-test_condition (test_utils.TestLexter)
+test_condition (test_parse.TestParse)
 test_condition ... ok
-test_divide (test_utils.TestLexter)
+test_divide (test_parse.TestParse)
 test_divide ... skipped "I don't want to run this case."
-test_is_space (test_utils.TestLexter)
-test_demo ... ok
+test_parser (test_parse.TestParse) ... ok
 
 ----------------------------------------------------------------------
 Ran 3 tests in 0.000s
