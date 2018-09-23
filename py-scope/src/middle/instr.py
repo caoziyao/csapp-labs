@@ -45,16 +45,21 @@ def gen_minus(left, right):
 
 
 def gen_number(node):
-    return node.value
+    t = node.value
+    print('mov   eax, {}'.format(t))
+    return t
 
 
 def gen_assignment(left, right):
     t = '{} = {}'.format(str(left), str(right))
+    print('mov   [{}], {}'.format(left, right))
     return t
 
 
 def gen_id(node):
-    return node.value
+    t = node.value
+    print('.db {}'.format(t))
+    return t
 
 
 def is_leaf(node):
@@ -96,6 +101,55 @@ def post_order(node):
 
         return t
 
+def gen_print(msg, len):
+    """
+    user_ssize_t write(int fd, user_addr_t cbuf, user_size_t nbyte);
+    :return:
+    """
+    t = """
+        mov     rax, 0x2000004 ; write
+        mov     rdi, 1 ; stdout
+        mov     rsi, msg
+        mov     rdx, msg.len
+        syscall
+    """
+    pass
+
+def gen_section_data():
+    """
+    section .data
+    :return:
+    """
+    t = """
+    global start
+    section .text
+    
+    start:
+        mov     rax, 0x2000004 ; write
+        mov     rdi, 1 ; stdout
+        mov     rsi, msg
+        mov     rdx, msg.len
+        syscall
+    
+        mov     rax, 0x2000001 ; exit
+        mov     rdi, 0
+        syscall
+    
+    
+    section .data
+    
+    msg:    db      "Hello, world!", 10
+    .len:   equ     $ - msg
+    """
+    with open('bin/main.s', 'w') as f:
+        f.write(t.strip())
+
+
+def gen_section_text():
+    """
+    section .text
+    :return:
+    """
 
 def myinstr(ast):
     """
@@ -103,4 +157,5 @@ def myinstr(ast):
     :return:
     """
     t = post_order(ast)
+    gen_section_data()
     return t
