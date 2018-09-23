@@ -21,6 +21,8 @@ tokens = (
     'LPAREN',           # (
     'RPAREN',           # )
     'ID',               # identify 字母数字下横线
+    'STRING',           # string
+    # 'QUOTE'            # " "
 )
 
 # Regular expression rules for simple tokens
@@ -32,6 +34,8 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_EQUAL = r'='
 t_DOUBLE_EQUAL = r'=='
+t_STRING = r'".*"'
+# t_QUOTE = r'"'
 
 
 keword = {
@@ -42,6 +46,7 @@ keword = {
     'var': 'VAR',
     'true': 'TRUE',
     'false': 'FALSE',
+    'print': 'PRINT',
 }
 
 tokens = list(tokens) + list(keword.values())
@@ -68,7 +73,6 @@ def t_newline(t):
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
-
 
 # Error handling rule
 def t_error(t):

@@ -21,6 +21,9 @@ class Kind(Enum):
     operator = 5  # 操作符 +-*/
     assignment = 6  # 赋值
     id = 7  # id
+    var = 8 # var
+    string = 9  # string
+    print = 10  # print
 
 
 class Number(object):
@@ -28,6 +31,8 @@ class Number(object):
     def __init__(self, value):
         self.type = Kind.number  # enum Kind
         self.value = value
+        self.left = None
+        self.right = None
 
     def __str__(self, level=0):
         ret = "\t" * level + repr(self.value) + "\n"
@@ -40,12 +45,53 @@ class ID(object):
     def __init__(self, value):
         self.type = Kind.id  # enum Kind
         self.value = value
+        self.left = None
+        self.right = None
 
     def __str__(self, level=0):
         ret = "\t" * level + repr(self.value) + "\n"
         # for child in self.children:
         return ret
 
+
+class VAR(object):
+
+    def __init__(self, value):
+        self.type = Kind.var  # enum Kind
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
+class STRING(object):
+
+    def __init__(self, value):
+        self.type = Kind.string  # enum Kind
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
+class PRINT(object):
+
+    def __init__(self, value):
+        self.type = Kind.print  # enum Kind
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
 
 class Node(object):
 
@@ -100,5 +146,13 @@ class ExprAssignment(Node):
 
     def __init__(self, left, right):
         self.type = Kind.assignment
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprPrint(Node):
+
+    def __init__(self, left, right):
+        self.type = Kind.print
         self.left = left  # class Exp
         self.right = right  # class Exp

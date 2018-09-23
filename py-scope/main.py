@@ -8,30 +8,7 @@
 """
 from src.lexer import lexer
 from src.parser import parser
-
-def lexer_test():
-    # data = '''
-    #     a_abc if_ if
-    #     3 + 4 * 10
-    #       + -20 *2
-    #     '''
-    data = '''
-            var a = 2
-            a == false
-            '''
-
-    # Give the lexer some input
-    lexer.input(data)
-
-    for tok in lexer:
-        print(tok)
-
-    # Tokenize
-    # while True:
-    #     tok = lexer.token()
-    #     if not tok:
-    #         break  # No more input
-    #     print(tok)
+from src.middle.instr import myinstr
 
 def parse_test():
     while True:
@@ -44,12 +21,19 @@ def parse_test():
         print(result)
 
 def main():
-    # lexer_test()
-    # parse_test()
-    # s = parser.parse('1+2+4')
-    s = parser.parse('a = 1')
+    # lexer.input('5 + 2 * 3')
+    # for t in lexer:
+    #     print(t)
+
+    # # parse_test()
+    # s = parser.parse('5 + 2 * 3 - 1 + 6 - 3 * 2')
+    s = parser.parse('a = 2 ')
+    # s = parser.parse('print "sds"')
     print(s)
-    # lexer_test()
+    #
+    c = myinstr(s)
+    print(c)
+    # # lexer_test()
 
 if __name__ == '__main__':
     main()

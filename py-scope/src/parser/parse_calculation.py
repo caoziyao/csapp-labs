@@ -6,9 +6,9 @@
 @time: 2018/9/23 
 @desc:
 """
+from src.lexer.lexer import tokens
 from src.parser.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes
 # Get the token map from the lexer.  This is required.
-from src.lexer.lexer import tokens
 
 
 def p_expression_plus(p):

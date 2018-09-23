@@ -26,6 +26,12 @@ class TestLexter(BaseCase):
         for tok in lexer:
             print(tok)
 
+    def test_lexer2(self):
+
+        lexer.input('print "sds" ')
+        for t in lexer:
+            print(t)
+
     @unittest.skip("I don't want to run this case.")
     def test_divide(self):
         """test_divide"""

@@ -140,6 +140,9 @@ def atest2():
             break  # No more input
         print(tok)
 
+    for t in lexer:
+        print(t)
+
 
 def main():
     atest2()
