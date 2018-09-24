@@ -1,3 +1,3 @@
 
 all:
-	nasm -f macho64 -o main.o  demo.s
+	nasm -f macho64 -o main.o  test.s

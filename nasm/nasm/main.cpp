@@ -14,7 +14,10 @@ extern "C" long long GetRDTSC();
 int main(int, const char**)
 {
     long long RDTSC1 = GetRDTSC();
-    long long RDTSC2 = GetRDTSC();
-    printf("Time-Stamp Counters: %lld - %lld\n", RDTSC1, RDTSC2);
+    
+    printf("res: %lld \n", RDTSC1);
+    
+//    long long RDTSC2 = GetRDTSC();
+//    printf("Time-Stamp Counters: %lld - %lld\n", RDTSC1, RDTSC2);
     return 0;
 }
