@@ -10,10 +10,20 @@ from src.common.expression import Kind
 from src.gen.section import Section
 from src.common.utils import is_leaf
 
+section = Section()
+
 
 def gen_print(node, left, right):
     # t = node.value
     # print('gen_print {}'.format(t))
+    t = """
+        mov     rax, 0x2000004 ; write
+        mov     rdi, 1 ; stdout
+        mov     rsi, msg
+        mov     rdx, msg.len
+        syscall
+    """
+    section.commit(t)
     return node
 
 
@@ -24,8 +34,16 @@ def gen_id(node):
 
 
 def gen_string(node):
-    t = node.value
-    print('gen_string {}'.format(t))
+    value = node.value
+    l = len(value) - 1
+    print('gen_string {}'.format(value))
+
+    section.statement('msg:    db      {}, {} '.format(value, 10))
+    section.statement('.len:   equ     $ - msg')
+    return node
+
+
+def gen_left_print(node):
     return node
 
 
@@ -40,13 +58,20 @@ def gen_code(node, section):
         Kind.print: gen_print,
     }
 
+    leaf = {
+        Kind.string: gen_string,
+        Kind.id: gen_id,
+        Kind.print: gen_left_print,
+    }
+
     if node:
         left = gen_code(node.left, section)
         right = gen_code(node.right, section)
 
         kind = node.type
         if is_leaf(node):
-            return node
+            f = leaf[kind]
+            t = f(node)
             # f = leaf[kind]
             # t = f(node)
         else:
@@ -61,8 +86,6 @@ def gen(ast):
 
     :return:
     """
-    section = Section()
-    # t = post_order(ast)
     gen_code(ast, section)
 
     section.gen()

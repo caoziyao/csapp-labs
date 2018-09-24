@@ -14,17 +14,18 @@ class Section(object):
         self.section_data = []
         self.section_txt = []
         self.template = """
-        global start
-        section .text
+global start
+section .text
 
-        start:
-           {text}
+start:
+   {text}
 
-            mov     rax, 0x2000001 ; exit
-            mov     rdi, 0
-            syscall
-        section .data
-            {data}
+exit:
+    mov     rax, 0x2000001 ; exit
+    mov     rdi, 0
+    syscall
+section .data
+    {data}
         """
 
     def statement(self, code):
@@ -39,4 +40,4 @@ class Section(object):
             data='\n'.join(self.section_data),
         )
         with open('bin/main.s', 'w') as f:
-            f.write(t.strip())
+            f.write(t)

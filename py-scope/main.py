@@ -6,9 +6,11 @@
 @time: 2018/9/20 
 @desc:
 """
+import os
 from src.parser import parser
 from src.semantic import semantic_analyzer
 from src.gen import gen
+
 
 def parse_test():
     while True:
@@ -19,6 +21,7 @@ def parse_test():
         if not s: continue
         result = parser.parse(s)
         print(result)
+
 
 def atest1():
     # lexer.input('5 + 2 * 3')
@@ -52,14 +55,20 @@ def atest1():
     # print(c)
     # # lexer_test()
 
-def main():
 
-    s = parser.parse('print "sds"')
+def run():
+    print('------run-------')
+    os.system('make')
+    os.system('make run')
+
+
+def main():
+    s = parser.parse('print "hello js"')
     ret = semantic_analyzer(s)
     print(s)
 
     gen(ret)
-
+    run()
 
 
 if __name__ == '__main__':
