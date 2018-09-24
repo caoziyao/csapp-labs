@@ -8,7 +8,8 @@
 """
 from src.common.expression import Kind
 from src.common.utils import is_leaf
-from src.semantic_analyzer.sem_table import SemTable
+from src.semantic.sem_table import SemTable
+from src.semantic.middle import three_address
 
 table = SemTable()
 
@@ -22,7 +23,7 @@ def check_pus(node, left, right):
     if right_type != Kind.number:
         raise Exception('type mismatch {} != {}'.format(right_type, Kind.number))
 
-    return Kind.number
+    return node
 
 
 def check_assignment(node, left, right):
@@ -39,7 +40,7 @@ def check_assignment(node, left, right):
     if right_type != Kind.number:
         raise Exception('type mismatch {} != {}'.format(right_type, Kind.number))
 
-    return Kind.assignment
+    return node
 
 
 def check_var(node, left, right):
@@ -50,25 +51,6 @@ def check_var(node, left, right):
     table.enter(name, Kind.var)
     return table
 
-
-def check_number(node):
-    return node
-
-
-def check_id(node):
-    return node
-
-
-def check_true(node):
-    return node
-
-
-def check_false(node):
-    return node
-
-
-def check_undefind(node):
-    return node
 
 def check_condition(node, left, right):
     # left_type = left.type
@@ -81,6 +63,11 @@ def check_condition(node, left, right):
 
     return Kind.k_if
 
+
+def check_print(node, left, right):
+    return node
+
+
 def semantic(node):
     root = {
         Kind.plus: check_pus,
@@ -90,6 +77,7 @@ def semantic(node):
         Kind.assignment: check_assignment,
         Kind.var: check_var,
         Kind.k_if: check_condition,
+        Kind.print: check_print,
     }
     leaf = {
         # Kind.number: check_number,
@@ -113,3 +101,15 @@ def semantic(node):
             t = f(node, left, right)
 
         return t
+
+
+def semantic_analyzer(node):
+    """
+
+    :param node:
+    :return:
+    """
+    semantic(node)
+    r = three_address(node)
+
+    return r

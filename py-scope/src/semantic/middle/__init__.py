@@ -7,5 +7,4 @@
 @desc:
 """
 
-from .gen import gen
-
+from .three_address import three_address

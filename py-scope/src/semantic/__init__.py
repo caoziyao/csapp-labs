@@ -7,8 +7,8 @@
 @desc:
 """
 
-from .semantic import semantic
+from .semantic import semantic_analyzer
 
 __all__ = [
-    semantic,
+    semantic_analyzer,
 ]

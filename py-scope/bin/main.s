@@ -1,12 +1,10 @@
 global start
-    section .text
+        section .text
 
-    start:
-        mov rbx 2
-        mov [a] rbx
+        start:
+           
 
-        mov     rax, 0x2000001 ; exit
-        mov     rdi, 0
-        syscall
-section .data
-    vara  db ?
+            mov     rax, 0x2000001 ; exit
+            mov     rdi, 0
+            syscall
+        section .data

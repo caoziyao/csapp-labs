@@ -3,12 +3,11 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/23 
+@time: 2018/9/25 
 @desc:
 """
 
-# from .instr import instr
-#
-# __all__ = [
-#     instr,
-# ]
+
+def three_address(ast):
+
+    return ast
