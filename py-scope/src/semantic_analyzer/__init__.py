@@ -6,3 +6,9 @@
 @time: 2018/9/23 
 @desc:
 """
+
+from .semantic import semantic
+
+__all__ = [
+    semantic,
+]

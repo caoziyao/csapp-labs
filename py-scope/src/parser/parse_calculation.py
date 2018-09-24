@@ -6,10 +6,8 @@
 @time: 2018/9/23 
 @desc:
 """
+from src.common.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, TRUE, FALSE
 from src.lexer.lexer import tokens
-from src.parser.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes
-# Get the token map from the lexer.  This is required.
-
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
@@ -47,6 +45,16 @@ def p_factor_num(p):
     """
     # p[0] = p[1]
     p[0] = Number(p[1])
+
+def p_factor_bool(p):
+    """factor : TRUE
+              | FALSE
+    """
+    # p[0] = p[1]
+    if p[1] == 'true':
+        p[0] = TRUE(p[1])
+    elif p[1] == 'false':
+        p[0] = FALSE(p[1])
 
 
 def p_factor_expr(p):

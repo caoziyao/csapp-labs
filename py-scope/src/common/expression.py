@@ -14,22 +14,60 @@ from enum import Enum, unique
 @unique
 class Kind(Enum):
     number = 0  # 0-9
-    plus = 1    # +
+    plus = 1  # +
     times = 2
     minus = 3
     div = 4
     operator = 5  # 操作符 +-*/
-    assignment = 6  # 赋值
-    id = 7  # id
-    var = 8 # var
-    string = 9  # string
-    print = 10  # print
+    is_more_then = 6  # >
+    is_less_then = 7  # <
+
+    id = 21  # id
+    assignment = 22  # 赋值
+    string = 23  # string
+    var = 24  # var
+    true = 25  # true
+    false = 26  # false
+    k_if = 27  # if
+
+    undefind = 101  # undefind
+    # condition = 102  # if else
+
+    print = 103  # print
 
 
 class Number(object):
 
     def __init__(self, value):
         self.type = Kind.number  # enum Kind
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
+
+class TRUE(object):
+
+    def __init__(self, value):
+        self.type = Kind.true  # enum Kind
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
+
+class FALSE(object):
+
+    def __init__(self, value):
+        self.type = Kind.false  # enum Kind
         self.value = value
         self.left = None
         self.right = None
@@ -56,9 +94,9 @@ class ID(object):
 
 class VAR(object):
 
-    def __init__(self, value):
+    def __init__(self):
         self.type = Kind.var  # enum Kind
-        self.value = value
+        self.value = 'var'
         self.left = None
         self.right = None
 
@@ -66,6 +104,21 @@ class VAR(object):
         ret = "\t" * level + repr(self.value) + "\n"
         # for child in self.children:
         return ret
+
+
+class UNDEFIND(object):
+
+    def __init__(self):
+        self.type = Kind.undefind  # enum Kind
+        self.value = 'undefind'
+        self.left = None
+        self.right = None
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        # for child in self.children:
+        return ret
+
 
 class STRING(object):
 
@@ -80,6 +133,7 @@ class STRING(object):
         # for child in self.children:
         return ret
 
+
 class PRINT(object):
 
     def __init__(self, value):
@@ -92,6 +146,9 @@ class PRINT(object):
         ret = "\t" * level + repr(self.value) + "\n"
         # for child in self.children:
         return ret
+
+
+########################
 
 class Node(object):
 
@@ -154,5 +211,38 @@ class ExprPrint(Node):
 
     def __init__(self, left, right):
         self.type = Kind.print
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprVar(Node):
+
+    def __init__(self, left, right):
+        self.type = Kind.var
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprCondition(Node):
+
+    def __init__(self, condition, left, right):
+        self.type = Kind.k_if
+        self.condition = condition
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprIsMoreThen(Node):
+
+    def __init__(self, left, right):
+        self.type = Kind.is_more_then
+        self.left = left  # class Exp
+        self.right = right  # class Exp
+
+
+class ExprIsLessThen(Node):
+
+    def __init__(self, left, right):
+        self.type = Kind.is_less_then
         self.left = left  # class Exp
         self.right = right  # class Exp

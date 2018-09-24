@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE DOUBLE_EQUAL ELSE EQUAL FALSE ID IF LPAREN MINUS NUMBER PLUS PRINT RPAREN STRING THEN TIMES TRUE VAR WHILEexpression : expression PLUS termexpression : id EQUAL expressionexpression : print valueexpression : expression MINUS termid : IDprint : PRINTexpression : termvalue : STRINGterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : NUMBER\n    factor : LPAREN expression RPAREN'
+_lr_signature = 'DIVIDE DOUBLE_EQUAL ELSE EQUAL FALSE ID IF IS_LESS_THEN IS_MORE_THEN LPAREN L_BRACE MINUS NUMBER PLUS PRINT RPAREN R_BRACE STRING THEN TIMES TRUE VAR WHILEexpression : expression PLUS termexpression : VAR IDexpression : print valueexpression : expression MINUS termexpression : IF LPAREN expression RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACEexpression : id EQUAL expressionprint : PRINTexpression : termid : ID\n    expression : expression IS_MORE_THEN expression\n               | expression IS_LESS_THEN expression\n    value : STRINGterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : NUMBER\n    factor : TRUE\n              | FALSE\n    factor : LPAREN expression RPAREN'
     
-_lr_action_items = {'ID':([0,9,14,],[5,5,5,]),'PRINT':([0,9,14,],[6,6,6,]),'NUMBER':([0,9,10,11,12,13,14,],[8,8,8,8,8,8,8,]),'LPAREN':([0,9,10,11,12,13,14,],[9,9,9,9,9,9,9,]),'$end':([1,2,7,8,15,16,18,19,20,21,22,23,],[0,-7,-11,-12,-3,-8,-1,-4,-9,-10,-2,-13,]),'PLUS':([1,2,7,8,15,16,17,18,19,20,21,22,23,],[10,-7,-11,-12,-3,-8,10,-1,-4,-9,-10,10,-13,]),'MINUS':([1,2,7,8,15,16,17,18,19,20,21,22,23,],[11,-7,-11,-12,-3,-8,11,-1,-4,-9,-10,11,-13,]),'RPAREN':([2,7,8,15,16,17,18,19,20,21,22,23,],[-7,-11,-12,-3,-8,23,-1,-4,-9,-10,-2,-13,]),'TIMES':([2,7,8,18,19,20,21,23,],[12,-11,-12,12,12,-9,-10,-13,]),'DIVIDE':([2,7,8,18,19,20,21,23,],[13,-11,-12,13,13,-9,-10,-13,]),'EQUAL':([3,5,],[14,-5,]),'STRING':([4,6,],[16,-6,]),}
+_lr_action_items = {'VAR':([0,7,16,17,23,25,36,40,],[3,3,3,3,3,3,3,3,]),'IF':([0,7,16,17,23,25,36,40,],[6,6,6,6,6,6,6,6,]),'PRINT':([0,7,16,17,23,25,36,40,],[9,9,9,9,9,9,9,9,]),'ID':([0,3,7,16,17,23,25,36,40,],[4,20,4,4,4,4,4,4,4,]),'NUMBER':([0,7,14,15,16,17,18,19,23,25,36,40,],[11,11,11,11,11,11,11,11,11,11,11,11,]),'TRUE':([0,7,14,15,16,17,18,19,23,25,36,40,],[12,12,12,12,12,12,12,12,12,12,12,12,]),'FALSE':([0,7,14,15,16,17,18,19,23,25,36,40,],[13,13,13,13,13,13,13,13,13,13,13,13,]),'LPAREN':([0,6,7,14,15,16,17,18,19,23,25,36,40,],[7,23,7,7,7,7,7,7,7,7,7,7,7,]),'$end':([1,2,10,11,12,13,20,21,22,26,27,28,29,30,31,33,34,42,],[0,-8,-15,-16,-17,-18,-2,-3,-12,-1,-4,-10,-11,-13,-14,-19,-6,-5,]),'PLUS':([1,2,10,11,12,13,20,21,22,24,26,27,28,29,30,31,32,33,34,37,41,42,],[14,-8,-15,-16,-17,-18,-2,-3,-12,14,-1,-4,14,14,-13,-14,14,-19,14,14,14,-5,]),'MINUS':([1,2,10,11,12,13,20,21,22,24,26,27,28,29,30,31,32,33,34,37,41,42,],[15,-8,-15,-16,-17,-18,-2,-3,-12,15,-1,-4,15,15,-13,-14,15,-19,15,15,15,-5,]),'IS_MORE_THEN':([1,2,10,11,12,13,20,21,22,24,26,27,28,29,30,31,32,33,34,37,41,42,],[16,-8,-15,-16,-17,-18,-2,-3,-12,16,-1,-4,16,16,-13,-14,16,-19,16,16,16,-5,]),'IS_LESS_THEN':([1,2,10,11,12,13,20,21,22,24,26,27,28,29,30,31,32,33,34,37,41,42,],[17,-8,-15,-16,-17,-18,-2,-3,-12,17,-1,-4,17,17,-13,-14,17,-19,17,17,17,-5,]),'RPAREN':([2,10,11,12,13,20,21,22,24,26,27,28,29,30,31,32,33,34,42,],[-8,-15,-16,-17,-18,-2,-3,-12,33,-1,-4,-10,-11,-13,-14,35,-19,-6,-5,]),'R_BRACE':([2,10,11,12,13,20,21,22,26,27,28,29,30,31,33,34,37,41,42,],[-8,-15,-16,-17,-18,-2,-3,-12,-1,-4,-10,-11,-13,-14,-19,-6,38,42,-5,]),'TIMES':([2,10,11,12,13,26,27,30,31,33,],[18,-15,-16,-17,-18,18,18,-13,-14,-19,]),'DIVIDE':([2,10,11,12,13,26,27,30,31,33,],[19,-15,-16,-17,-18,19,19,-13,-14,-19,]),'EQUAL':([4,8,],[-9,25,]),'STRING':([5,9,],[22,-7,]),'L_BRACE':([35,39,],[36,40,]),'ELSE':([38,],[39,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,9,14,],[1,17,22,]),'term':([0,9,10,11,14,],[2,2,18,19,2,]),'id':([0,9,14,],[3,3,3,]),'print':([0,9,14,],[4,4,4,]),'factor':([0,9,10,11,12,13,14,],[7,7,7,7,20,21,7,]),'value':([4,],[15,]),}
+_lr_goto_items = {'expression':([0,7,16,17,23,25,36,40,],[1,24,28,29,32,34,37,41,]),'term':([0,7,14,15,16,17,23,25,36,40,],[2,2,26,27,2,2,2,2,2,2,]),'print':([0,7,16,17,23,25,36,40,],[5,5,5,5,5,5,5,5,]),'id':([0,7,16,17,23,25,36,40,],[8,8,8,8,8,8,8,8,]),'factor':([0,7,14,15,16,17,18,19,23,25,36,40,],[10,10,10,10,10,10,30,31,10,10,10,10,]),'value':([5,],[21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,17 +27,23 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','parse_calculation.py',15),
-  ('expression -> id EQUAL expression','expression',3,'p_assignment','parse_assignment.py',16),
-  ('expression -> print value','expression',2,'p_print','parse_print.py',17),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','parse_calculation.py',20),
-  ('id -> ID','id',1,'p_assignment_id','parse_assignment.py',21),
-  ('print -> PRINT','print',1,'p_print_print','parse_print.py',22),
-  ('expression -> term','expression',1,'p_expression_term','parse_calculation.py',25),
-  ('value -> STRING','value',1,'p_print_value','parse_print.py',27),
-  ('term -> term TIMES factor','term',3,'p_term_times','parse_calculation.py',30),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','parse_calculation.py',36),
-  ('term -> factor','term',1,'p_term_factor','parse_calculation.py',41),
-  ('factor -> NUMBER','factor',1,'p_factor_num','parse_calculation.py',46),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','parse_calculation.py',53),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','parse_calculation.py',13),
+  ('expression -> VAR ID','expression',2,'p_assignment_var','parse_assignment.py',16),
+  ('expression -> print value','expression',2,'p_print','parse_print.py',16),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','parse_calculation.py',18),
+  ('expression -> IF LPAREN expression RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACE','expression',11,'p_condition_if','parse_condition.py',18),
+  ('expression -> id EQUAL expression','expression',3,'p_assignment','parse_assignment.py',21),
+  ('print -> PRINT','print',1,'p_print_print','parse_print.py',21),
+  ('expression -> term','expression',1,'p_expression_term','parse_calculation.py',23),
+  ('id -> ID','id',1,'p_assignment_id','parse_assignment.py',26),
+  ('expression -> expression IS_MORE_THEN expression','expression',3,'p_condition_conf','parse_condition.py',27),
+  ('expression -> expression IS_LESS_THEN expression','expression',3,'p_condition_conf','parse_condition.py',28),
+  ('value -> STRING','value',1,'p_print_value','parse_print.py',26),
+  ('term -> term TIMES factor','term',3,'p_term_times','parse_calculation.py',28),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','parse_calculation.py',34),
+  ('term -> factor','term',1,'p_term_factor','parse_calculation.py',39),
+  ('factor -> NUMBER','factor',1,'p_factor_num','parse_calculation.py',44),
+  ('factor -> TRUE','factor',1,'p_factor_bool','parse_calculation.py',50),
+  ('factor -> FALSE','factor',1,'p_factor_bool','parse_calculation.py',51),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','parse_calculation.py',61),
 ]

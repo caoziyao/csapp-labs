@@ -6,9 +6,8 @@
 @time: 2018/9/23 
 @desc:
 """
-
 from src.lexer.lexer import tokens
-from src.parser.expression import (
+from src.common.expression import (
     ExprPrint, PRINT, STRING
 )
 

@@ -11,7 +11,7 @@
 用 前看符号 指导生成式规则的选择
 """
 from src.token import Type
-from src.parser.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
+from src.common.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
 
 current_index = 0
 

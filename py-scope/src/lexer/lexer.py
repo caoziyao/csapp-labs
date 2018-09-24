@@ -11,18 +11,23 @@ import ply.lex as lex
 
 # List of token names.   This is always required
 tokens = (
-    'NUMBER',           # number
-    'PLUS',             # +
-    'MINUS',            # -
-    'TIMES',            # *
-    'DIVIDE',           # /
-    'EQUAL',            # =
-    'DOUBLE_EQUAL',     # ==
-    'LPAREN',           # (
-    'RPAREN',           # )
-    'ID',               # identify 字母数字下横线
-    'STRING',           # string
-    # 'QUOTE'            # " "
+    'NUMBER',                       # number
+    'PLUS',                         # +
+    'MINUS',                        # -
+    'TIMES',                        # *
+    'DIVIDE',                       # /
+    'EQUAL',                        # =
+    'DOUBLE_EQUAL',                 # ==
+    'LPAREN',                       # (
+    'RPAREN',                       # )
+    'ID',                           # identify 字母数字下横线
+    'STRING',                       # string
+    'L_BRACE',                      # {
+    'R_BRACE',                      # {
+    'IS_MORE_THEN',                 # >
+    'IS_LESS_THEN',                 # <
+    # 'IS_MORE_THEN_OR_EQUAL',      # >=
+    # 'IS_LESS_THEN_OR_EQUAL',      # <=
 )
 
 # Regular expression rules for simple tokens
@@ -35,7 +40,13 @@ t_RPAREN = r'\)'
 t_EQUAL = r'='
 t_DOUBLE_EQUAL = r'=='
 t_STRING = r'".*"'
-# t_QUOTE = r'"'
+t_L_BRACE = r'\{'
+t_R_BRACE = r'\}'
+t_IS_MORE_THEN = r'\>'
+t_IS_LESS_THEN = r'\<'
+# t_IS_MORE_THEN_OR_EQUAL = r'\>='
+# t_IS_LESS_THEN_OR_EQUAL = r'\<='
+
 
 
 keword = {

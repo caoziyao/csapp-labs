@@ -6,7 +6,7 @@
 @time: 2018/9/23 
 @desc:
 """
-from src.parser.expression import Kind
+from src.common.expression import Kind
 
 
 # 递归实现前序、中序、后序遍历
@@ -22,6 +22,40 @@ def mid_order(node):
         pre_order(node.left)
         print(node.value)
         pre_order(node.right)
+
+
+class Section(object):
+
+    def __init__(self):
+        self.section_data = []
+        self.section_txt = []
+        self.template = """
+        global start
+        section .text
+        
+        start:
+           {text}
+           
+            mov     rax, 0x2000001 ; exit
+            mov     rdi, 0
+            syscall
+        section .data
+            {data}
+        """
+
+    def statement(self, code):
+        self.section_data.append(code)
+
+    def commit(self, code):
+        self.section_txt.append(code)
+
+    def gen(self):
+        t = self.template.format(
+            text='\n'.join(self.section_txt),
+            data='\n'.join(self.section_data),
+        )
+        with open('bin/main.s', 'w') as f:
+            f.write(t.strip())
 
 
 def gen_div(left, right):
@@ -101,61 +135,58 @@ def post_order(node):
 
         return t
 
-def gen_print(msg, len):
-    """
-    user_ssize_t write(int fd, user_addr_t cbuf, user_size_t nbyte);
-    :return:
-    """
-    t = """
-        mov     rax, 0x2000004 ; write
-        mov     rdi, 1 ; stdout
-        mov     rsi, msg
-        mov     rdx, msg.len
-        syscall
-    """
-    pass
 
-def gen_section_data():
+def gen_section_assignment(left, right, section):
+    s = section
+    s.commit('mov [{}] rbx'.format(left))
+
+
+def gen_section_num(node, section):
+    s = section
+    value = node.value
+    s.commit('mov rbx {}'.format(value))
+    return value
+
+
+def gen_section_id(node, section):
+    s = section
+    value = node.value
+    s.statement('var{}  db ?'.format(value))
+    return value
+
+
+def gen_section(node, section):
     """
     section .data
     :return:
     """
-    t = """
-    global start
-    section .text
-    
-    start:
-        mov     rax, 0x2000004 ; write
-        mov     rdi, 1 ; stdout
-        mov     rsi, msg
-        mov     rdx, msg.len
-        syscall
-    
-        mov     rax, 0x2000001 ; exit
-        mov     rdi, 0
-        syscall
-    
-    
-    section .data
-    
-    msg:    db      "Hello, world!", 10
-    .len:   equ     $ - msg
-    """
-    with open('bin/main.s', 'w') as f:
-        f.write(t.strip())
+    if node:
+        left = gen_section(node.left, section)
+        right = gen_section(node.right, section)
 
+        kind = node.type
+        if kind == Kind.assignment:
+            gen_section_assignment(left, right, section)
 
-def gen_section_text():
-    """
-    section .text
-    :return:
-    """
+        elif kind == Kind.id:
+            t = gen_section_id(node, section)
+            return t
+
+        elif kind == Kind.number:
+            t = gen_section_num(node, section)
+            return t
+        else:
+            pass
+        # return t
+
 
 def myinstr(ast):
     """
 
     :return:
     """
+    section = Section()
     t = post_order(ast)
-    gen_section_data()
+    gen_section(ast, section)
+    section.gen()
     return t
