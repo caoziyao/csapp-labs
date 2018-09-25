@@ -63,13 +63,20 @@ def run():
 
 
 def main():
+    # s = parser.parse('print "hello js"')
+    # ret = semantic_analyzer(s)
+    # print(s)
+
+    # gen(ret)
+    # run()
+    # a2 = parser.parse('var a')
+    # ret = semantic_analyzer(a2)
+    a2 = parser.parse('if (2 > 1) {a = 2} else {1 + 2}')
     s = parser.parse('print "hello js"')
+    # print(a2)
+    ret = semantic_analyzer(a2)
     ret = semantic_analyzer(s)
-    print(s)
-
-    gen(ret)
-    run()
-
+    # print('ret', ret)
 
 if __name__ == '__main__':
     main()

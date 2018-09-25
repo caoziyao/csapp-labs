@@ -9,7 +9,7 @@
 from src.common.expression import Kind
 from src.common.utils import is_leaf
 from src.semantic.sem_table import SemTable
-from src.semantic.middle import three_address
+from src.ir import three_address
 
 table = SemTable()
 
@@ -109,7 +109,7 @@ def semantic_analyzer(node):
     :param node:
     :return:
     """
-    semantic(node)
+    # semantic(node)
     r = three_address(node)
 
     return r
