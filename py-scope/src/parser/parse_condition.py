@@ -16,10 +16,10 @@ from src.common.expression import (
 # if (2 > 1) {a = 2} else {a = 1}
 def p_condition_if(p):
     'expression : IF LPAREN expression RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACE'
-    conditon = p[3]
+    condition = p[3]
     yes = p[6]
     no = p[10]
-    p[0] = ExprCondition(conditon, yes, no)
+    p[0] = ExprCondition(condition, yes, no)
 
 
 def p_condition_conf(p):

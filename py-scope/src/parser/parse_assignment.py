@@ -17,6 +17,11 @@ def p_assignment_var(p):
     p[0] = ExprVar(ID(p[2]), UNDEFIND())
 
 
+def p_assignment_var_equal(p):
+    'expression : VAR ID EQUAL expression'
+    p[0] = ExprVar(ID(p[2]), p[4])
+
+
 def p_assignment(p):
     'expression : id EQUAL expression'
     p[0] = ExprAssignment(p[1], p[3])

@@ -8,8 +8,7 @@
 """
 
 from src.common.expression import Kind
-from src.common.utils import is_leaf
-from src.ir.instr_kind import Quad, IR, InstrIf, InstrPrint
+from src.ir.instr_kind import Quad, IR, InstrIf, InstrPrint, InstrVar
 
 ir = IR()
 
@@ -34,19 +33,8 @@ def gen_assignment(node, left, right):
     return right
 
 
-def gen_var(node, left, right):
-    name = left.value
-    # t = {
-    #     name: Kind.var
-    # }
-
-
 def gen_is_more_then(node, left, right):
     name = left.value
-
-
-def gen_print(node, left, right):
-    return node
 
 
 def gen_number(node):
@@ -85,7 +73,7 @@ def gen_expression(node):
         quads.append(quad)
 
     elif kind == Kind.plus:
-        quad = Quad(Kind.number, left.value, right.value)
+        quad = Quad(Kind.plus, left.value, right.value)
         quads.append(quad)
 
     elif kind == Kind.string:
@@ -102,16 +90,33 @@ def gen_slist(node):
 
     # block = Block()
     if kind == Kind.assignment:
+        l = []
         x = gen_expression(right)
+        # l.extend(x)
+        # l.extend()
 
 
     elif kind == Kind.plus:
         x = gen_expression(node)
 
+    elif kind == Kind.print:
+        x = gen_print(node, left, right)
     else:
         x = []
 
     return x
+
+
+def gen_var(node, left, right):
+    quad = Quad(Kind.var, left.value, right.value)
+    return quad
+
+
+def gen_print(node, left, right):
+    quads = []
+    quad = Quad(Kind.print, right.value)
+    quads.append(quad)
+    return quads
 
 
 def three_address(node):
@@ -123,7 +128,7 @@ def three_address(node):
         instr = InstrIf()
         condition = node.condition
         r = gen_expression(condition)
-        instr.conditon.extend(r)
+        instr.condition.extend(r)
 
         l = gen_slist(left)
         instr.left.extend(l)
@@ -132,44 +137,17 @@ def three_address(node):
 
     elif kind == Kind.print:
         instr = InstrPrint()
-        r = gen_expression(right)
+        r = gen_print(node, left, right)
         instr.left.extend(r)
+
+    elif kind == Kind.var:
+        instr = InstrVar()
+        q = gen_var(node, left, right)
+        instr.left.append(q)
+        # instr
     else:
         raise Exception('not kind')
 
     ir.instrs.append(instr)
 
     return ir
-    # root = {
-    #     Kind.plus: gen_pus,
-    #     # Kind.minus: gen_minus,
-    #     # Kind.times: gen_times,
-    #     # Kind.div: gen_div,
-    #     Kind.assignment: gen_assignment,
-    #     Kind.var: gen_var,
-    #     Kind.k_if: gen_condition,
-    #     Kind.print: gen_print,
-    #     Kind.is_more_then: gen_is_more_then,
-    # }
-    # leaf = {
-    #     Kind.number: gen_number,
-    #     Kind.id: gen_id,
-    #     # Kind.true: gen_true,
-    #     # Kind.false: gen_false,
-    #     # Kind.undefind: gen_undefind,
-    # }
-    #
-    # if node:
-    #     left = three_address(node.left)
-    #     right = three_address(node.right)
-    #
-    #     kind = node.type
-    #     if is_leaf(node):
-    #         # return node
-    #         f = leaf[kind]
-    #         t = f(node)
-    #     else:
-    #         f = root[kind]
-    #         t = f(node, left, right)
-    #
-    #     return t

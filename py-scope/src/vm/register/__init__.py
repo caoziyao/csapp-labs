@@ -6,3 +6,5 @@
 @time: 2018/9/26 
 @desc:
 """
+
+from .vm_register import VM

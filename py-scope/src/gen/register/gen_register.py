@@ -7,7 +7,7 @@
 @desc:
 """
 from src.common.expression import Kind
-from src.gen.register.section import Section
+from src.gen.register import Section
 from src.common.utils import is_leaf
 
 section = Section()

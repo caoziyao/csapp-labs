@@ -11,13 +11,14 @@
 from enum import Enum, unique
 from src.common.expression import Kind
 
-@unique
-class InstrKind(Enum):
-    const = 0
-    move = 1
-    plus = 2
-    assignment = 3
-    k_if = 4
+
+# @unique
+# class InstrKind(Enum):
+#     const = 0
+#     move = 1
+#     plus = 2
+#     assignment = 3
+#     k_if = 4
 
 
 class InstrT(object):
@@ -32,7 +33,7 @@ class InstrAdd(object):
     """
 
     def __init__(self, x, y, z):
-        self.instr_kind = InstrKind.add
+        self.instr_kind = Kind.add
         self.x = x
         self.y = y
         self.z = z
@@ -44,7 +45,7 @@ class InstrMove(object):
     """
 
     def __init__(self, x, y, z):
-        self.instr_kind = InstrKind.move
+        self.instr_kind = Kind.move
         self.x = x
         self.y = y
         self.z = z
@@ -65,15 +66,24 @@ class InstrIf(object):
         # 基本块
         self.kind = Kind.k_if
         # self.quads = []
-        self.conditon = []
+        self.condition = []
         self.left = []
         self.right = []
+
 
 class InstrPrint(object):
 
     def __init__(self):
         # 基本块
         self.kind = Kind.print
+        # self.quads = []
+        self.left = []
+
+
+class InstrVar(object):
+
+    def __init__(self):
+        self.kind = Kind.var
         # self.quads = []
         self.left = []
 

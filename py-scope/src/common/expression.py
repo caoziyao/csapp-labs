@@ -35,6 +35,27 @@ class Kind(Enum):
 
     print = 103  # print
 
+    # register todo
+    mov = 201
+    ldrb = 202
+    ldr = 203
+    strb = 204
+    str = 205
+
+    push = 206
+    pop = 207
+
+    call = 208
+    ret = 209
+
+    jmp = 210
+    jmpn = 211
+    jmpz = 212
+    jmpo = 213
+
+    comp = 214
+    cjmp = 215
+
 
 class Number(object):
 
@@ -230,6 +251,13 @@ class ExprCondition(Node):
         self.condition = condition
         self.left = left  # class Exp
         self.right = right  # class Exp
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.type.name) + "\n"
+        ret += self.condition.__str__(level + 1)
+        ret += self.left.__str__(level + 1)
+        ret += self.right.__str__(level + 1)
+        return ret
 
 
 class ExprIsMoreThen(Node):

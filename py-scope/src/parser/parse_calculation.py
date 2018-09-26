@@ -6,8 +6,9 @@
 @time: 2018/9/23 
 @desc:
 """
-from src.common.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, TRUE, FALSE
+from src.common.expression import Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, TRUE, FALSE, ID
 from src.lexer.lexer import tokens
+
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
@@ -45,6 +46,14 @@ def p_factor_num(p):
     """
     # p[0] = p[1]
     p[0] = Number(p[1])
+
+
+def p_factor_id(p):
+    """factor : ID
+    """
+    # p[0] = p[1]
+    p[0] = ID(p[1])
+
 
 def p_factor_bool(p):
     """factor : TRUE
