@@ -109,7 +109,7 @@ def semantic_analyzer(node):
     :param node:
     :return:
     """
-    res = semantic(node)
+    # res = semantic(node)
     ir = three_address(node)
 
     return ir

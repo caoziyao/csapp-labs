@@ -53,11 +53,27 @@ class InstrMove(object):
 
 class Quad(object):
 
-    def __init__(self, op, x, y='', result=''):
-        self.op = op
+    def __init__(self, op, result, x, y=''):
+        self.type = op
+        self.result = result
         self.x = x
         self.y = y
-        self.result = result
+
+
+class QuadCondition(object):
+
+    def __init__(self, op, condition, x='', y=''):
+        self.type = op
+        self.condition = condition
+        self.x = x
+        self.y = y
+
+
+class QuadPrint(object):
+
+    def __init__(self, op, value=''):
+        self.type = op
+        self.value = value
 
 
 class InstrIf(object):

@@ -7,5 +7,5 @@
 @desc:
 """
 
-from .gen_register_vm import gen_register_vm
+# from .gen_register_vm import gen_register_vm
 

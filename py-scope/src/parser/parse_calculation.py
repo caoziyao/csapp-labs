@@ -42,8 +42,7 @@ def p_term_factor(p):
 
 
 def p_factor_num(p):
-    """factor : NUMBER
-    """
+    'factor : NUMBER'
     # p[0] = p[1]
     p[0] = Number(p[1])
 
