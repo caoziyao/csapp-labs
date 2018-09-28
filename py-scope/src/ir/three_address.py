@@ -8,7 +8,7 @@
 """
 from src.common.utils import is_leaf
 from src.common.expression import Kind
-from src.ir.instr_kind import QuadPrint, Quad, IR, InstrIf, InstrPrint, InstrVar, QuadCondition
+from src.ir.instr_kind import QuadPrint, QuadLabel, Quad, QuadWhile, InstrIf, InstrPrint, InstrVar, QuadCondition
 
 #
 # ir = IR()
@@ -296,6 +296,7 @@ class IRTree(object):
             Kind.var: self.gen_instr_var,
             Kind.print: self.gen_instr_print,
             Kind.k_if: self.gen_instr_kif,
+            Kind.kwhile: self.gen_instr_kwhile,
         }
 
         f = m.get(kind, None)
@@ -308,7 +309,6 @@ class IRTree(object):
 
     def gen_instr_kif(self, node):
         """
-        var a = 123
         :param node:
         :return:
         """
@@ -333,6 +333,31 @@ class IRTree(object):
         # self.quads.append(q)
         return q
 
+    def gen_instr_kwhile(self, node):
+        """
+        while (1) {}
+        :param node:
+        :return:
+        """
+        cond = node.condition
+        body = node.body
+
+        t = self.get_tmp_var()
+        start = QuadLabel(Kind.kwhile_start, t)
+        self.quads.append(start)
+
+        rc = self.gen_expression(cond)
+
+        rl = []
+        for l in body:
+            a = self.gen_instr(l)
+            rl.append(a)
+
+        q = QuadWhile(Kind.kwhile, rc, rl, start)
+
+        # self.quads.append(q)
+        return q
+
     def gen(self):
 
         kind = self.root.type
@@ -341,6 +366,7 @@ class IRTree(object):
             Kind.var: self.gen_instr_var,
             Kind.print: self.gen_instr_print,
             Kind.k_if: self.gen_instr_kif,
+            Kind.kwhile: self.gen_instr_kwhile,
         }
 
         f = m.get(kind, None)

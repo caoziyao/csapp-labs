@@ -29,6 +29,8 @@ class Kind(Enum):
     true = 25  # true
     false = 26  # false
     k_if = 27  # if
+    kwhile = 28  # while
+    kwhile_start = 29  # while start
 
     undefind = 101  # undefind
     # condition = 102  # if else
@@ -245,6 +247,9 @@ class ExprVar(Node):
 
 
 class ExprCondition(Node):
+    """
+    if
+    """
 
     def __init__(self, condition, left, right):
         self.type = Kind.k_if
@@ -257,6 +262,21 @@ class ExprCondition(Node):
         ret += self.condition.__str__(level + 1)
         ret += self.left.__str__(level + 1)
         ret += self.right.__str__(level + 1)
+        return ret
+
+
+class ExprWhile(Node):
+    """ while """
+
+    def __init__(self, condition, body):
+        self.type = Kind.kwhile
+        self.condition = condition
+        self.body = body  # class Exp
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.type.name) + "\n"
+        ret += self.condition.__str__(level + 1)
+        ret += self.body.__str__(level + 1)
         return ret
 
 

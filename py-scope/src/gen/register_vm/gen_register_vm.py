@@ -194,6 +194,8 @@ register_index = 0
 register_map = {}
 db_index = 0
 db_map = {}
+label_index = 0
+label_map = {}
 
 
 class CodeRen(object):
@@ -254,14 +256,34 @@ class CodeRen(object):
 
         return r
 
-    def get_label(self):
-        """
-        :return:
-        """
-        t = 'L{}'.format(self.index_label)
-        self.index_label += 1
+    # def get_label(self):
+    #     """
+    #     :return:
+    #     """
+    #     t = 'L{}'.format(self.index_label)
+    #     self.index_label += 1
+    #
+    #     return t
 
-        return t
+    def gen_label(self, label=''):
+        global label_index
+        global label_map
+
+        if label:
+            # 存在临时变量
+            r = label_map.get(label, None)
+            if r is None:
+                # 没有则生成并做映射
+                r = 'L{}'.format(label_index)
+                label_index += 1
+                label_map.update({
+                    label: r
+                })
+        else:
+            r = 'L{}'.format(label_index)
+            label_index += 1
+
+        return r
 
     def gen_var(self, ir):
         """
@@ -355,6 +377,8 @@ class CodeRen(object):
             Kind.string: self.gen_string,
             Kind.k_if: self.gen_kif,
             Kind.is_more_then: self.gen_is_more_then,
+            Kind.is_less_then: self.gen_is_less_then,
+            Kind.kwhile: self.gen_kwhile,
         }
 
         t = ir.type
@@ -364,7 +388,6 @@ class CodeRen(object):
         else:
             raise Exception('code gen_instr not found')
 
-
     def gen_kif(self, ir):
 
         cond = ir.condition
@@ -372,9 +395,9 @@ class CodeRen(object):
         listy = ir.y
 
         rcond = self.gen_register(cond)
-        l1 = self.get_label()
-        l2 = self.get_label()
-        l3 = self.get_label()
+        l1 = self.gen_label()
+        l2 = self.gen_label()
+        l3 = self.gen_label()
         self.codes.append('cjmp {} {} {}'.format(rcond, l1, l2))
 
         # l1
@@ -393,6 +416,39 @@ class CodeRen(object):
         # l3
         self.codes.append('{}:'.format(l3))
 
+    def gen_kwhile(self, ir):
+
+        cond = ir.condition
+        body = ir.body
+        start = ir.start
+
+        rcond = self.gen_register(cond)
+        l1 = self.gen_label()
+        l2 = self.gen_label()
+
+        lstart = self.gen_label(start.label)
+
+        self.codes.append('cjmp {} {} {}'.format(rcond, l1, l2))
+
+        # l1
+        self.codes.append('{}:'.format(l1))
+
+        for x in body:
+            self.gen_instr(x)
+
+        # self.codes.append('cjmp {} {} {}'.format(rcond, l1, l2))
+        self.codes.append('jmp {}'.format(lstart))
+
+        # l2
+        self.codes.append('{}:'.format(l2))
+
+    def gen_kwhile_start(self, ir):
+
+        label = ir.label
+
+        l1 = self.gen_label(label)
+        self.codes.append('{}:'.format(l1))
+
     def gen_is_more_then(self, ir):
         """
         x > y  -> r
@@ -409,6 +465,22 @@ class CodeRen(object):
 
         self.codes.append('cmp {} {} {}'.format(rx, ry, rr))
 
+    def gen_is_less_then(self, ir):
+        """
+        r1 - r2  -> r
+        :param ir:
+        :return:
+        """
+        result = ir.result
+        x = ir.x
+        y = ir.y
+
+        rr = self.gen_register(result)
+        rx = self.gen_register(x)
+        ry = self.gen_register(y)
+
+        self.codes.append('cmp {} {} {}'.format(ry, rx, rr))
+
     def gen(self):
         m = {
             Kind.var: self.gen_var,
@@ -420,6 +492,9 @@ class CodeRen(object):
             Kind.string: self.gen_string,
             Kind.k_if: self.gen_kif,
             Kind.is_more_then: self.gen_is_more_then,
+            Kind.is_less_then: self.gen_is_less_then,
+            Kind.kwhile: self.gen_kwhile,
+            Kind.kwhile_start: self.gen_kwhile_start,
         }
 
         for ir in self.ir:

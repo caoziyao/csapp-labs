@@ -23,34 +23,43 @@ def run():
 
 def main():
     """
-     if (11 > 10)
-        {
-            print "aaa"
-            print "ccc"
-        }
-        else
-        {
-            print "bbb"
-        }$
-
-            var a = 2 * 2 + 3 * 5 + 2;
-        print "abdd";
-    :return:
-    """
-    codes = """
         var b = 134;
-        if (11 > 10)
+        var a = 1;
+        if (b > 10)
         {
             print "aaa"
             print "cccc"
-            
+
             print b
         }
         else
         {
             print "bbb"
         }
-       
+
+        var a = 2;
+        a = a + 1;
+        print a;
+    :return:
+    """
+    codes = """
+        var b = 134;
+        if (b > 10)
+        {
+            print "1"
+            print "2"
+        }
+        else
+        {
+            print "3"
+        };
+        
+        var a = 1;
+        while ( a < 3 ) 
+        {
+            print "4"
+            a = a + 1
+        }
     """
     lines = codes.split(';')
 

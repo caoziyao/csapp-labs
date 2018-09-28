@@ -21,9 +21,6 @@ precedence = (
     ('right', 'UMINUS'),
 )
 
-# dictionary of names
-names = {}
-
 
 def p_statement_assign(p):
     'statement : ID EQUAL expression'

@@ -69,6 +69,24 @@ class QuadCondition(object):
         self.y = y
 
 
+class QuadLabel(object):
+
+    def __init__(self, op, label):
+        self.type = op
+        # self.condition = condition
+        # self.body = body
+        self.label = label
+
+
+class QuadWhile(object):
+
+    def __init__(self, op, condition, body, start):
+        self.type = op
+        self.condition = condition
+        self.body = body
+        self.start = start
+
+
 class QuadPrint(object):
 
     def __init__(self, op, value=''):
