@@ -8,7 +8,7 @@
 """
 from src.lexer.lexer import tokens
 from src.common.expression import (
-    ExprAssignment, ID, UNDEFIND, VAR, ExprVar
+    ID, UNDEFIND, VAR, ExprVar
 )
 # precedence = (
 #     ('left', 'PLUS', 'MINUS'),
@@ -23,6 +23,7 @@ def p_assignment_var(p):
 def p_assignment_var_equal(p):
     'expression : VAR ID EQUAL expression'
     p[0] = ExprVar(ID(p[2]), p[4])
+
 
 
 # def p_assignment(p):

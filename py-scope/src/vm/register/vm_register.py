@@ -507,6 +507,15 @@ class VM(object):
 
         return instr
 
+    def args_from_instr(self, instr):
+        """
+        db r16 "www js"
+        :param args:
+        :return:
+        todo
+        """
+        pass
+
     def run(self):
         """
 
@@ -521,7 +530,6 @@ class VM(object):
             'print': self.op_print,
             'push': self.op_push,
             'pop': self.op_pop,
-            # 'L': self.op_label,
             'jmp': self.op_jmp,
             'times': self.op_times,
             'plus': self.op_plus,

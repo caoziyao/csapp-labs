@@ -22,17 +22,31 @@ def run():
 
 
 def main():
-    codes = """
-        var a = 2 * 2 + 3 * 5 + 2;
-        print "abdd";
-         if (a > 10)
+    """
+     if (11 > 10)
         {
-            print "ddfe"
+            print "aaa"
+            print "ccc"
         }
         else
         {
-            print "cdf"
-        };
+            print "bbb"
+        }$
+
+            var a = 2 * 2 + 3 * 5 + 2;
+        print "abdd";
+    :return:
+    """
+    codes = """
+        if (11 > 10)
+        {
+            print "aaa"
+            print "cccc"
+        }
+        else
+        {
+            print "bbb"
+        }
        
     """
     lines = codes.split(';')
@@ -56,10 +70,7 @@ def main():
         asm = g.gen()
 
         asms.extend(asm)
-        # ir = semantic_analyzer(a2)
 
-        # a = gen(ir)
-        # asm.extend(a)
 
     print('asm', asms)
     vm = VM(asms)

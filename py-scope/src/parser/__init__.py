@@ -7,11 +7,13 @@
 @desc:
 """
 
-from src.lexer.lexer import tokens
 import ply.yacc as yacc
-from .parse_calculation import *
-from .parse_assignment import *
-from .parse_print import *
-from .parse_condition import *
+from src.parser.parse_calc import *
+from src.parser.parse_print import *
+from src.parser.parse_condition import *
+# from src.parser.v1.parse_calculation import *
+# from src.parser.v1.parse_assignment import *
+# from src.parser.v1.parse_print import *
+# from src.parser.v1.parse_condition import *
 
 parser = yacc.yacc()

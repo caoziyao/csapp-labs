@@ -220,12 +220,12 @@ class ExprDiv(Node):
         self.right = right  # class Exp
 
 
-class ExprAssignment(Node):
-
-    def __init__(self, left, right):
-        self.type = Kind.assignment
-        self.left = left  # class Exp
-        self.right = right  # class Exp
+# class ExprAssignment(Node):
+#
+#     def __init__(self, left, right):
+#         self.type = Kind.assignment
+#         self.left = left  # class Exp
+#         self.right = right  # class Exp
 
 
 class ExprPrint(Node):
