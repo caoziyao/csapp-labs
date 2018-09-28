@@ -317,8 +317,16 @@ class IRTree(object):
         right = node.right
 
         rc = self.gen_expression(cond)
-        rl = self.gen_instr(left)
-        rr = self.gen_instr(right)
+
+        rl = []
+        for l in left:
+            a = self.gen_instr(l)
+            rl.append(a)
+
+        rr = []
+        for r in right:
+            b = self.gen_instr(r)
+            rr.append(b)
 
         q = QuadCondition(Kind.k_if, rc, rl, rr)
 

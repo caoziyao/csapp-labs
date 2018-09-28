@@ -32,11 +32,3 @@ def p_condition_conf(p):
     elif p[2] == '<':
         p[0] = ExprIsLessThen(p[1], p[3])
 
-def p_statement_list_1(t):
-    'statement_list : statement'
-    pass
-
-
-def p_statement_list_2(t):
-    'statement_list : statement_list statement'
-    pass

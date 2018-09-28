@@ -368,8 +368,8 @@ class CodeRen(object):
     def gen_kif(self, ir):
 
         cond = ir.condition
-        x = ir.x
-        y = ir.y
+        listx = ir.x
+        listy = ir.y
 
         rcond = self.gen_register(cond)
         l1 = self.get_label()
@@ -379,12 +379,15 @@ class CodeRen(object):
 
         # l1
         self.codes.append('{}:'.format(l1))
-        self.gen_instr(x)
+
+        for x in listx:
+            self.gen_instr(x)
         self.codes.append('jmp {}'.format(l3))
 
         # l2
         self.codes.append('{}:'.format(l2))
-        self.gen_instr(y)
+        for y in listy:
+            self.gen_instr(y)
         self.codes.append('jmp {}'.format(l3))
 
         # l3

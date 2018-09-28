@@ -11,6 +11,7 @@ import ply.yacc as yacc
 from src.parser.parse_calc import *
 from src.parser.parse_print import *
 from src.parser.parse_condition import *
+from src.parser.parse_statement import *
 # from src.parser.v1.parse_calculation import *
 # from src.parser.v1.parse_assignment import *
 # from src.parser.v1.parse_print import *

@@ -38,10 +38,13 @@ def main():
     :return:
     """
     codes = """
+        var b = 134;
         if (11 > 10)
         {
             print "aaa"
             print "cccc"
+            
+            print b
         }
         else
         {
