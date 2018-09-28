@@ -11,6 +11,7 @@ import ply.lex as lex
 
 # List of token names.   This is always required
 tokens = (
+    'COMMENT',                      # 注释
     'NUMBER',                       # number
     'PLUS',                         # +
     'MINUS',                        # -
@@ -59,6 +60,8 @@ keword = {
     'true': 'TRUE',
     'false': 'FALSE',
     'print': 'PRINT',
+    'def': 'DEF',
+    'call': 'CALL',
 }
 
 tokens = list(tokens) + list(keword.values())
@@ -82,6 +85,10 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+def t_COMMENT(t):
+    r'\//.*'
+    pass
+    # No return value. Token discarded
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'

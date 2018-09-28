@@ -78,6 +78,15 @@ class QuadLabel(object):
         self.label = label
 
 
+class QuadFunctionLabel(object):
+
+    def __init__(self, op, func_name):
+        self.type = op
+        # self.condition = condition
+        # self.body = body
+        self.func_name = func_name
+
+
 class QuadWhile(object):
 
     def __init__(self, op, condition, body, start):
@@ -85,6 +94,24 @@ class QuadWhile(object):
         self.condition = condition
         self.body = body
         self.start = start
+
+
+class QuadDef(object):
+
+    def __init__(self, op, args, body, func_name):
+        self.type = op
+        self.args = args
+        self.body = body
+        self.func_name = func_name
+        # self.end = end
+
+
+class QuadCall(object):
+
+    def __init__(self, op, args, func_name):
+        self.type = op
+        self.args = args
+        self.func_name = func_name
 
 
 class QuadPrint(object):

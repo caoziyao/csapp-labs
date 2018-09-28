@@ -42,241 +42,28 @@ from src.common.expression import Kind
 from src.vm.register.vm_state import VMState, VMInstr
 
 
-#
-# class VM(object):
-#
-#     def __init__(self, instrs):
-#         self._instruction = {
-#             'mov': self.op_mov,
-#             'ldrb': self.op_ldrb,
-#             'comp': self.op_comp,
-#             'cjmp': self.op_cjmp,
-#             'print': self.op_print,
-#             'push': self.op_push,
-#             'pop': self.op_pop,
-#             'L': self.op_label,
-#             'jmp': self.op_jmp,
-#             'times': self.op_times,
-#             'plus': self.op_plus,
-#         }
-#         self.instrs = instrs
-#         self.stack = {}
-#         self.data = []
-#         self.table_label = {}
-#         self.init()
-#
-#     @property
-#     def R0(self):
-#         return self.R[0]
-#
-#     @property
-#     def R1(self):
-#         return self.R[1]
-#
-#     def init(self):
-#         self.pc = 0
-#         self.current_inst = None
-#         self.status = VMState.idle
-#         self.R = [0] * 10
-#         self.init_table_label()
-#
-#     def init_table_label(self):
-#         """"""
-#         for index, instr in enumerate(self.instrs):
-#             op = instr[0]
-#             if op[0] == 'L':
-#                 self.op_label(instr, index)
-#
-#     # def update_table_label(self, lable, line):
-#     #     """
-#     #     :param lable: L1:  L2:
-#     #     :param line: 行号:
-#     #     :return:
-#     #     """
-#     #     l = 'L{}'.format(line)
-#     #     self.table_label.update({
-#     #         l: line
-#     #     })
-#
-#     def get_label_num(self, label):
-#         """
-#         获得 label
-#         :return:
-#         """
-#         t = self.table_label[label]
-#         return t
-#
-#     def op_comp(self, *args):
-#
-#         src1 = args[1]
-#         src2 = args[2]
-#         dest = args[3]
-#
-#         r1 = int(src1[1])
-#         r2 = int(src2[1])
-#         r3 = int(dest[1])
-#
-#         self.R[r3] = self.R[r1] - self.R[r2]
-#
-#     def op_times(self, *args):
-#
-#         src1 = args[1]
-#         src2 = args[2]
-#         dest = args[3]
-#
-#         r1 = int(src1[1])
-#         r2 = int(src2[1])
-#         r3 = int(dest[1])
-#
-#         self.R[r3] = self.R[r1] * self.R[r2]
-#
-#     def op_plus(self, *args):
-#
-#         src1 = args[1]
-#         src2 = args[2]
-#         dest = args[3]
-#
-#         r1 = int(src1[1])
-#         r2 = int(src2[1])
-#         r3 = int(dest[1])
-#
-#         self.R[r3] = self.R[r1] + self.R[r2]
-#
-#     def op_jmp(self, *args):
-#         src1 = args[1]
-#
-#         # r1 = int(src1[1])
-#         self.pc = self.get_label_num(src1)
-#
-#     def op_print(self, *args):
-#
-#         src = args[1]
-#
-#         if '[' in src:
-#             v = self.stack[src[1]]
-#             print(v)
-#         else:
-#             print(src)
-#
-#         # self.pc = 10
-#
-#     def op_cjmp(self, *args):
-#         cond = args[1]
-#         l1 = args[2]
-#         l2 = args[3]
-#
-#         r = int(cond[1])
-#
-#         if self.R[r] > 0:
-#             self.pc = self.get_label_num(l1)
-#         else:
-#             self.pc = self.get_label_num(l2)
-#
-#     def op_ldrb(self, *args):
-#         pass
-#
-#     def is_register(self, r):
-#
-#         if isinstance(r, str):
-#             if r[0] == 'r':
-#                 return True
-#
-#         return False
-#
-#     def is_memery(self, r):
-#
-#         if isinstance(r, str):
-#             if r[0] == '[':
-#                 return True
-#
-#         return False
-#
-#     def op_mov(self, *args):
-#         # todo
-#         r = args[1]
-#
-#         src = args[2]
-#
-#         if self.is_memery(r):
-#             if self.is_register(src):
-#                 self.stack[r[1]] = self.R[int(src[1])]
-#             else:
-#                 self.stack[r[1]] = int(src)
-#         else:
-#             if self.is_memery(src):
-#                 number = self.stack[src[1]]
-#
-#                 rnum = int(r[1])
-#                 self.R[rnum] = number
-#             elif self.is_register(src):
-#                 rnum = int(r[1])
-#                 # self.R[rnum] = int(src)
-#
-#                 self.R[rnum] = self.R[int(src[1])]
-#             else:
-#                 rnum = int(r[1])
-#                 if isinstance(src, str):
-#                     src = src.strip()
-#                 self.R[rnum] = int(src)
-#
-#     def op_push(self, *args):
-#
-#         pass
-#
-#     def op_pop(self, *args):
-#
-#         pass
-#
-#     def op_label(self, instr, number):
-#         """
-#         instr: L1:
-#         :param instr:
-#         :return:
-#         """
-#         l = instr.split(':', 1)[0]
-#         self.table_label.update({
-#             l: number
-#         })
-#
-#     def next_instr(self):
-#
-#         instr = self.instrs[self.pc]
-#         self.pc += 1
-#
-#         l = len(self.instrs)
-#         if self.pc >= l:
-#             self.status = VMState.idle
-#
-#         return instr
-#
-#     def run(self):
-#         """
-#
-#         :param state:
-#         :return:
-#         """
-#         self.status = VMState.run
-#         while True:
-#
-#             if self.status == VMState.idle:
-#                 break
-#
-#             instr = self.next_instr()
-#             args = instr.split(' ')
-#             op = args[0]
-#             f = self._instruction.get(op)
-#             if f:
-#                 f(*args)
-
-
 class VM(object):
 
     def __init__(self, instrs):
         self.instrs = instrs
-        self.stack = {}
+        self.heap = {}
         self.data = []
         self.table_label = {}
+        self.stack = []
+        self.sp = 0
+        self.current_inst = None
+        self.status = VMState.idle
+        self.R = [0] * 100
         self.init()
+        self.pc_start()
+
+    def pop(self):
+
+        return self.stack.pop()
+
+    def push(self, value):
+
+        self.stack.append(value)
 
     @property
     def R0(self):
@@ -287,17 +74,26 @@ class VM(object):
         return self.R[1]
 
     def init(self):
-        self.pc = 0
-        self.current_inst = None
-        self.status = VMState.idle
-        self.R = [0] * 100
+
         self.init_table_label()
+
+    def pc_start(self):
+        self.pc = -1
+
+        for index, instr in enumerate(self.instrs):
+
+            if instr == 'start:':
+                self.pc = index - 1
 
     def init_table_label(self):
         """"""
         for index, instr in enumerate(self.instrs):
-            op = instr[0]
-            if op[0] == 'L':
+            if instr[0] == 'L':
+                l = instr.split(':', 1)[0]
+                self.table_label.update({
+                    l: index
+                })
+            elif instr[:4] == 'func':
                 l = instr.split(':', 1)[0]
                 self.table_label.update({
                     l: index
@@ -330,7 +126,7 @@ class VM(object):
         """
         if self.is_memery(src):
             index = self.index_memery(src)
-            r1 = self.stack[index]
+            r1 = self.heap[index]
         elif self.is_register(src):
             index = int(src[1:])
             r1 = self.R[index]
@@ -346,7 +142,7 @@ class VM(object):
         """
         if self.is_memery(src):
             index = self.index_memery(src)
-            self.stack[index] = value
+            self.heap[index] = value
 
         elif self.is_register(src):
             index = int(src[1:])
@@ -382,24 +178,12 @@ class VM(object):
         l = args[1]
 
         self.set_pc(l)
-        # r1 = int(src1[1])
-        # self.pc = self.get_label_num(src1)
 
     def op_print(self, *args):
 
         src = args[1]
-
         r = self.value_from(src)
-
         print(r)
-
-        # if '[' in src:
-        #     v = self.stack[src[1]]
-        #     print(v)
-        # else:
-        #     print(src)
-
-        # self.pc = 10
 
     def set_pc(self, label):
         """
@@ -426,17 +210,6 @@ class VM(object):
             self.set_pc(l1)
         else:
             self.set_pc(l2)
-
-        # cond = args[1]
-        # l1 = args[2]
-        # l2 = args[3]
-        #
-        # r = int(cond[1])
-        #
-        # if self.R[r] > 0:
-        #     self.pc = self.get_label_num(l1)
-        # else:
-        #     self.pc = self.get_label_num(l2)
 
     def op_ldrb(self, *args):
         pass
@@ -480,6 +253,21 @@ class VM(object):
 
         self.set_value(dest, src1)
 
+    def op_call(self, *args):
+        func_name = args[1]
+
+        self.push(self.pc)
+        self.set_pc(func_name)
+        # self.set_value(dest, src1)
+
+    def op_ret(self, *args):
+        # dest = args[1]
+        # src1 = args[2]
+        if self.stack:
+            self.pc = self.pop()
+
+        # self.set_value(dest, src1)
+
     def op_push(self, *args):
 
         pass
@@ -498,12 +286,13 @@ class VM(object):
 
     def next_instr(self):
 
-        instr = self.instrs[self.pc]
         self.pc += 1
 
         l = len(self.instrs)
-        if self.pc >= l:
+        if self.pc >= l - 1:
             self.status = VMState.idle
+
+        instr = self.instrs[self.pc]
 
         return instr
 
@@ -534,12 +323,17 @@ class VM(object):
             'times': self.op_times,
             'plus': self.op_plus,
             'db': self.op_db,
+            'call': self.op_call,
+            'ret': self.op_ret,
         }
 
         self.status = VMState.run
+        l = len(self.instrs)
         while True:
 
-            if self.status == VMState.idle:
+            # if self.status == VMState.idle:
+            #     break
+            if self.pc >= l - 1:
                 break
 
             instr = self.next_instr()
@@ -549,4 +343,4 @@ class VM(object):
             if f:
                 f(*args)
 
-        return self.R, self.stack
+        return self.R, self.heap

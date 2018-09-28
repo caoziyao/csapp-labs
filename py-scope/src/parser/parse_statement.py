@@ -13,6 +13,28 @@ from src.common.expression import (
 )
 
 
+def p_statement_assign(p):
+    'statement : ID EQUAL expression'
+    # names[p[1]] = p[3]
+    p[0] = ExprVar(ID(p[1]), p[3])
+
+
+def p_statement_var_assign(p):
+    'statement : VAR ID EQUAL expression'
+    # names[p[1]] = p[3]
+    p[0] = ExprVar(ID(p[2]), p[4])
+
+
+def p_statement_var_undefind(p):
+    'statement : VAR ID'
+    # names[p[1]] = p[3]
+    p[0] = ExprVar(ID(p[2]), UNDEFIND())
+
+def p_statement_expr(p):
+    'statement : expression'
+    print(p[1])
+
+
 def p_statement_list_1(p):
     'statement_list : statement'
     p[0] = [p[1]]

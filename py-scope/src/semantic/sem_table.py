@@ -24,14 +24,12 @@ class SemTable(object):
         :param value:
         :return:
         """
-        t = self.table
-
         data = {
             'type': '',
             'scope': '',
         }
 
-        t.update({
+        self.table.update({
             key: value
         })
 

@@ -31,6 +31,9 @@ class Kind(Enum):
     k_if = 27  # if
     kwhile = 28  # while
     kwhile_start = 29  # while start
+    kdef = 30  # def
+    kdef_name = 31  # def start
+    kdef_end = 32  # def end
 
     undefind = 101  # undefind
     # condition = 102  # if else
@@ -294,3 +297,20 @@ class ExprIsLessThen(Node):
         self.type = Kind.is_less_then
         self.left = left  # class Exp
         self.right = right  # class Exp
+
+
+class ExprDef(Node):
+
+    def __init__(self, func_name, args, body):
+        self.type = Kind.kdef
+        self.func_name = func_name
+        self.args = args
+        self.body = body
+
+
+class ExprCall(Node):
+
+    def __init__(self, func_name, args):
+        self.type = Kind.call
+        self.func_name = func_name
+        self.args = args

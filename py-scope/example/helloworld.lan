@@ -1,0 +1,19 @@
+var b = 134;
+print b;
+
+if (b > 10)
+{
+    print "1"
+    print "2"
+}
+else
+{
+    print "3"
+};
+
+var a = 1;
+while ( a < 3 )
+{
+    print "4"
+    a = a + 1
+}

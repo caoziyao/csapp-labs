@@ -1,15 +1,22 @@
 
 ```
-# Compute the x'th fibonacci number.
-a = 1
+函数
+进程线程
 
-def fib(x)
-  if x < 3 then
-    1
-  else
-    fib(x-1)+fib(x-2)
+q:
+实现函数，卡住
 
-# This expression will compute the 40th number.
-fib(40)
+b
+不了解函数调用过程
+有个模糊概念，但还是不清楚
+如何定义汇编结构提，有个模糊概念还是不知道为什么
+不了解内存分布
+
+设计
+在汇编函数调用
+了解内存分布，了解函数调用，了解函数参数
+搜网上资料，csapp
+
+
 ```
 

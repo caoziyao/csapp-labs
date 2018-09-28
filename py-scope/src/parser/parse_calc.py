@@ -22,21 +22,6 @@ precedence = (
 )
 
 
-def p_statement_assign(p):
-    'statement : ID EQUAL expression'
-    # names[p[1]] = p[3]
-    p[0] = ExprVar(ID(p[1]), p[3])
-
-
-def p_statement_var_assign(p):
-    'statement : VAR ID EQUAL expression'
-    # names[p[1]] = p[3]
-    p[0] = ExprVar(ID(p[2]), p[4])
-
-
-def p_statement_expr(p):
-    'statement : expression'
-    print(p[1])
 
 
 def p_expression_binop(p):

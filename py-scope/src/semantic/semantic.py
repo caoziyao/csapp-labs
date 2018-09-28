@@ -9,107 +9,197 @@
 from src.common.expression import Kind
 from src.common.utils import is_leaf
 from src.semantic.sem_table import SemTable
-from src.ir import three_address
 
 table = SemTable()
 
 
-def check_pus(node, left, right):
-    left_type = left.type
-    right_type = right.type
-    if left_type != Kind.number:
-        raise Exception('type mismatch {} != {}'.format(left_type, Kind.number))
+class Sematic(object):
 
-    if right_type != Kind.number:
-        raise Exception('type mismatch {} != {}'.format(right_type, Kind.number))
+    def __init__(self, root):
+        global table
+        self.root = root
+        self.table = table
+        self.semfunc = {
+            Kind.plus: self.check_stm_plus,
+            Kind.var: self.check_stm_var,
+            Kind.print: self.check_stm_print,
+            Kind.k_if: self.check_stm_kif,
+            Kind.kwhile: self.check_stm_kwhile,
+            Kind.kdef: self.check_stm_def,
+            # Kind.minus: check_minus,
+            # Kind.times: check_times,
+            # Kind.div: check_div,
+            # Kind.number: check_number,
+            # Kind.id: check_id,
+            # Kind.true: check_true,
+            # Kind.false: check_false,
+            # Kind.undefind: check_undefind,
+        }
 
-    return node
+    def check_stm_kwhile(self, node):
+        """
 
+        :param node:
+        :return:
+        """
+        pass
 
-def check_assignment(node, left, right):
-    left_type = left.type
-    right_type = right.type
-    left_value = left.value
+    def check_stm_def(self, node):
+        """
 
-    if not table.lookup(left.value):
-        raise Exception('{} is not defined'.format(left_value))
+        :param node:
+        :return:
+        """
+        pass
 
-    if left_type != Kind.id:
-        raise Exception('type mismatch {} != {}'.format(left_type, Kind.id))
+    def check_stm_var(self, node):
+        left = node.left
+        right = node.right
 
-    if right_type != Kind.number:
-        raise Exception('type mismatch {} != {}'.format(right_type, Kind.number))
+        if self.check_id(left):
+            name = left.value
+            self.table.enter(name, Kind.var)
 
-    return node
+        self.check_stm_expression(right)
 
+        return True
 
-def check_var(node, left, right):
-    name = left.value
-    # t = {
-    #     name: Kind.var
-    # }
-    table.enter(name, Kind.var)
-    return table
+    def check_stm_kif(self, node):
+        """
 
+        :return:
+        """
+        pass
 
-def check_condition(node, left, right):
-    # left_type = left.type
-    # right_type = right.type
-    # if left_type != Kind.number:
-    #     raise Exception('type mismatch {} != {}'.format(left_type, Kind.number))
-    #
-    # if right_type != Kind.number:
-    #     raise Exception('type mismatch {} != {}'.format(right_type, Kind.number))
-
-    return Kind.k_if
-
-
-def check_print(node, left, right):
-    return node
-
-
-def semantic(node):
-    root = {
-        Kind.plus: check_pus,
-        # Kind.minus: check_minus,
-        # Kind.times: check_times,
-        # Kind.div: check_div,
-        Kind.assignment: check_assignment,
-        Kind.var: check_var,
-        Kind.k_if: check_condition,
-        Kind.print: check_print,
-    }
-    leaf = {
-        # Kind.number: check_number,
-        # Kind.id: check_id,
-        # Kind.true: check_true,
-        # Kind.false: check_false,
-        # Kind.undefind: check_undefind,
-    }
-
-    if node:
-        left = semantic(node.left)
-        right = semantic(node.right)
-
-        kind = node.type
-        if is_leaf(node):
-            return node
-            # f = leaf[kind]
-            # t = f(node)
+    def is_id(self, node):
+        """
+        是 Id
+        :param node:
+        :return:
+        """
+        if node.type == Kind.id:
+            return True
         else:
-            f = root[kind]
-            t = f(node, left, right)
+            return False
 
-        return t
+    def is_lookup(self, node):
+        """
+        是否已经声明
+        :param node:
+        :return:
+        """
+        table = self.table
+        value = node.value
+        if table.lookup(value):
+            return True
+        else:
+            return False
 
+    def check_stm_print(self, node):
+        """
+        如果右边为 id
+        :param node:
+        :return:
+        """
+        left = node.left
+        right = node.right
 
-def semantic_analyzer(node):
-    """
+        if self.is_id(right):
+            if not self.is_lookup(right):
+                raise Exception('{} is undefined'.format(right.value))
+        #     name = left.value
+        #     self.table.enter(name, Kind.var)
+        #
+        # self.check_stm_expression(right)
 
-    :param node:
-    :return:
-    """
-    # res = semantic(node)
-    ir = three_address(node)
+        return True
 
-    return ir
+    def check_stm_expression(self, node):
+        """
+        校验表达式
+        :param node:
+        :return:
+        """
+        m = {
+            Kind.plus: self.check_stm_plus,
+            Kind.times: self.check_stm_times,
+        }
+        if node:
+            ltype = self.check_stm_expression(node.left)
+            rtype = self.check_stm_expression(node.right)
+
+            if is_leaf(node):
+                # 叶子节点
+                return node.type
+            else:
+                kind = node.type
+                f = m.get(kind, None)
+                if f:
+                    t = f(node, ltype, rtype)
+                else:
+                    raise Exception('not check_expression')
+                return t
+
+    def check_same_var(self, ltype, rtype):
+        """
+        left 类型 == right 类型
+        :param left:
+        :param right:
+        :return:
+        """
+        # ltype = left.type
+        # rtype = right.type
+        if ltype != rtype:
+            raise Exception('type mismatch {} != {}'.format(ltype.name, rtype.name))
+
+        return True
+
+    def check_stm_times(self, node, ltype, rtype):
+        """
+
+        :param node:
+        :param ltype:
+        :param rtype:
+        :return:
+        """
+        self.check_same_var(ltype, rtype)
+
+        return ltype
+
+    def check_stm_plus(self, node, ltype, rtype):
+        """
+
+        :param node:
+        :param ltype:
+        :param rtype:
+        :return:
+        """
+        self.check_same_var(ltype, rtype)
+
+        return ltype
+
+    def sem_node(self, node):
+        kind = node.type
+        f = self.semfunc.get(kind, None)
+        if f:
+            r = f(node)
+        else:
+            raise Exception('not sem {}'.format(kind))
+
+        return r
+
+    def check_id(self, node):
+        """
+        校验 id
+        :param node:
+        :return:
+        """
+        kind = node.type
+        if kind != Kind.id:
+            raise Exception('expect ID but {}'.format(kind))
+
+        return True
+
+    def sem(self):
+
+        self.sem_node(self.root)
