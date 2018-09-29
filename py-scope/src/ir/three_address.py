@@ -38,23 +38,6 @@ class IRTree(object):
         index_tmp += 1
         return t
 
-    #
-    # def gen_plus(self, node):
-    #     """
-    #     1 + 2
-    #     :param node:
-    #     :return:
-    #     """
-    #     pass
-    #
-    # def gen_times(self, node):
-    #     """
-    #     1 * 2
-    #     :param node:
-    #     :return:
-    #     """
-    #     pass
-
     def gen_expression(self, node):
         """
         表达式

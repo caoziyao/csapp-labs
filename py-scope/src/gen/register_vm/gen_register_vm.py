@@ -8,6 +8,8 @@
 """
 from src.common.expression import Kind
 from src.ir.instr_kind import Quad
+from .instruction import InstrY
+from .assem import Assem
 
 register_index = 0
 register_map = {}
@@ -24,6 +26,7 @@ class CodeRen(object):
         self.index_register = 0
         self.index_label = 0
         self.codes = []
+        self.asm = Assem()
 
     def gen_register(self, tmp_var=''):
         """
@@ -94,16 +97,6 @@ class CodeRen(object):
 
         return r
 
-    # def update_label(self, label_name):
-    #     """
-    #     函数 label
-    #     :param label_name:
-    #     :return:
-    #     """
-    #     label_map.update({
-    #         label_name: r
-    #     })
-
     def gen_var(self, ir):
         """
 
@@ -114,7 +107,8 @@ class CodeRen(object):
         x = ir.x
 
         rx = self.gen_register(x)
-        self.codes.append('mov [{}] {}'.format(result.value, rx))
+        # self.codes.append('mov [{}] {}'.format(result.value, rx))
+        self.emit(self.asm.rmmovq(result.value, rx))
 
     def gen_number(self, ir):
         """
@@ -127,7 +121,8 @@ class CodeRen(object):
 
         rr = self.gen_register(result)
 
-        self.codes.append('mov {} {}'.format(rr, x.value))
+        self.emit(self.asm.irmovq(rr, x.value))
+        # self.codes.append('mov {} {}'.format(rr, x.value))
 
     def gen_times(self, ir):
         """
@@ -147,7 +142,7 @@ class CodeRen(object):
 
     def gen_plus(self, ir):
         """
-        r = a * b
+        r = a + b
         :param ir:
         :return:
         """
@@ -159,7 +154,25 @@ class CodeRen(object):
         rx = self.gen_register(x)
         ry = self.gen_register(y)
 
-        self.codes.append('plus {} {} {}'.format(rx, ry, rr))
+        # self.codes.append('plus {} {} {}'.format(rx, ry, rr))
+        self.emit(self.asm.addq(rx, ry, rr))
+
+    def gen_minus(self, ir):
+        """
+        r = a - b
+        :param ir:
+        :return:
+        """
+        result = ir.result
+        x = ir.x
+        y = ir.y
+
+        rr = self.gen_register(result)
+        rx = self.gen_register(x)
+        ry = self.gen_register(y)
+
+        # self.codes.append('plus {} {} {}'.format(rx, ry, rr))
+        self.emit(self.asm.subq(rx, ry, rr))
 
     def gen_print(self, ir):
 
@@ -174,7 +187,8 @@ class CodeRen(object):
 
         rr = self.gen_register(result)
 
-        self.codes.append('mov {} [{}]'.format(rr, x.value))
+        # self.codes.append('mov {} [{}]'.format(rr, x.value))
+        self.emit(self.asm.mrmovq(rr, x.value))
 
     def gen_string(self, ir):
 
@@ -184,6 +198,14 @@ class CodeRen(object):
         rx = self.gen_register(result)
 
         self.codes.append('db {} {}'.format(rx, x.value))
+
+    def emit(self, code):
+        """
+        生成代码
+        :param code:
+        :return:
+        """
+        self.codes.append(code)
 
     def gen_kif(self, ir):
 
@@ -198,20 +220,23 @@ class CodeRen(object):
         self.codes.append('cjmp {} {} {}'.format(rcond, l1, l2))
 
         # l1
-        self.codes.append('{}:'.format(l1))
+        self.emit(self.asm.label(l1))
 
         for x in listx:
             self.gen_instr(x)
-        self.codes.append('jmp {}'.format(l3))
+        # self.codes.append('jmp {}'.format(l3))
+        self.emit(self.asm.jmp(l3))
 
         # l2
-        self.codes.append('{}:'.format(l2))
+        self.emit(self.asm.label(l2))
+
         for y in listy:
             self.gen_instr(y)
-        self.codes.append('jmp {}'.format(l3))
+        # self.codes.append('jmp {}'.format(l3))
+        self.emit(self.asm.jmp(l3))
 
         # l3
-        self.codes.append('{}:'.format(l3))
+        self.emit(self.asm.label(l3))
 
     def gen_kwhile(self, ir):
 
@@ -228,22 +253,23 @@ class CodeRen(object):
         self.codes.append('cjmp {} {} {}'.format(rcond, l1, l2))
 
         # l1
-        self.codes.append('{}:'.format(l1))
+        self.emit(self.asm.label(l1))
 
         for x in body:
             self.gen_instr(x)
 
-        self.codes.append('jmp {}'.format(lstart))
+        # self.codes.append('jmp {}'.format(lstart))
+        self.emit(self.asm.jmp(lstart))
 
         # l2
-        self.codes.append('{}:'.format(l2))
+        self.emit(self.asm.label(l2))
 
     def gen_kwhile_start(self, ir):
 
         label = ir.label
 
         l1 = self.gen_label(label)
-        self.codes.append('{}:'.format(l1))
+        self.emit(self.asm.label(l1))
 
     def gen_is_more_then(self, ir):
         """
@@ -259,7 +285,8 @@ class CodeRen(object):
         rx = self.gen_register(x)
         ry = self.gen_register(y)
 
-        self.codes.append('cmp {} {} {}'.format(rx, ry, rr))
+        # self.codes.append('cmp {} {} {}'.format(rx, ry, rr))
+        self.emit(self.asm.subq(rx, ry, rr))
 
     def gen_is_less_then(self, ir):
         """
@@ -275,7 +302,8 @@ class CodeRen(object):
         rx = self.gen_register(x)
         ry = self.gen_register(y)
 
-        self.codes.append('cmp {} {} {}'.format(ry, rx, rr))
+        # self.codes.append('cmp {} {} {}'.format(ry, rx, rr))
+        self.emit(self.asm.subq(ry, rx, rr))
 
     def gen_undefind(self, ir):
         """
@@ -311,7 +339,7 @@ class CodeRen(object):
         for x in body:
             self.gen_instr(x)
 
-        self.codes.append('ret')
+        self.emit(self.asm.ret())
 
     def gen_call(self, ir):
 
@@ -322,8 +350,10 @@ class CodeRen(object):
         for arg in args:
             self.gen_id(arg)
 
-        l = 'func_{}'.format(fname)
-        self.codes.append('call {}'.format(l))
+        dest = 'func_{}'.format(fname)
+        cmd = self.asm.call(dest)
+        self.codes.append(cmd)
+        # self.codes.append('{} {}'.format(InstrY.call.value, l))
 
     def gen_instr(self, ir):
         m = {
@@ -331,6 +361,7 @@ class CodeRen(object):
             Kind.number: self.gen_number,
             Kind.times: self.gen_times,
             Kind.plus: self.gen_plus,
+            Kind.minus: self.gen_minus,
             Kind.id: self.gen_id,
             Kind.print: self.gen_print,
             Kind.string: self.gen_string,

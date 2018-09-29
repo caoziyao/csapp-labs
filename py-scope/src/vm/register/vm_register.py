@@ -5,41 +5,15 @@
 @contact: wyzycao@gmail.com
 @time: 2018/9/26 
 @desc:
-
-{"mov",   MOV,   op_mov},
-{"ldrb",  LDRB,  op_ldr},
-{"ldr",   LDR,   op_ldr},
-{"strb",  STRB,  op_str},
-{"str",   STR,   op_str},
-
-{"push",  PUSH,  op_push},
-{"pop",   POP,   op_pop},
-
-{"call",  CALL,  op_call},
-{"ret",   RET,   op_ret},
-
-{"add",   ADD,   op_alu},
-{"sub",   SUB,   op_alu},
-{"mul",   MUL,   op_alu},
-{"div",   DIV,   op_alu},
-{"and",   AND,   op_alu},
-{"or",    OR,    op_alu},
-{"xor",   XOR,   op_alu},
-{"lol",   LOL,   op_alu},
-{"lor",   LOR,   op_alu},
-
-{"jmp",   JMP,   op_jmp},
-{"jmpn",  JMPN,  op_jmp},
-{"jmpz",  JMPZ,  op_jmp},
-{"jmpo",  JMPO,  op_jmp},
-{"jmpnn", JMPNN, op_jmp},
-{"jmpnz", JMPNZ, op_jmp},
-{"jmpno", JMPNO, op_jmp},
-
-{"halt",  HALT,  op_halt},
 """
+import sys
 from src.common.expression import Kind
 from src.vm.register.vm_state import VMState, VMInstr
+
+
+def get_input(*args, **kw):
+    """Read a string from standard input."""
+    return input(*args, **kw)
 
 
 class VM(object):
@@ -50,10 +24,15 @@ class VM(object):
         self.data = []
         self.table_label = {}
         self.stack = []
-        self.sp = 0
         self.current_inst = None
         self.status = VMState.idle
         self.R = [0] * 100
+        self.zf = 0  # 当算术运算指令的目的操作数被赋 0 时，zf = 1
+        self.sf = 0  # 在算术结果为负数时，sf = 1
+        self.of = 0  # 有符号运算才有效，溢出时 of = 1
+        self.cf = 0  # 无符号运算才有效，进位时 cf = 1
+        self.sp = 0
+        self.pc = -1
         self.init()
         self.pc_start()
 
@@ -78,8 +57,6 @@ class VM(object):
         self.init_table_label()
 
     def pc_start(self):
-        self.pc = -1
-
         for index, instr in enumerate(self.instrs):
 
             if instr == 'start:':
@@ -108,6 +85,18 @@ class VM(object):
         return t
 
     def op_cmp(self, *args):
+
+        src1 = args[1]
+        src2 = args[2]
+        dest = args[3]
+
+        r1 = self.value_from(src1)
+        r2 = self.value_from(src2)
+
+        r = r1 - r2
+        self.set_value(dest, r)
+
+    def op_subq(self, *args):
 
         src1 = args[1]
         src2 = args[2]
@@ -174,16 +163,40 @@ class VM(object):
         r = r1 + r2
         self.set_value(dest, r)
 
+    def op_addq(self, *args):
+
+        src1 = args[1]
+        src2 = args[2]
+        dest = args[3]
+
+        r1 = self.value_from(src1)
+        r2 = self.value_from(src2)
+
+        r = r1 + r2
+        self.set_value(dest, r)
+
     def op_jmp(self, *args):
         l = args[1]
 
         self.set_pc(l)
 
+    def read(self):
+        self.push(get_input())
+
+    def print(self, value):
+        sys.stdout.write(str(value))
+        sys.stdout.flush()
+
+    def println(self, value):
+        sys.stdout.write("{}\n".format(value))
+        sys.stdout.flush()
+
     def op_print(self, *args):
 
         src = args[1]
         r = self.value_from(src)
-        print(r)
+        # print(r)
+        self.println(r)
 
     def set_pc(self, label):
         """
@@ -247,6 +260,30 @@ class VM(object):
 
         self.set_value(dest, r1)
 
+    def op_irmovq(self, *args):
+        dest = args[1]
+        src1 = args[2]
+
+        r1 = self.value_from(src1)
+
+        self.set_value(dest, r1)
+
+    def op_rmmovq(self, *args):
+        dest = args[1]
+        src1 = args[2]
+
+        r1 = self.value_from(src1)
+
+        self.set_value(dest, r1)
+
+    def op_mrmovq(self, *args):
+        dest = args[1]
+        src1 = args[2]
+
+        r1 = self.value_from(src1)
+
+        self.set_value(dest, r1)
+
     def op_db(self, *args):
         dest = args[1]
         src1 = args[2]
@@ -276,14 +313,6 @@ class VM(object):
 
         pass
 
-    # def op_label(self, instr, number):
-    #     """
-    #     instr: L1:
-    #     :param instr:
-    #     :return:
-    #     """
-    #
-
     def next_instr(self):
 
         self.pc += 1
@@ -312,16 +341,21 @@ class VM(object):
         :return:
         """
         m = {
-            'mov': self.op_mov,
+            # 'cmp': self.op_cmp,
+            # 'plus': self.op_plus,
+            # 'mov': self.op_mov,
+            'irmovq': self.op_irmovq,
+            'rmmovq': self.op_rmmovq,
+            'mrmovq': self.op_mrmovq,
             'ldrb': self.op_ldrb,
-            'cmp': self.op_cmp,
+            'subq': self.op_subq,
             'cjmp': self.op_cjmp,
             'print': self.op_print,
             'push': self.op_push,
             'pop': self.op_pop,
             'jmp': self.op_jmp,
             'times': self.op_times,
-            'plus': self.op_plus,
+            'addq': self.op_addq,
             'db': self.op_db,
             'call': self.op_call,
             'ret': self.op_ret,
@@ -342,5 +376,7 @@ class VM(object):
             f = m.get(op)
             if f:
                 f(*args)
+            # else:
+            #     raise Exception('not fund {}'.format(instr))
 
         return self.R, self.heap

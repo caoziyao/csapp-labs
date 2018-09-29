@@ -23,6 +23,7 @@ def mtest():
         except EOFError:
             break
 
+
 def mtest2():
     with open('c.lan', 'r') as f:
         s = f.read()
@@ -43,6 +44,7 @@ def mtest2():
         asms = asms_func + ['start:'] + asms
         vm = VM(asms)
         vm.run()
+
 
 def compiler(code):
     lexer.input(code)
