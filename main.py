@@ -6,11 +6,9 @@
 @time: 2018/9/20 
 @desc:
 """
-import os
 from zy.src.lexer import lexer
 from zy.src.parser import parser
-from zy.src.semantic.semantic import Sematic
-from zy.src.vm.register import VM
+from vm import VM
 from zy.src.ir.three_address import IRTree
 from zy.src.gen.register_vm.gen_register_vm import CodeRen
 from zy.src.common.expression import Kind
