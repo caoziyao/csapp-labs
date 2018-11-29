@@ -16,34 +16,72 @@ from src.gen.register_vm.gen_register_vm import CodeRen
 from src.common.expression import Kind
 
 
-def mtest():
-    while True:
-        try:
-            s = input('cal > ')
-        except EOFError:
-            break
-
-
-def mtest2():
-    with open('c.lan', 'r') as f:
-        s = f.read()
-        lines = s.split(';')
-        asms = []
-        asms_func = []
-        for l in lines:
-            code = l.strip()
-            if code == '':
-                continue
-
-            asm, kind = compiler(code)
-            if kind == Kind.kdef:
-                asms_func.extend(asm)
-            else:
-                asms.extend(asm)
-
-        asms = asms_func + ['start:'] + asms
-        vm = VM(asms)
-        vm.run()
+#
+#
+# def mtest():
+#     while True:
+#         try:
+#             s = input('cal > ')
+#         except EOFError:
+#             break
+#
+#
+#
+# def main():
+#     """
+#         var b = 134;
+#         print b;
+#         if (b > 10)
+#         {
+#             print "1"
+#             print "2"
+#         }
+#         else
+#         {
+#             print "3"
+#         };
+#
+#         var a = 1;
+#         while ( a < 3 )
+#         {
+#             print "4"
+#             a = a + 1
+#         }
+#     :return:
+#     var a = 2;
+#
+#      def (a) {
+#             print a
+#         }
+#     """
+#     codes = """
+#
+#          def abc ( ) {
+#             print "hello"
+#         };
+#
+#         call abc;
+#         call abc;
+#     """
+#     lines = codes.split(';')
+#
+#     asms = []
+#     asms_func = []
+#     for l in lines:
+#         code = l.strip()
+#         if code == '':
+#             continue
+#
+#         asm, kind = compiler(code)
+#         if kind == Kind.kdef:
+#             asms_func.extend(asm)
+#         else:
+#             asms.extend(asm)
+#
+#     asms = asms_func + ['start:'] + asms
+#     print('asm', asms)
+#     vm = VM(asms)
+#     vm.run()
 
 
 def compiler(code):
@@ -67,61 +105,26 @@ def compiler(code):
 
 
 def main():
-    """
-        var b = 134;
-        print b;
-        if (b > 10)
-        {
-            print "1"
-            print "2"
-        }
-        else
-        {
-            print "3"
-        };
+    with open('c.lan', 'r') as f:
+        s = f.read()
+        lines = s.split(';')
+        asms = []
+        asms_func = []
+        for l in lines:
+            code = l.strip()
+            if code == '':
+                continue
 
-        var a = 1;
-        while ( a < 3 )
-        {
-            print "4"
-            a = a + 1
-        }
-    :return:
-    var a = 2;
+            asm, kind = compiler(code)
+            if kind == Kind.kdef:
+                asms_func.extend(asm)
+            else:
+                asms.extend(asm)
 
-     def (a) {
-            print a
-        }
-    """
-    codes = """
-         
-         def abc ( ) {
-            print "hello"
-        };
-        
-        call abc;
-        call abc;
-    """
-    lines = codes.split(';')
-
-    asms = []
-    asms_func = []
-    for l in lines:
-        code = l.strip()
-        if code == '':
-            continue
-
-        asm, kind = compiler(code)
-        if kind == Kind.kdef:
-            asms_func.extend(asm)
-        else:
-            asms.extend(asm)
-
-    asms = asms_func + ['start:'] + asms
-    print('asm', asms)
-    vm = VM(asms)
-    vm.run()
+        asms = asms_func + ['start:'] + asms
+        vm = VM(asms)
+        vm.run()
 
 
 if __name__ == '__main__':
-    mtest2()
+    main()
