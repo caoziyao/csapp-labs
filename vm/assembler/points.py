@@ -62,10 +62,10 @@ def gen_binary(num, datatype=EDataType.byte):
     l = len(p)
 
     # 不足补 0
-    n = EData.get(datatype) - 1
-    if l <= n:
-        p = s + '0' * (n - l) + p
+    n = EData.get(datatype)
+    p = s + '0' * (n - l - 1) + p
 
+    assert n == len(p)
     # encode
     p = p.encode()
     return p
