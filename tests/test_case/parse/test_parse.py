@@ -7,7 +7,7 @@
 @desc:
 python3 testmain.py parse
 """
-from src.parser import parser
+from zy.src.parser import parser
 
 import unittest
 from tests.test_case.base import BaseCase
@@ -17,7 +17,6 @@ class TestParse(BaseCase):
 
     def test_parser(self):
         s = parser.parse('a = 1')
-        print(s)
 
     @unittest.skip("I don't want to run this case.")
     def test_divide(self):
