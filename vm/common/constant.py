@@ -17,8 +17,14 @@ class EDataType(Enum):
     short 16bite
     int 32bite
     int64  64bite
+    float 32bite
+    double 64bite
+
+    char * 32bite
     """
     byte = 0
     short = 1
     int = 2
     int64 = 3
+    float = 4
+    double = 5

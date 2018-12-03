@@ -10,6 +10,10 @@ byte 8bite
 short 16bite
 int 32bite
 int64  64bite
+float 32bite
+double 64bite
+
+char * 32bite
 """
 from vm.common.constant import EDataType
 
