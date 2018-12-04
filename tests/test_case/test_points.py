@@ -9,7 +9,7 @@
 
 import unittest
 from tests.test_case.base import BaseCase
-from isa.assembler import points
+from cpu.assembler import points
 
 
 class TestPoints(BaseCase):

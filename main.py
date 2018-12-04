@@ -6,12 +6,12 @@
 @time: 2018/9/20 
 @desc:
 """
-from zy.src.lexer import lexer
-from zy.src.parser import parser
+from lang.src.lexer import lexer
+from lang.src.parser import parser
 from vm import VM
-from zy.src.ir.three_address import IRTree
-from zy.src.gen.register_vm.gen_register_vm import CodeRen
-from zy.src.common.expression import Kind
+from lang.src.ir.three_address import IRTree
+from lang.src.gen.register_vm.gen_register_vm import CodeRen
+from lang.src.common.expression import Kind
 
 
 #

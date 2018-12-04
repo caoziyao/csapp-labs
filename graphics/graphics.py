@@ -12,9 +12,11 @@ import pygame
 
 class Graphics(object):
 
-    def __init__(self):
+    def __init__(self, cpu):
         self.width = 256
         self.height = 240
+
+        self.cpu = cpu
 
         scale = 1
         self.size = (self.width * scale, self.height * scale)
@@ -30,7 +32,7 @@ class Graphics(object):
             if event.type == pygame.QUIT:
                 self.exit()
 
-    def run(self):
+    def draw(self):
         self.update()
 
         self.screen.fill(self.black)
@@ -40,9 +42,3 @@ class Graphics(object):
                 self.screen.set_at((h, w), (255, 0, 0))
 
         pygame.display.flip()
-
-
-if __name__ == '__main__':
-    g = Graphics()
-    while True:
-        g.run()

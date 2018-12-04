@@ -10,7 +10,7 @@ python3 testmain.py lexer
 
 import unittest
 from tests.test_case.base import BaseCase
-from zy.src.lexer import lexer
+from lang.src.lexer import lexer
 
 
 class TestLexter(BaseCase):

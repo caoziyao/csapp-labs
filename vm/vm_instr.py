@@ -8,7 +8,7 @@
 """
 
 from enum import Enum, unique
-from zy.src.common.expression import Kind
+from lang.src.common.expression import Kind
 
 
 class VMInstr(object):
