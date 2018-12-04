@@ -7,3 +7,15 @@
 @desc:
 """
 
+irmov = [
+    0x21, 'irmov {} {}'
+]
+
+regfile = {
+    0x21: {
+        'mode': 'xx',
+        'name': 'irmov',
+        'length': 2,
+        'syntax': 'irmov {} {}',
+    }
+}

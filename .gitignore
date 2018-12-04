@@ -2,6 +2,7 @@
 .idea/*
 todo2.md
 tmp
+doc
 
 */*.xcodeproj
 **/.idea/*
