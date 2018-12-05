@@ -1,4 +1,4 @@
-class GuaCanvas extends GuaObject{
+class GuaCanvas extends GuaObject {
     constructor(selector) {
         super()
         this.setup(selector)
@@ -43,9 +43,9 @@ class GuaCanvas extends GuaObject{
 
         // log('rgba', color, r, g, b, a)
         data[i] = r
-        data[i+1] = g
-        data[i+2] = b
-        data[i+3] = a
+        data[i + 1] = g
+        data[i + 2] = b
+        data[i + 3] = a
         this.render()
     }
 
@@ -58,9 +58,9 @@ class GuaCanvas extends GuaObject{
         let [r, g, b, a] = this.rgbaFromColor(color)
 
         data[i] = r
-        data[i+1] = g
-        data[i+2] = b
-        data[i+3] = a
+        data[i + 1] = g
+        data[i + 2] = b
+        data[i + 3] = a
         this.render()
     }
 
@@ -95,12 +95,12 @@ class GuaCanvas extends GuaObject{
         let data = pixels.data
         // 一个像素 4 字节，分别表示 r g b a
         for (let i = 0; i < data.length; i += 4) {
-            let [r, g, b , a] = data.slice(i, i + 4)
+            let [r, g, b, a] = data.slice(i, i + 4)
             r = 255
             a = 255
             data[i] = r
-            data[i+3] = a
+            data[i + 3] = a
         }
-        context.putImageData(pixels, 0 , 0)
+        context.putImageData(pixels, 0, 0)
     }
 }

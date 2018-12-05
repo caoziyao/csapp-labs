@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="style.css" rel="stylesheet">
+    <title>gen ascii</title>
+
+    <!--<style media="screen">-->
+    <!---->
+    <!--</style>-->
+</head>
+
+<body>
+<canvas id="id-canvas" width="32" height="16"></canvas>
+<div class="board-div">
+
+    <div class="colum0 colum-div">
+        <div id="cell00" class="cell"></div>
+        <div id="cell01" class="cell"></div>
+        <div id="cell02" class="cell"></div>
+        <div id="cell03" class="cell"></div>
+        <div id="cell04" class="cell"></div>
+        <div id="cell05" class="cell"></div>
+        <div id="cell06" class="cell"></div>
+        <div id="cell07" class="cell"></div>
+    </div>
+
+    <div class="colum1 colum-div">
+        <div id="cell10" class="cell"></div>
+        <div id="cell11" class="cell"></div>
+        <div id="cell12" class="cell"></div>
+        <div id="cell13" class="cell"></div>
+        <div id="cell14" class="cell"></div>
+        <div id="cell15" class="cell"></div>
+        <div id="cell16" class="cell"></div>
+        <div id="cell17" class="cell"></div>
+    </div>
+
+    <div class="colum2 colum-div">
+        <div id="cell20" class="cell"></div>
+        <div id="cell21" class="cell"></div>
+        <div id="cell22" class="cell"></div>
+        <div id="cell23" class="cell"></div>
+        <div id="cell24" class="cell"></div>
+        <div id="cell25" class="cell"></div>
+        <div id="cell26" class="cell"></div>
+        <div id="cell27" class="cell"></div>
+    </div>
+
+    <div class="colum3 colum-div">
+        <div id="cell30" class="cell"></div>
+        <div id="cell31" class="cell"></div>
+        <div id="cell32" class="cell"></div>
+        <div id="cell33" class="cell"></div>
+        <div id="cell34" class="cell"></div>
+        <div id="cell35" class="cell"></div>
+        <div id="cell36" class="cell"></div>
+        <div id="cell37" class="cell"></div>
+    </div>
+
+</div>
+
+<div class="cell-result">
+    <div>0: <span id="id-cell0-result">00000000</span></div>
+    <div>1: <span id="id-cell1-result">00000000</span></div>
+    <div>2: <span id="id-cell2-result">00000000</span></div>
+    <div>3: <span id="id-cell3-result">00000000</span></div>
+</div>
+
+<script src='utils.js'></script>
+<script src='object.js'></script>
+<script src='canvas.js'></script>
+<script src='ascii.js'></script>
+<script src='vm.js'></script>
+
+<script>
+
+    const setCellResult = (colNum, num) => {
+        let result = _e(`#id-cell${colNum}-result`)
+        result.innerHTML = num // asciiTxt[colNum]
+    }
+
+
+    const __main = () => {
+        let asciiTxt = ['00000000', '00000000', '00000000', '00000000']
+
+        bindAll('.cell', (event) => {
+            let target = event.target
+            let id = target.id;
+            let colInd = parseInt(id[4])
+            let pos = parseInt(id[5])
+
+            let num = asciiTxt[colInd]
+            let b = num[pos]
+
+            let replace = '0' === b ? '1' : '0'
+            asciiTxt[colInd] = replacePos(num, pos, replace)
+            if (replace === '0') {
+                target.classList.remove('black')
+            } else {
+                target.classList.add('black')
+            }
+
+            setCellResult(colInd, asciiTxt[colInd])
+        })
+    }
+
+    __main()
+
+
+</script>
+</body>
+
+</html>

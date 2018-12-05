@@ -1,0 +1,37 @@
+canvas {
+    border: 1px solid black;
+}
+
+.black {
+    background-color: #000000;
+}
+
+.board-div {
+    font-size: 0;
+}
+
+.cell {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    /*border-right: 1px solid black;*/
+    width: 30px;
+    height: 30px;
+}
+
+.colum-div {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.colum3 {
+    border-right: 1px solid black;
+}
+
+#cell07, #cell17, #cell27, #cell37 {
+    border-bottom: 1px solid black;
+}
+
+.cell-result {
+    letter-spacing: 3px;
+}

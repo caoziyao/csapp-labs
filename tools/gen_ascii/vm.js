@@ -37,8 +37,6 @@ class VMachine {
             }
         }
         log('memery', this.memory)
-
-
     }
 
     run(memory) {
