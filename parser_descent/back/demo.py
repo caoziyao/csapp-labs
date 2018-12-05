@@ -5,10 +5,11 @@
 分别用递归和栈的方式从 token 列表解析为 ast
 """
 import operator
-from token_list import token_list
-from token_parser import parse
+from parser_descent.back.token_list import token_list
+from parser_descent.back.token_parser import parse
 
 vars = {}
+
 
 def parsed_ast(token_list):
     """
@@ -54,6 +55,7 @@ def parsed_ast_stack(token_list):
         else:
             l.append(token)
     return l
+
 
 def apply(code, vars):
     res = ''
@@ -128,4 +130,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

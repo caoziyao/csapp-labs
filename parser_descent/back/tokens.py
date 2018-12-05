@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from token_type import Type
+from parser_descent.back.token_type import Type
 
 class Token():
     def __init__(self, token_type=None, value=None):

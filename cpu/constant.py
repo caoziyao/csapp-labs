@@ -17,3 +17,12 @@ class EWriteRead(Enum):
 class EErrorSignal(Enum):
     success = 0
     failure = 1
+
+
+class EOperator(Enum):
+    add = 0
+    sub = 1
+    mul = 2
+    truediv = 3
+
+

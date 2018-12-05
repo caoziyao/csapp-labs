@@ -1,4 +1,4 @@
-from token_type import Type
+from parser_descent.back.token_type import Type
 
 
 def parse(ts):

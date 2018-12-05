@@ -15,7 +15,7 @@ reg:
 00000000
 """
 import operator
-from cpu.constant import EErrorSignal, EWriteRead
+from cpu.constant import EErrorSignal, EWriteRead, EOperator
 from cpu.instrutions import regfile
 
 
@@ -46,10 +46,10 @@ class CPU(object):
         Division	a // b	floordiv(a, b)
         """
         m = {
-            0: operator.add,
-            1: operator.sub,
-            2: operator.mul,
-            3: operator.truediv,
+            EOperator.add: operator.add,
+            EOperator.sub: operator.sub,
+            EOperator.mul: operator.mul,
+            EOperator.truediv: operator.truediv,
         }
 
         if op not in m:
@@ -98,7 +98,7 @@ class CPU(object):
         """
         pass
 
-    def write_ram(self, address, val):
+    def _write_ram(self, address, val):
         """
         写 ram
         :return:
@@ -107,11 +107,12 @@ class CPU(object):
             self.memory[address] = val
             err = EErrorSignal.success
         else:
-            err = EErrorSignal.failure
+            # err = EErrorSignal.failure
+            raise Exception('over write ram')
 
         return err
 
-    def read_ram(self, address):
+    def _read_ram(self, address):
         """
         读 ram
         :param address:
@@ -121,25 +122,26 @@ class CPU(object):
             val = self.memory[address]
             err = EErrorSignal.success
         else:
-            err = EErrorSignal.failure
-            val = None
+            # err = EErrorSignal.failure
+            # val = None
+            raise Exception('over read ram')
 
         return err, val
 
-    def hardware_ram(self, rw, address, val):
+    def _hardware_ram(self, rw, address, val):
         """
         随机访问存储器
         输入：读/写（1/0），地址，数据输入，时钟
         输出：error (0/1)，数据输出
         :return:
         """
-        if rw == 1:
-            err = self.write_ram(address, val)
+        if rw == EWriteRead.write:
+            err = self._write_ram(address, val)
             res = None
-        elif rw == 0:
-            err, res = self.read_ram(address)
+        elif rw == EWriteRead.read:
+            err, res = self._read_ram(address)
         else:
-            raise Exception('error hardware_ram')
+            raise Exception('error _hardware_ram')
 
         if err == EErrorSignal.failure:
             raise Exception('over memery')
@@ -152,10 +154,20 @@ class CPU(object):
         :param address:
         :return:
         """
-        if address >= len(self.memory):
-            raise Exception('over memory')
+        # if address >= len(self.memory):
+        #     raise Exception('over memory')
+        #
+        # return self.memory[address]
+        return self._hardware_ram(EWriteRead.read, address, None)
 
-        return self.memory[address]
+    def write_memory(self, address, value):
+        """
+
+        :param address:
+        :param value:
+        :return:
+        """
+        self._hardware_ram(EWriteRead.write, address, value)
 
     def run(self):
         """
@@ -194,7 +206,8 @@ class CPU(object):
         # 译码
 
         # 执行
-        vale = 0 + valc
+        # vale = 0 + valc
+        vale = self.alu(0, valc, EOperator.add)
 
         # 访存
 

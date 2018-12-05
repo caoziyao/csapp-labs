@@ -1,5 +1,5 @@
-from token_type import Type
-from tokens import Token
+from parser_descent.back.token_type import Type
+from parser_descent.back.tokens import Token
 
 
 def load_file(path):

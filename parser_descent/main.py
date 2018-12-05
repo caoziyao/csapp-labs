@@ -7,8 +7,8 @@
 @desc:
 """
 
-from src.lexer import lexer
-from src.parser import parse
+from parser_descent.src.lexer import lexer
+from parser_descent.src.parse import parse
 
 
 def main():
@@ -16,6 +16,7 @@ def main():
     codes = '3 + 1 * 5'
     tokens = lexer(codes)
     parse(tokens)
+
 
 if __name__ == '__main__':
     main()

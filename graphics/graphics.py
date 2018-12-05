@@ -12,7 +12,7 @@ import pygame
 
 class Graphics(object):
 
-    def __init__(self, cpu):
+    def __init__(self, cpu=None):
         self.width = 256
         self.height = 240
 
