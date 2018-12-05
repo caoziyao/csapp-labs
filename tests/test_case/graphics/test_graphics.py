@@ -14,11 +14,12 @@ from graphics.graphics import Graphics
 
 class TestGraphics(BaseCase):
 
-    def test_draw(self):
+    def test_drawchar(self):
         """
-
         :return:
         """
-        t = ['1', '2', '3']
+        t = '8'
         g = Graphics()
 
+        while True:
+            g.draw_char(t)

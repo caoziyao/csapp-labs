@@ -11,8 +11,13 @@ import os
 
 import coverage
 import unittest
-from tests import test_cases
 
+from tests.test_case.parse.test_parse import TestParse
+from tests.test_case.test_points import TestPoints
+from tests.test_case.graphics.test_graphics import TestGraphics
+
+# test_cases = (TestParse, TestPoints)
+test_cases = (TestGraphics, )
 
 def get_covdir():
     basedir = os.path.abspath(os.path.dirname(__file__))
@@ -21,6 +26,13 @@ def get_covdir():
 
 
 def load_tests(loader, standard_tests, pattern):
+    """
+    discover
+    :param loader:
+    :param standard_tests:
+    :param pattern:
+    :return:
+    """
     # top level directory cached on loader instance
     this_dir = os.path.dirname(__file__)
     package_tests = loader.discover(start_dir=this_dir, pattern=pattern)
@@ -29,6 +41,13 @@ def load_tests(loader, standard_tests, pattern):
 
 
 def load_test_cases(loader, tests, pattern):
+    """
+    Case
+    :param loader:
+    :param tests:
+    :param pattern:
+    :return:
+    """
     suite = unittest.TestSuite()
 
     for test_class in test_cases:
@@ -47,7 +66,7 @@ def run_test():
 
 
 def cov_start():
-    cov = coverage.coverage(branch=True, include=['vm/*', 'zy/*'])
+    cov = coverage.coverage(branch=True, include=['vm/*', 'zvm/*'])
     cov.start()
     return cov
 
@@ -63,9 +82,9 @@ def cov_end(cov):
 
 
 def main():
-    cov = cov_start()
+    # cov = cov_start()
     run_test()
-    cov_end(cov)
+    # cov_end(cov)
 
 
 if __name__ == '__main__':
