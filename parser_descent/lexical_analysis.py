@@ -3,11 +3,14 @@
 @author: csy
 @license: (C) Copyright 2017-2018
 @contact: wyzycao@gmail.com
-@time: 2018/9/20
+@time: 2018/12/5 
 @desc:
 """
 from parser_descent.src.commont.utils import is_space
 from parser_descent.src.token import Token, Type
+from parser_descent.symbol_table import SysmbolTable
+
+sysmbol_idx = 0
 
 
 def string_token(current_index, codes):
@@ -40,6 +43,7 @@ def identify_keyword_token(current_index, codes):
     var
     :return: var
     """
+    global sysmbol_idx
     codes = codes[current_index:]
 
     i = 0
@@ -60,7 +64,13 @@ def identify_keyword_token(current_index, codes):
     if value in m:
         token = Token(Type.keyword, value)
     else:
-        token = Token(Type.id, value)
+        token = Token(Type.id, value, sysmbol_idx)
+        d = {
+            'type': Type.id,
+            'name': value
+        }
+        SysmbolTable[sysmbol_idx] = d
+        sysmbol_idx += 1
 
     return i + current_index - 1, token
 
@@ -86,6 +96,7 @@ def operate_token(current_index, codes):
     token = m[value]
 
     return i + current_index, token
+
 
 def parentheses_token(current_index, codes):
     """
@@ -145,8 +156,9 @@ def next_token(current_index, codes):
     return i + current_index, token
 
 
-def pase_list(codes):
+def lexical_analysis(codes):
     """
+    词法分析
     :param codes:
     :return:
     """
@@ -165,18 +177,6 @@ def pase_list(codes):
 
         token_list.append(token)
 
+    print(token_list)
+    print('SysmbolTable', SysmbolTable)
     return token_list
-
-
-def lexer(codes):
-    # codes = """
-    #     var a = "abc"
-    #     if a = 3
-    # # """
-
-    # codes = 'var a = "abnd" '
-
-    s = pase_list(codes)
-
-    print('token_list', s)
-    return s

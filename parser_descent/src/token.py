@@ -22,18 +22,18 @@ class Type(Enum):
     number = 8              # 123
     string = 9              # "name"
     var = 10                # var
-    equal = 11              # =
+    assign = 11              # =
     sub = 12                # -
     times = 13              # *
     div = 14                # /
     add = 15                # +
-    identifier = 16         # abc 标志符
+    id = 16         # identifier abc 标志符
     parenthesesLeft = 17    # (
     parenthesesRight = 18   # )
 
 
 class Token():
-    def __init__(self, token_type=None, value=None):
+    def __init__(self, token_type=None, value=None, symbol_idx=None):
         d = {
             ':': Type.colon,
             ',': Type.comma,
@@ -49,8 +49,12 @@ class Token():
             self.type = token_type
 
         self.value = value
+        self.symbol_idx = symbol_idx
 
     def __repr__(self):
-        s = '({}: {})'.format(self.value, self.type)
+        if self.symbol_idx is not None:
+            s = '({} {}: {} )'.format(self.symbol_idx, self.value, self.type)
+        else:
+            s = '({}: {})'.format(self.value, self.type)
         # s = '"{}"'.format(self.value)
         return s
