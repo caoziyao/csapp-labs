@@ -14,11 +14,11 @@ from parser_descent.syntax_analysis import syntax_analysis
 
 
 def main():
-    # codes = '3 + 4 * 5'
-    # codes = '3 + 1 * 5'
     # tokens = lexer(codes)
     # parse(tokens)
-    s = 'position = inital + rate * 60'
+    # s = 'position = inital + rate * 60'
+    s = 'a = 9 - 5 * 2 + 3'
+    # s = 'for ( a = 1; a < 3; a = a + 2  )  { print "adwf" }'
     tokens = lexical_analysis(s)
     syntax_analysis(tokens)
 

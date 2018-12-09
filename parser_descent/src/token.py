@@ -27,9 +27,12 @@ class Type(Enum):
     times = 13              # *
     div = 14                # /
     add = 15                # +
-    id = 16         # identifier abc 标志符
-    parenthesesLeft = 17    # (
-    parenthesesRight = 18   # )
+    more_then = 16          # >
+    less_then = 17          # <
+    id = 18         # identifier abc 标志符
+    parenthesesLeft = 19    # (
+    parenthesesRight = 20   # )
+    semicolon = 21          # ;
 
 
 class Token():

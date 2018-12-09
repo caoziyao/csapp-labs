@@ -59,7 +59,7 @@ def identify_keyword_token(current_index, codes):
         else:
             value += c
 
-    m = ['var', 'if', 'while']
+    m = ['var', 'if', 'while', 'for', 'print']
 
     if value in m:
         token = Token(Type.keyword, value)
@@ -91,6 +91,8 @@ def operate_token(current_index, codes):
         '*': Token(Type.times, value),
         '/': Token(Type.div, value),
         '=': Token(Type.assign, value),
+        '>': Token(Type.more_then, value),
+        '<': Token(Type.less_then, value),
     }
 
     token = m[value]
@@ -111,6 +113,27 @@ def parentheses_token(current_index, codes):
     m = {
         '(': Token(Type.parenthesesLeft, value),
         ')': Token(Type.parenthesesRight, value),
+        '{': Token(Type.braceLeft, value),
+        '}': Token(Type.braceRight, value),
+    }
+
+    token = m[value]
+
+    return i + current_index, token
+
+
+def semicolon_token(current_index, codes):
+    """
+    ;
+    :param current_index:
+    :param codes:
+    :return:
+    """
+    value = codes[current_index]
+    i = 1
+
+    m = {
+        ';': Token(Type.semicolon, value),
     }
 
     token = m[value]
@@ -138,16 +161,15 @@ def next_token(current_index, codes):
     elif c == '"':
         # string
         i, token = string_token(i - 1, codes)
-    elif c in '+-*/=':
+    elif c in '+-*/=><':
         i, token = operate_token(i - 1, codes)
-        # token = Token(Type.assign, '=')
-    elif c in '()':
+    elif c in '(){}':
         i, token = parentheses_token(i - 1, codes)
-        # break
+    elif c == ';':
+        i, token = semicolon_token(i - 1, codes)
     else:
-        pass
         # error
-        # raise Exception('error next_token')
+        raise Exception('error next_token')
 
     if value.isdigit():
         value = int(value)
