@@ -8,6 +8,13 @@ term -> term * factor | term / factor | factor
 factor -> digit | ( expr )
 digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
+*EBNF形式 表达式*
+expr ::= term { (+|-) term }*
+term ::= factor { (*|/) factor }*
+factor ::= ( expr )
+    |   NUM
+
+
 *函数调用*
 optparams: 可选参数列表
 null: 表示空

@@ -17,7 +17,7 @@ def main():
     # tokens = lexer(codes)
     # parse(tokens)
     # s = 'position = inital + rate * 60'
-    s = 'a = 9 - 5 * 2 + 3'
+    s = 'a = (1 - 2) * 2 * (2 + 3) '
     # s = 'for ( a = 1; a < 3; a = a + 2  )  { print "adwf" }'
     tokens = lexical_analysis(s)
     syntax_analysis(tokens)

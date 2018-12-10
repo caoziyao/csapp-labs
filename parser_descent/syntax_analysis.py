@@ -23,13 +23,11 @@ class TokenList(object):
         self.tokens = tokens
 
     def current(self):
-        t = self.get_token(self.index)
-        self.index += 1
 
-        return t
-
-    def current_noadd(self):
-        t = self.get_token(self.index)
+        if self.isend():
+            t = None
+        else:
+            t = self.tokens[self.index]
 
         return t
 
@@ -45,11 +43,13 @@ class TokenList(object):
         """
         return self.index == self.size()
 
-    def get_token(self, index):
+    def get_token(self):
         """
         :return:
         """
-        return self.tokens[index]
+        t = self.tokens[self.index]
+        self.index += 1
+        return t
 
     def lookahead(self):
         """
@@ -58,7 +58,7 @@ class TokenList(object):
         if self.isend():
             t = None
         else:
-            t = self.get_token(self.index + 1)
+            t = self.tokens[self.index + 1]
 
         return t
 
@@ -103,11 +103,15 @@ def parse_factor():
     factor -> digit | ( expr )
     :return:
     """
-    t = tokens.current()
+    t = tokens.get_token()
     kind = t.type
     value = t.value
 
     if kind == Type.number:
+        return value
+    elif kind == Type.parenthesesLeft:
+        value = parse_expr()
+        tokens.get_token()
         return value
     else:
         raise Exception('expect number but {}'.format(value))
@@ -119,58 +123,83 @@ def parse_term():
     :return:
     """
 
-    left = parse_factor()
-    current = tokens.current_noadd()
-    if current.type in [Type.add, Type.sub]:
-        return left
+    res = parse_factor()
 
     t = tokens.current()
+    if t is None:
+        return res
+
     kind = t.type
     value = t.value
 
-    if kind == Type.times:
-        right = parse_factor()
-        res = left * right
-    elif kind == Type.div:
-        right = parse_factor()
-        res = left / right
-    else:
-        raise Exception('expect */ but {}'.format(value))
+    while kind in [Type.times, Type.div]:
+        tokens.get_token()
+
+        if kind == Type.times:
+            right = parse_factor()
+            res *= right
+        elif kind == Type.div:
+            right = parse_factor()
+            res /= right
+
+        t = tokens.current()
+        if t is None:
+            break
+
+        kind = t.type
+        value = t.value
+
+    # if t is not None:
+    #     raise Exception('expect */ but {} {}'.format(kind, value))
 
     return res
 
 
 def parse_expr():
     """
-    表达式 expr -> expr + term | expr - term | term
+    1 + 2 * 3
+    表达式 expr ::= term { (+|-) term }*
     :return:
     """
-    left = parse_term()
+    res = parse_term()
 
     t = tokens.current()
+    if t is None:
+        return res
+
     kind = t.type
     value = t.value
+    while kind in [Type.add, Type.sub]:
+        tokens.get_token()
 
-    if kind == Type.add:
-        right = parse_term()
-        res = left + right
-    elif kind == Type.sub:
-        right = parse_term()
-        res = left - right
-    else:
-        raise Exception('expect +- but {}'.format(value))
+        if kind == Type.add:
+            right = parse_term()
+            res += right
+        elif kind == Type.sub:
+            right = parse_term()
+            res -= right
+
+        t = tokens.current()
+        if t is None:
+            break
+
+        kind = t.type
+        value = t.value
+
+    # if t is not None:
+    #     raise Exception('expect +- but {} {}'.format(kind, value))
 
     return res
 
 
 def parse_stmt():
     """
+    a = 1 + 2 * 3
     :param token_list:
     :return:
     """
-    t = tokens.current()
-
-    assign = tokens.current()
+    tokens.get_token()  # id
+    assign = tokens.get_token()  # =
     kind = assign.type
     value = assign.value
 
@@ -217,7 +246,7 @@ def syntax_analysis(token_list):
     """
     tokens.tokens = token_list
 
-    t = tokens.current_noadd()
+    t = tokens.current()
     kind = t.type
     value = t.value
 
