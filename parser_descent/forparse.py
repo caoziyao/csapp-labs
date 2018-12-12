@@ -7,9 +7,7 @@
 @desc:
 """
 
-from parser_descent.src.token import Type
-from parser_descent.src.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
-from parser_descent.token_list import TokenList
+from parser_descent.tokentype import Type
 from parser_descent.stmt_parse import StmtParse
 
 

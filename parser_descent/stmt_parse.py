@@ -7,9 +7,8 @@
 @desc:
 """
 
-from parser_descent.src.token import Type
-from parser_descent.src.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
-from parser_descent.token_list import TokenList
+from parser_descent.tokentype import Type
+from parser_descent.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub
 
 
 class StmtParse(object):
@@ -47,10 +46,12 @@ class StmtParse(object):
         value = t.value
 
         if kind == Type.number:
-            return value
+            # return value
+            return Number(value)
         elif kind == Type.parenthesesLeft:
             value = self.parse_expr()
             tokens.get_token()
+            # return value
             return value
         else:
             raise Exception('expect number but {}'.format(value))
@@ -62,12 +63,13 @@ class StmtParse(object):
         """
         tokens = self.tokens
 
-        res = self.parse_factor()
+        left = self.parse_factor()
 
         t = tokens.current()
         if t is None:
-            return res
+            return left
 
+        root = left
         kind = t.type
         value = t.value
 
@@ -76,10 +78,12 @@ class StmtParse(object):
 
             if kind == Type.times:
                 right = self.parse_factor()
-                res *= right
+                # res *= right
+                root = ExpTimes(root, right)
             elif kind == Type.div:
                 right = self.parse_factor()
-                res /= right
+                # left /= right
+                root = ExpDiv(root, right)
 
             t = tokens.current()
             if t is None:
@@ -91,7 +95,7 @@ class StmtParse(object):
         # if t is not None:
         #     raise Exception('expect */ but {} {}'.format(kind, value))
 
-        return res
+        return root
 
     def parse_expr(self):
         """
@@ -101,12 +105,13 @@ class StmtParse(object):
         """
         tokens = self.tokens
 
-        res = self.parse_term()
+        left = self.parse_term()
 
         t = tokens.current()
         if t is None:
-            return res
+            return left
 
+        root = left
         kind = t.type
         value = t.value
         while kind in [Type.add, Type.sub]:
@@ -114,10 +119,12 @@ class StmtParse(object):
 
             if kind == Type.add:
                 right = self.parse_term()
-                res += right
+                # res += right
+                root = ExpAdd(root, right)
             elif kind == Type.sub:
                 right = self.parse_term()
-                res -= right
+                # res -= right
+                root = ExpSub(root, right)
 
             t = tokens.current()
             if t is None:
@@ -129,7 +136,7 @@ class StmtParse(object):
         # if t is not None:
         #     raise Exception('expect +- but {} {}'.format(kind, value))
 
-        return res
+        return root
 
     def parse_stmt(self):
         """
@@ -139,14 +146,18 @@ class StmtParse(object):
         """
         tokens = self.tokens
 
-        tokens.get_token()  # id
+        a = tokens.get_token()
+
+        # id
         assign = tokens.get_token()  # =
         kind = assign.type
         value = assign.value
 
         if kind == Type.assign:
-            expr = self.parse_expr()
+            res = self.parse_expr()
+            root = ExpAssgin(ID(a.value), res)
         else:
             raise Exception('expect = but {}'.format(value))
 
-        print('expr', expr)
+
+        return root

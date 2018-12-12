@@ -16,13 +16,15 @@ def exper_test():
     """
     s1 = 'a = (3 - 5) * 2 * (2 + 3) '
     t1 = lexical_analysis(s1)
-    syntax_analysis(t1)
+    root = syntax_analysis(t1)
+    print('expr', root)
 
 
 def for_test():
     s2 = 'for ( a = 1; a = 3; a = 5 + 2)  { b = 3 }'
     t2 = lexical_analysis(s2)
-    syntax_analysis(t2)
+    root = syntax_analysis(t2)
+    print('expr', root)
 
 
 def main():
