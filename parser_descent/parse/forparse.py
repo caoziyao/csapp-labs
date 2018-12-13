@@ -8,7 +8,8 @@
 """
 
 from parser_descent.tokentype import Type
-from parser_descent.stmt_parse import StmtParse
+from parser_descent.parse.stmt_parse import StmtParse
+from parser_descent.parse.expression import ExpFor
 
 
 class ForParse(object):
@@ -37,6 +38,7 @@ class ForParse(object):
         :param token_list:
         :return:
         """
+        e = ExpFor()
         tokens = self.tokens
 
         tokens.get_token()  # for
@@ -47,17 +49,17 @@ class ForParse(object):
         if kind != Type.parenthesesLeft:
             raise Exception('expect ( but {}'.format(value))
 
-        self.stm_parse.parse_stmt()  # expert
+        e.init_stmt = self.stm_parse.parse_stmt()  # expert
         t = tokens.get_token()  # ;
         if t.type != Type.semicolon:
-            raise Exception('expect 1; but {}'.format(t.value))
+            raise Exception('expect ;(1) but {}'.format(t.value))
 
-        self.stm_parse.parse_stmt()  # expert
+        e.test_expr = self.stm_parse.parse_stmt()  # expert
         t = tokens.get_token()  # ;
         if t.type != Type.semicolon:
-            raise Exception('expect 2; but {}'.format(t.value))
+            raise Exception('expect 2(2s) but {}'.format(t.value))
 
-        self.stm_parse.parse_stmt()  # expert
+        e.update_stmt = self.stm_parse.parse_stmt()  # expert
         t = tokens.get_token()  # )
         if t.type != Type.parenthesesRight:
             raise Exception('expect ) but {}'.format(t.value))
@@ -66,12 +68,12 @@ class ForParse(object):
         if t.type != Type.braceLeft:
             raise Exception('expect { but {}'.format(t.value))
 
-        self.stm_parse.parse_stmt()  # expert
-
-        t = tokens.get_token()  # {
+        e.code = self.stm_parse.parse_stmt()  # expert
+        t = tokens.get_token()  # }
         if t.type != Type.braceRight:
-            raise Exception('expect { but {}'.format(t.value))
+            raise Exception('expect } but {}'.format(t.value))
 
+        return e
         #     # for ( ; ; ;) {}
         #     match(t, 'for')  # for
         #     match(t, '(')  # (

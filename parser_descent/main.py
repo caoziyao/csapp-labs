@@ -21,7 +21,7 @@ def exper_test():
 
 
 def for_test():
-    s2 = 'for ( a = 1; a = 3; a = 5 + 2)  { b = 3 }'
+    s2 = 'for ( a = 1; a < 3; a = a + 2)  { b = 3 }'
     t2 = lexical_analysis(s2)
     root = syntax_analysis(t2)
     print('expr', root)

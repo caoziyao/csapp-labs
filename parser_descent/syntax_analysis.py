@@ -11,8 +11,8 @@ descent_parsing 递归下降
 用前看符号指导产生式规则的规则
 """
 from parser_descent.tokentype import Type
-from parser_descent.stmt_parse import StmtParse
-from parser_descent.forparse import ForParse
+from parser_descent.parse.stmt_parse import StmtParse
+from parser_descent.parse.forparse import ForParse
 from parser_descent.token_list import TokenList
 
 

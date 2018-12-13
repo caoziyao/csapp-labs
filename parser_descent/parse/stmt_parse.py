@@ -8,7 +8,8 @@
 """
 
 from parser_descent.tokentype import Type
-from parser_descent.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub
+from parser_descent.parse.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
+    ExpMoreThen
 
 
 class StmtParse(object):
@@ -48,6 +49,8 @@ class StmtParse(object):
         if kind == Type.number:
             # return value
             return Number(value)
+        elif kind == Type.id:
+            return ID(value)
         elif kind == Type.parenthesesLeft:
             value = self.parse_expr()
             tokens.get_token()
@@ -156,8 +159,13 @@ class StmtParse(object):
         if kind == Type.assign:
             res = self.parse_expr()
             root = ExpAssgin(ID(a.value), res)
+        elif kind == Type.less_then:
+            res = self.parse_expr()
+            root = ExpLessThen(ID(a.value), res)
+        elif kind == Type.more_then:
+            res = self.parse_expr()
+            root = ExpMoreThen(ID(a.value), res)
         else:
             raise Exception('expect = but {}'.format(value))
-
 
         return root

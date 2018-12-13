@@ -11,7 +11,7 @@
 用 前看符号 指导生成式规则的选择
 """
 from parser_descent.tokentype import Type
-from parser_descent.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
+from parser_descent.parse.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
 
 current_index = 0
 

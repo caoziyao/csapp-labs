@@ -35,6 +35,7 @@ class Type(Enum):
     semicolon = 21          # ;
 
 
+
 class Token():
     def __init__(self, token_type=None, value=None, symbol_idx=None):
         d = {
