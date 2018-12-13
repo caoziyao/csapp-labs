@@ -7,8 +7,8 @@
 @desc:
 """
 
-from parser_descent.tokentype import Type
-from parser_descent.parse.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
+from common.tokentype import Type
+from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
     ExpMoreThen
 
 

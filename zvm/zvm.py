@@ -6,11 +6,9 @@
 @time: 2018/12/4 
 @desc:
 """
-import sys
-import threading
 import sched
 import time
-from cpu.cpu import CPU
+from zvm.cpu.cpu import CPU
 from graphics.graphics import Graphics
 
 scheduler = sched.scheduler(time.time, time.sleep)

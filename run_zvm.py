@@ -7,7 +7,7 @@
 @desc:
 """
 
-from cpu.cpu import CPU
+from zvm.cpu import CPU
 from zvm.zvm import ZVM
 
 

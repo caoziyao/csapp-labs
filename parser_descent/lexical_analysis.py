@@ -7,7 +7,7 @@
 @desc:
 """
 from parser_descent.src.commont.utils import is_space
-from parser_descent.tokentype import Token, Type
+from common.tokentype import Token, Type
 from parser_descent.symbol_table import SysmbolTable
 
 sysmbol_idx = 0

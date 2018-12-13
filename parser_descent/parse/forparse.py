@@ -7,9 +7,9 @@
 @desc:
 """
 
-from parser_descent.tokentype import Type
+from common.tokentype import Type
 from parser_descent.parse.stmt_parse import StmtParse
-from parser_descent.parse.expression import ExpFor
+from common.expression import ExpFor
 
 
 class ForParse(object):

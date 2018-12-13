@@ -7,7 +7,7 @@
 @desc:
 python3 testmain.py parse
 """
-from lang.src.parser import parser
+from lang.parser import parser
 
 import unittest
 from tests.test_case.base import BaseCase

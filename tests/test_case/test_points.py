@@ -9,7 +9,7 @@
 
 import unittest
 from tests.test_case.base import BaseCase
-from cpu.assembler import points
+from zvm.cpu.assembler import points
 
 
 class TestPoints(BaseCase):
