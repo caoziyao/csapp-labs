@@ -18,14 +18,17 @@ from parser_descent.lexical_analysis import lexical_analysis
 from parser_descent.syntax_analysis import syntax_analysis
 from backend.ir.three_address import IRTree
 
+
 def exper_test():
     """
     :return:
     """
-    s1 = 'a = (3 - 5) * 2 * (2 + 3) '
+    s1 = 'a = (1 - 2) * 3 * (4 + 5) '
     t1 = lexical_analysis(s1)
     root = syntax_analysis(t1)
     print('expr', root)
+
+    return root
 
 
 def for_test():
@@ -34,9 +37,17 @@ def for_test():
     root = syntax_analysis(t2)
     print('expr', root)
 
+    return root
+
 
 def main():
-    for_test()
+    root = exper_test()
+
+    ir = IRTree(root)
+    ts = ir.gen()
+
+    for t in ts:
+        print(t)
 
 
 if __name__ == '__main__':

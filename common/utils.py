@@ -6,6 +6,7 @@
 @time: 2018/9/24 
 @desc:
 """
+from common.tokentype import Type
 
 def is_leaf(node):
     """
@@ -13,7 +14,9 @@ def is_leaf(node):
     :param node:
     :return:
     """
-    if (node.left is None) and (node.right is None):
+    _type = node.type
+
+    if _type in [Type.number, Type.id]:
         return True
     else:
         return False

@@ -21,5 +21,6 @@ class Keywords(Enum):
     kdef = 7        # def
     print = 8       # print
     call = 9        # call
+    kfor = 10       # for
 
     undefind = 100  # undefind
