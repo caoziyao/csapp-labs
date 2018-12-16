@@ -29,11 +29,10 @@ class Type(Enum):
     add = 15                # +
     more_then = 16          # >
     less_then = 17          # <
-    id = 18         # identifier abc 标志符
+    id = 18                 # identifier abc 标志符
     parenthesesLeft = 19    # (
     parenthesesRight = 20   # )
     semicolon = 21          # ;
-
 
 
 class Token():

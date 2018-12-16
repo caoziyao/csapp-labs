@@ -7,7 +7,7 @@
 @desc:
 """
 
-from zvm.cpu import CPU
+from zvm.cpu.cpu import CPU
 from zvm.zvm import ZVM
 
 
@@ -19,9 +19,15 @@ def asm_test():
     cpu.run()
 
 
-def main():
+def lang_test():
     zvm = ZVM()
-    zvm.run()
+    zvm.run_forever()
+
+
+def main():
+    # zvm = ZVM()
+    # zvm.run()
+    lang_test()
 
 
 if __name__ == '__main__':

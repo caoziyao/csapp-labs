@@ -17,7 +17,7 @@
 from parser_descent.lexical_analysis import lexical_analysis
 from parser_descent.syntax_analysis import syntax_analysis
 from backend.ir.three_address import IRTree
-
+from backend.gen.gen_register_vm import CodeRen
 
 def exper_test():
     """
@@ -49,6 +49,10 @@ def main():
     for t in ts:
         print(t)
 
+    gen = CodeRen()
+    b = gen.gen(ts)
+
+    print(b)
 
 if __name__ == '__main__':
     main()

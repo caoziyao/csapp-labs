@@ -6,23 +6,24 @@
 @time: 2018/9/26 
 @desc:
 """
-from lang.common import Kind
+# from lang.common import Kind
+from common.keywords import Keywords
+from common.tokentype import Type
+from common.label_type import LabelType
 from backend.gen.assem import Assem
-
-register_index = 0
-register_map = {}
-db_index = 0
-db_map = {}
-label_index = 0
-label_map = {}
 
 
 class CodeRen(object):
 
-    def __init__(self, ir):
-        self.ir = ir
-        self.index_register = 0
-        self.index_label = 0
+    def __init__(self):
+        # self.ir = ir
+        self.idx_register = 0
+        self.idx_label = 0
+        self.idx_db = 0
+        self.idx_label = 0
+        self.label_map = {}
+        self.register_map = {}
+        self.db_map = {}
         self.codes = []
         self.asm = Assem()
 
@@ -31,22 +32,22 @@ class CodeRen(object):
         tmp_var: 临时变量
         :return:
         """
-        global register_index
-        global register_map
+        # global self.idx_register
+        # global register_map
 
         if tmp_var:
             # 存在临时变量
-            r = register_map.get(tmp_var, None)
+            r = self.register_map.get(tmp_var, None)
             if r is None:
                 # 没有则生成并做映射
-                r = 'r{}'.format(register_index)
-                register_index += 1
-                register_map.update({
+                r = 'r{}'.format(self.idx_register)
+                self.idx_register += 1
+                self.register_map.update({
                     tmp_var: r
                 })
         else:
-            r = 'r{}'.format(register_index)
-            register_index += 1
+            r = 'r{}'.format(self.idx_register)
+            self.idx_register += 1
 
         return r
 
@@ -56,42 +57,42 @@ class CodeRen(object):
         :param tmp_var:
         :return:
         """
-        global db_index
-        global db_map
+        # global db_index
+        # global db_map
 
         if tmp_var:
             # 存在临时变量
-            r = db_map.get(tmp_var, None)
+            r = self.db_map.get(tmp_var, None)
             if r is None:
                 # 没有则生成并做映射
-                r = 'db_{}'.format(db_index)
-                db_index += 1
-                db_map.update({
+                r = 'db_{}'.format(self.idx_db)
+                self.idx_db += 1
+                self.db_map.update({
                     tmp_var: r
                 })
         else:
-            r = 'db_{}'.format(db_index)
-            db_index += 1
+            r = 'db_{}'.format(self.idx_db)
+            self.idx_db += 1
 
         return r
 
     def gen_label(self, label=''):
-        global label_index
-        global label_map
+        # global label_index
+        # global label_map
 
         if label:
             # 存在临时变量
-            r = label_map.get(label, None)
+            r = self.label_map.get(label, None)
             if r is None:
                 # 没有则生成并做映射
-                r = 'L{}'.format(label_index)
-                label_index += 1
-                label_map.update({
+                r = 'L{}'.format(self.idx_label)
+                self.idx_label += 1
+                self.label_map.update({
                     label: r
                 })
         else:
-            r = 'L{}'.format(label_index)
-            label_index += 1
+            r = 'L{}'.format(self.idx_label)
+            self.idx_label += 1
 
         return r
 
@@ -106,7 +107,8 @@ class CodeRen(object):
 
         rx = self.gen_register(x)
         # self.codes.append('mov [{}] {}'.format(result.value, rx))
-        self.emit(self.asm.rmmovq(result.value, rx))
+        # self.emit(self.asm.rmmovq(result.value, rx))
+        self.emit(self.asm.rmmovq(result, rx))
 
     def gen_number(self, ir):
         """
@@ -355,24 +357,44 @@ class CodeRen(object):
 
     def gen_instr(self, ir):
         m = {
-            Kind.var: self.gen_var,
-            Kind.number: self.gen_number,
-            Kind.times: self.gen_times,
-            Kind.plus: self.gen_plus,
-            Kind.minus: self.gen_minus,
-            Kind.id: self.gen_id,
-            Kind.print: self.gen_print,
-            Kind.string: self.gen_string,
-            Kind.k_if: self.gen_kif,
-            Kind.is_more_then: self.gen_is_more_then,
-            Kind.is_less_then: self.gen_is_less_then,
-            Kind.kwhile: self.gen_kwhile,
-            Kind.kwhile_start: self.gen_kwhile_start,
-            Kind.undefind: self.gen_undefind,
-            Kind.kdef_name: self.gen_kdef_name,
-            Kind.kdef: self.gen_kdef,
-            Kind.call: self.gen_call,
+            # Kind.var: self.gen_var,
+            # Kind.number: self.gen_number,
+            # Kind.times: self.gen_times,
+            # Kind.plus: self.gen_plus,
+            # Kind.minus: self.gen_minus,
+            # Kind.id: self.gen_id,
+            # Kind.print: self.gen_print,
+            # Kind.string: self.gen_string,
+            # Kind.k_if: self.gen_kif,
+            # Kind.is_more_then: self.gen_is_more_then,
+            # Kind.is_less_then: self.gen_is_less_then,
+            # Kind.kwhile: self.gen_kwhile,
+            # Kind.kwhile_start: self.gen_kwhile_start,
+            # Kind.undefind: self.gen_undefind,
+            # Kind.kdef_name: self.gen_kdef_name,
+            # Kind.kdef: self.gen_kdef,
+            # Kind.call: self.gen_call,
             # Kind.kdef_end: self.gen_kdef_end,
+            LabelType.whilestart: self.gen_kwhile_start,
+            LabelType.kdef_name: self.gen_kdef_name,
+
+            Keywords.kdef: self.gen_kdef,
+            Keywords.call: self.gen_call,
+            # Keywords.var: self.gen_var,
+            Keywords.print: self.gen_print,
+            Keywords.kif: self.gen_kif,
+            Keywords.kwhile: self.gen_kwhile,
+            Keywords.undefind: self.gen_undefind,
+
+            Type.assign: self.gen_var,
+            Type.number: self.gen_number,
+            Type.times: self.gen_times,
+            Type.add: self.gen_plus,
+            Type.sub: self.gen_minus,
+            Type.id: self.gen_id,
+            Type.string: self.gen_string,
+            Type.more_then: self.gen_is_more_then,
+            Type.less_then: self.gen_is_less_then,
         }
         t = ir.type
         f = m.get(t, None)
@@ -381,9 +403,9 @@ class CodeRen(object):
         else:
             raise Exception('code gen_instr not found')
 
-    def gen(self):
+    def gen(self, irs):
 
-        for ir in self.ir:
+        for ir in irs:
             self.gen_instr(ir)
 
         return self.codes

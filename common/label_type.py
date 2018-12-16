@@ -14,3 +14,8 @@ from enum import Enum, unique
 class LabelType(Enum):
     forstart = 0    # for start
     forend = 1      # for end
+
+    whilestart = 2  # while start
+    whileend = 3    # while end
+
+    kdef_name = 4   # def name

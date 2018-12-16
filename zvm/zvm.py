@@ -19,7 +19,7 @@ class ZVM(object):
     def __init__(self):
         self.frame = 60
         self.init_cpu()
-        self.init_graphics()
+        # self.init_graphics()
 
     def init_cpu(self):
         self.cpu = CPU()
@@ -33,8 +33,8 @@ class ZVM(object):
         :return:
         """
         for i in range(10000):
-            pass
-            # self.cpu.run()
+            # pass
+            self.cpu.run()
 
         self.grap.draw()
         scheduler.enter(1 / self.frame, 1, self.run_task)
@@ -46,3 +46,10 @@ class ZVM(object):
         """
         scheduler.enter(1 / self.frame, 1, self.run_task)
         scheduler.run()
+
+    def run_forever(self):
+        """
+        :return:
+        """
+        while True:
+            self.cpu.run()
