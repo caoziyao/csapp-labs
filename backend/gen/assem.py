@@ -41,7 +41,7 @@ class Assem(object):
         :param r1: 寄存器
         :return:
         """
-        return 'rmmovq [{}] {}'.format(memery, r1)
+        return 'rmmovq {} {}'.format(memery, r1)
 
     def mrmovq(self, r1, memery):
         """
@@ -50,7 +50,7 @@ class Assem(object):
         :param memery:
         :return:
         """
-        return 'mrmovq {} [{}]'.format(r1, memery)
+        return 'mrmovq {} {}'.format(r1, memery)
 
     def ret(self):
         """

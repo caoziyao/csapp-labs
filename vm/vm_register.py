@@ -19,7 +19,7 @@ class VM(object):
 
     def __init__(self, instrs):
         self.instrs = instrs
-        self.heap = {}
+        self.memery = {}
         self.data = []
         self.table_label = {}
         self.stack = []
@@ -96,83 +96,161 @@ class VM(object):
         self.set_value(dest, r)
 
     def op_subq(self, *args):
+        """
+        subq dest src1 src2
+        :param args:
+        :return:
+        """
+        dest = args[1]
+        src1 = args[2]
+        src2 = args[3]
 
-        src1 = args[1]
-        src2 = args[2]
-        dest = args[3]
+        # r
+        idx1 = int(src1[1:])
+        r1 = self.R[idx1]
 
-        r1 = self.value_from(src1)
-        r2 = self.value_from(src2)
+        idx2 = int(src2[1:])
+        r2 = self.R[idx2]
 
+        # dest
         r = r1 - r2
-        self.set_value(dest, r)
+        idx3 = int(dest[1:])
+        self.R[idx3] = r
+        # self.set_value(dest, r)
 
-    def value_from(self, src):
-        """
-        :param src:
-        :return:
-        """
-        if self.is_memery(src):
-            index = self.index_memery(src)
-            r1 = self.heap[index]
-        elif self.is_register(src):
-            index = int(src[1:])
-            r1 = self.R[index]
-        else:
-            r1 = int(src.strip())
+    # def value_from(self, src):
+    #     """
+    #     :param src:
+    #     :return:
+    #     """
+    #     if self.is_memery(src):
+    #         index = self.index_memery(src)
+    #         r1 = self.memery[index]
+    #     elif self.is_register(src):
+    #         index = int(src[1:])
+    #         r1 = self.R[index]
+    #     else:
+    #         r1 = int(src.strip())
+    #
+    #     return r1
 
-        return r1
-
-    def set_value(self, src, value):
-        """
-
-        :return:
-        """
-        if self.is_memery(src):
-            index = self.index_memery(src)
-            self.heap[index] = value
-
-        elif self.is_register(src):
-            index = int(src[1:])
-            self.R[index] = value
-        else:
-            raise Exception('set_value error')
+    # def set_value(self, src, value):
+    #     """
+    #
+    #     :return:
+    #     """
+    #     if self.is_memery(src):
+    #         index = self.index_memery(src)
+    #         self.memery[index] = value
+    #
+    #     elif self.is_register(src):
+    #         index = int(src[1:])
+    #         self.R[index] = value
+    #     else:
+    #         raise Exception('set_value error')
 
     def op_times(self, *args):
+        """
+        times dest src1 src2
+        :param args:
+        :return:
+        """
+        dest = args[1]
+        src1 = args[2]
+        src2 = args[3]
 
-        src1 = args[1]
-        src2 = args[2]
-        dest = args[3]
+        # r
+        idx1 = int(src1[1:])
+        r1 = self.R[idx1]
 
-        r1 = self.value_from(src1)
-        r2 = self.value_from(src2)
+        idx2 = int(src2[1:])
+        r2 = self.R[idx2]
 
+        # dest
         r = r1 * r2
-        self.set_value(dest, r)
+        idx3 = int(dest[1:])
+        self.R[idx3] = r
 
-    def op_plus(self, *args):
+        # idx1 = int(src1[1:])
+        # r1 = self.R[idx1]
+        #
+        # idx2 = int(src2[1:])
+        # r2 = self.R[idx2]
+        #
+        #
+        # # r1 = self.value_from(src1)
+        # # r2 = self.value_from(src2)
+        #
+        # r = r1 * r2
+        # self.set_value(dest, r)
 
-        src1 = args[1]
-        src2 = args[2]
-        dest = args[3]
-
-        r1 = self.value_from(src1)
-        r2 = self.value_from(src2)
-
-        r = r1 + r2
-        self.set_value(dest, r)
+    # def op_plus(self, *args):
+    #     """
+    #     addq dest src1 src2
+    #     :param args:
+    #     :return:
+    #     """
+    #     dest = args[1]
+    #     src1 = args[2]
+    #     src2 = args[3]
+    #
+    #     # r
+    #     idx1 = int(src1[1:])
+    #     r1 = self.R[idx1]
+    #
+    #     idx2 = int(src2[1:])
+    #     r2 = self.R[idx2]
+    #
+    #     # dest
+    #     r = r1 + r2
+    #     idx3 = int(dest[1:])
+    #     self.R[idx3] = r
+        # src1 = args[1]
+        # src2 = args[2]
+        # dest = args[3]
+        #
+        # r1 = self.value_from(src1)
+        # r2 = self.value_from(src2)
+        #
+        # r = r1 + r2
+        # self.set_value(dest, r)
 
     def op_addq(self, *args):
+        """
+        addq dest src1 src2
+        :param args:
+        :return:
+        """
+        dest = args[1]
+        src1 = args[2]
+        src2 = args[3]
 
-        src1 = args[1]
-        src2 = args[2]
-        dest = args[3]
+        # r
+        idx1 = int(src1[1:])
+        r1 = self.R[idx1]
 
-        r1 = self.value_from(src1)
-        r2 = self.value_from(src2)
+        idx2 = int(src2[1:])
+        r2 = self.R[idx2]
 
+        # dest
         r = r1 + r2
-        self.set_value(dest, r)
+        idx3 = int(dest[1:])
+        self.R[idx3] = r
+        # src1 = args[1]
+        # src2 = args[2]
+        # dest = args[3]
+        #
+        # idx1 = int(src1[1:])
+        # r1 = self.R[idx1]
+        #
+        # idx2 = int(src2[1:])
+        # r2 = self.R[idx2]
+        #
+        # # r1 = self.value_from(src1)
+        # # r2 = self.value_from(src2)
+        #
+        # r = r1 + r2
+        # self.set_value(dest, r)
 
     def op_jmp(self, *args):
         l = args[1]
@@ -260,20 +338,48 @@ class VM(object):
         self.set_value(dest, r1)
 
     def op_irmovq(self, *args):
+        """
+        irmovq dest src
+        :param args:
+        :return:
+        """
         dest = args[1]
-        src1 = args[2]
+        src = int(args[2])
 
-        r1 = self.value_from(src1)
+        index = int(dest[1:])
+        self.R[index] = src
 
-        self.set_value(dest, r1)
+        # r1 = self.R[index]
+        # r1 = self.value_from(src1)
+        # index = int(src[1:])
+        # self.set_value(dest, r1)
 
     def op_rmmovq(self, *args):
+        """
+        rmmovq dest src
+        :param args:
+        :return:
+        """
         dest = args[1]
-        src1 = args[2]
+        src = args[2]
 
-        r1 = self.value_from(src1)
+        index = int(src[1:])
+        value = self.R[index]
 
-        self.set_value(dest, r1)
+        self.memery.update({
+            dest: value
+        })
+
+        # value = self.value_from(src)
+        # index = self.index_memery(dest)
+        #         r1 = self.memery[index]
+
+        # index = self.index_memery(src)
+        # value = self.memery[index]
+
+
+        # self.set_value(dest, r1)
+
 
     def op_mrmovq(self, *args):
         dest = args[1]
@@ -378,4 +484,4 @@ class VM(object):
             # else:
             #     raise Exception('not fund {}'.format(instr))
 
-        return self.R, self.heap
+        return self.R, self.memery

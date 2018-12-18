@@ -17,6 +17,7 @@ from common.instr_kind import (
 )
 from backend.ir.ir_expression import IRExpression
 from backend.ir.ir_assign import IRAssgin
+from backend.ir.ir_for import IRFor
 
 class IRTree(object):
 
@@ -32,7 +33,7 @@ class IRTree(object):
             # Keywords.kdef: self.gen_instr_def,
             # Keywords.call: self.gen_instr_call,
 
-            # Type.keyword: self.gen_keyword,
+            Type.keyword: self.gen_keyword,
             Type.assign: self.gen_instr_var,
         }
 
@@ -190,6 +191,7 @@ class IRTree(object):
     #     _type = node.type
     #     value = node.value
     #
+    #     e = IRFor()
     #     d = {
     #         'for': self.gen_instr_for,
     #     }
@@ -200,6 +202,25 @@ class IRTree(object):
     #         raise Exception('not instr ir {}'.format(_type))
     #
     #     return r
+    def gen_keyword(self, node):
+        """
+
+        :return:
+        """
+        _type = node.type
+        value = node.value
+
+        e = IRFor()
+        d = {
+            'for': e.gen_instr_for,
+        }
+        f = d.get(value, None)
+        if f:
+            r = f(node, self.quads)
+        else:
+            raise Exception('not instr ir {}'.format(_type))
+
+        return r
 
     def gen_instr_var(self, node):
         """

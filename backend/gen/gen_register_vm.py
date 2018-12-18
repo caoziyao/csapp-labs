@@ -11,7 +11,8 @@ from common.keywords import Keywords
 from common.tokentype import Type
 from common.label_type import LabelType
 from backend.gen.assem import Assem
-
+from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
+    ExpMoreThen
 
 class CodeRen(object):
 
@@ -98,17 +99,25 @@ class CodeRen(object):
 
     def gen_var(self, ir):
         """
-
+        mov dest src
         :param ir:
         :return:
         """
-        result = ir.result
-        x = ir.x
+        result = ir.result  # #0
+        x = ir.x        # number
+        if isinstance(x, str):
+            v = x
+        else:
+            v = x.value
 
-        rx = self.gen_register(x)
-        # self.codes.append('mov [{}] {}'.format(result.value, rx))
-        # self.emit(self.asm.rmmovq(result.value, rx))
-        self.emit(self.asm.rmmovq(result, rx))
+        if isinstance(result, ID):
+            rx = self.gen_register(v)
+            self.emit(self.asm.rmmovq(result.value, rx))
+        else:
+            rx = self.gen_register(result)
+            # self.codes.append('mov [{}] {}'.format(result.value, rx))
+            # self.emit(self.asm.rmmovq(result.value, rx))
+            self.emit(self.asm.irmovq(rx, v))
 
     def gen_number(self, ir):
         """
@@ -126,7 +135,7 @@ class CodeRen(object):
 
     def gen_times(self, ir):
         """
-        r = a * b
+        times dest src1 src2
         :param ir:
         :return:
         """
@@ -138,11 +147,11 @@ class CodeRen(object):
         rx = self.gen_register(x)
         ry = self.gen_register(y)
 
-        self.codes.append('times {} {} {}'.format(rx, ry, rr))
+        self.codes.append('times {} {} {}'.format(rr, rx, ry))
 
     def gen_plus(self, ir):
         """
-        r = a + b
+        addq dest src1 src2
         :param ir:
         :return:
         """
@@ -155,11 +164,11 @@ class CodeRen(object):
         ry = self.gen_register(y)
 
         # self.codes.append('plus {} {} {}'.format(rx, ry, rr))
-        self.emit(self.asm.addq(rx, ry, rr))
+        self.emit(self.asm.addq(rr, rx, ry))
 
     def gen_minus(self, ir):
         """
-        r = a - b
+        subq dest src1 src2
         :param ir:
         :return:
         """
@@ -172,7 +181,7 @@ class CodeRen(object):
         ry = self.gen_register(y)
 
         # self.codes.append('plus {} {} {}'.format(rx, ry, rr))
-        self.emit(self.asm.subq(rx, ry, rr))
+        self.emit(self.asm.subq(rr, rx, ry))
 
     def gen_print(self, ir):
 
