@@ -33,6 +33,7 @@ class Type(Enum):
     parenthesesLeft = 19    # (
     parenthesesRight = 20   # )
     semicolon = 21          # ;
+    goto = 22               # goto
 
 
 class Token():

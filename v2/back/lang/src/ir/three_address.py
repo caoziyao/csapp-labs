@@ -66,15 +66,15 @@ class IRTree(object):
                 self.quads.append(q)
                 return t
 
-    def strip_string(self, str):
-        """
-        "abc" -> abc
-        :param str:
-        :return:
-        todo
-        """
-        s = str.split('"', 1)[1].split('"')[0]
-        return s
+    # def strip_string(self, str):
+    #     """
+    #     "abc" -> abc
+    #     :param str:
+    #     :return:
+    #     todo
+    #     """
+    #     s = str.split('"', 1)[1].split('"')[0]
+    #     return s
 
     def gen_instr_call(self, node):
         """

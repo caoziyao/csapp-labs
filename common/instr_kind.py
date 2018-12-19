@@ -52,6 +52,38 @@ class QuadAssign(BaseQuad):
         return ret
 
 
+class QuadLessThen(BaseQuad):
+
+    def __init__(self, result, x):
+        self.type = Type.less_then
+        self.left = result
+        self.right = x
+        # self.y = y
+
+    def __str__(self, level=0):
+        ret = '{} {} {}'.format(self.left, self.type.name, self.right)
+        # ret = "\t" * level + repr(self.type.name) + "\n"
+        # ret += self.x
+        # ret +=  self.y
+        return ret
+
+class QuadGoto(BaseQuad):
+
+    def __init__(self, label):
+        self.type = Type.goto
+        self.label = label
+        # self.right = x
+        # self.y = y
+
+    def __str__(self, level=0):
+        ret = '{} {} '.format(self.type.name, self.label)
+        # ret = "\t" * level + repr(self.type.name) + "\n"
+        # ret += self.x
+        # ret +=  self.y
+        return ret
+
+
+
 class QuadFor(BaseQuad):
 
     def __init__(self, init_stmt=None, test_expr=None, update_stmt=None, code=None):
@@ -80,7 +112,7 @@ class QuadLabel(BaseQuad):
         self.label = label
 
     def __str__(self, level=0):
-        ret = '{} {}'.format(self.type.name, self.label)
+        ret = 'tag:{} {}'.format(self.type.name, self.label)
         return ret
 
 

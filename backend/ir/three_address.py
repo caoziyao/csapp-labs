@@ -17,14 +17,14 @@ from common.instr_kind import (
 )
 from backend.ir.ir_expression import IRExpression
 from backend.ir.ir_assign import IRAssgin
+from backend.ir.ir_less_then import IRLessThen
 from backend.ir.ir_for import IRFor
 
 class IRTree(object):
 
-    def __init__(self, root):
-        self.root = root
+    def __init__(self, quads):
         self.index = 0
-        self.quads = []
+        self.quads = quads
         self.irfunc = {
             # Keywords.var: self.gen_instr_var,
             # Keywords.print: self.gen_instr_print,
@@ -35,6 +35,7 @@ class IRTree(object):
 
             Type.keyword: self.gen_keyword,
             Type.assign: self.gen_instr_var,
+            Type.less_then: self.gen_less_then,
         }
 
     # def get_tmp_var(self):
@@ -42,16 +43,16 @@ class IRTree(object):
     #     t = '#{}'.format(self.index)
     #     self.index += 1
     #     return t
-
-    def strip_string(self, str):
-        """
-        "abc" -> abc
-        :param str:
-        :return:
-        todo
-        """
-        s = str.split('"', 1)[1].split('"')[0]
-        return s
+    #
+    # def strip_string(self, str):
+    #     """
+    #     "abc" -> abc
+    #     :param str:
+    #     :return:
+    #     todo
+    #     """
+    #     s = str.split('"', 1)[1].split('"')[0]
+    #     return s
 
     # def gen_instr_call(self, node):
     #     """
@@ -173,14 +174,14 @@ class IRTree(object):
     #     self.gen_expression(init_stmt)
     #
     #     t = self.get_tmp_var()
-    #     start = QuadLabel(LabelType.forstart, t)
+    #     start = QuadLabel(LabelType.forloop, t)
     #     self.quads.append(start)
     #
     #     self.gen_expression(test_expr)
     #     self.gen_expression(update_stmt)
     #
     #     t = self.get_tmp_var()
-    #     end = QuadLabel(LabelType.forend, t)
+    #     end = QuadLabel(LabelType.fordone, t)
     #     self.quads.append(end)
 
     # def gen_keyword(self, node):
@@ -210,17 +211,26 @@ class IRTree(object):
         _type = node.type
         value = node.value
 
-        e = IRFor()
         d = {
-            'for': e.gen_instr_for,
+            'for': IRFor().gen_instr_for,
         }
         f = d.get(value, None)
         if f:
-            r = f(node, self.quads)
+            left = f(node, self.quads)
         else:
             raise Exception('not instr ir {}'.format(_type))
 
-        return r
+        return left
+
+    def gen_less_then(self, node):
+        """
+
+        :param node:
+        :return:
+        """
+        e = IRLessThen()
+        left = e.gen(node, self.quads)
+        return left
 
     def gen_instr_var(self, node):
         """
@@ -229,8 +239,8 @@ class IRTree(object):
         :return:
         """
         e = IRAssgin()
-        q = e.gen_assgin(node, self.quads)
-        return q
+        left = e.gen_assgin(node, self.quads)
+        return left
 
         # idf = node.left
         # expr = node.right
@@ -296,10 +306,10 @@ class IRTree(object):
 
         return r
 
-    def gen(self):
+    def gen(self, root):
+        """
+        :return:
+        """
+        r = self.gen_instr(root)
 
-        r = self.gen_instr(self.root)
-        if r:
-            self.quads.append(r)
-
-        return self.quads
+        return r

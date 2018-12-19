@@ -12,8 +12,8 @@ from enum import Enum, unique
 
 @unique
 class LabelType(Enum):
-    forstart = 0    # for start
-    forend = 1      # for end
+    forloop = 0    # for loop
+    fordone = 1      # for done
 
     whilestart = 2  # while start
     whileend = 3    # while end
