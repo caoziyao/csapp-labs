@@ -34,6 +34,7 @@ class Type(Enum):
     parenthesesRight = 20   # )
     semicolon = 21          # ;
     goto = 22               # goto
+    cmdgoto = 23               # ncmdgoto
 
 
 class Token():

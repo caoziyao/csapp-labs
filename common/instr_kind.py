@@ -83,7 +83,21 @@ class QuadGoto(BaseQuad):
         # ret +=  self.y
         return ret
 
+class QuadCmpGoto(BaseQuad):
 
+    def __init__(self, label, condition=None):
+        self.type = Type.cmdgoto
+        self.label = label
+        self.condition = condition
+        # self.right = x
+        # self.y = y
+
+    def __str__(self, level=0):
+        ret = '{} {} '.format(self.type.name, self.label)
+        # ret = "\t" * level + repr(self.type.name) + "\n"
+        # ret += self.x
+        # ret +=  self.y
+        return ret
 
 class QuadCondition(BaseQuad):
 

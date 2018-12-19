@@ -11,7 +11,7 @@ from common.expression import Type
 from common.keywords import Keywords
 from common.label_type import LabelType
 from common.instr_kind import (
-    QuadPrint, QuadLabel, QuadAssign, QuadWhile, QuadGoto, QuadLessThen,
+    QuadPrint, QuadLabel, QuadAssign, QuadCmpGoto, QuadGoto, QuadLessThen,
     QuadCall, QuadCondition, QuadFunctionLabel, QuadExpr, QuadFor
 )
 from backend.ir.base_ir import CommonVar
@@ -29,14 +29,15 @@ class IRFor(object):
 
         a
         if b:
-            goto done
+            goto loop
+        goto done
 
-        start:
+        loop:
             d;
             c;
 
             if b:
-                goto start
+                goto loop
 
         done
         :param node:
@@ -52,14 +53,19 @@ class IRFor(object):
 
         IRTree(quads).gen(init_stmt)
 
-        # condition
+
+        tag_loop = CommonVar().get_tmp_var()
         tag_done = CommonVar().get_tmp_var()
+
+        # condition
         t1 = IRTree(quads).gen(test_expr)
-        q1 = QuadGoto(tag_done, condition=t1)
+        q1 = QuadCmpGoto(tag_loop, condition=t1)
         quads.append(q1)
 
+        q2 = QuadGoto(tag_done, condition=None)
+        quads.append(q2)
+
         # loop tag
-        tag_loop = CommonVar().get_tmp_var()
         start = QuadLabel(LabelType.label, tag_loop)
         quads.append(start)
 
@@ -69,8 +75,8 @@ class IRFor(object):
 
         # condition
         t2 = IRTree(quads).gen(test_expr)
-        q2 = QuadGoto(tag_loop, condition=t2)
-        quads.append(q2)
+        q3 = QuadCmpGoto(tag_loop, condition=t2)
+        quads.append(q3)
 
         # done
         end = QuadLabel(LabelType.label, tag_done)

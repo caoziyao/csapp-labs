@@ -30,6 +30,7 @@ class VM(object):
         self.sf = 0  # 在算术结果为负数时，sf = 1
         self.of = 0  # 有符号运算才有效，溢出时 of = 1
         self.cf = 0  # 无符号运算才有效，进位时 cf = 1
+        self.rf = 0  # 自定义结果 0相等， 1大于  -1小于
         self.sp = 0
         self.pc = -1
         self.init()
@@ -62,7 +63,10 @@ class VM(object):
                 self.pc = index - 1
 
     def init_table_label(self):
-        """"""
+        """
+
+        :return:
+        """
         for index, instr in enumerate(self.instrs):
             if instr[0] == 'L':
                 l = instr.split(':', 1)[0]
@@ -83,17 +87,17 @@ class VM(object):
         t = self.table_label[label]
         return t
 
-    def op_cmp(self, *args):
-
-        src1 = args[1]
-        src2 = args[2]
-        dest = args[3]
-
-        r1 = self.value_from(src1)
-        r2 = self.value_from(src2)
-
-        r = r1 - r2
-        self.set_value(dest, r)
+    # def op_cmp(self, *args):
+    #
+    #     src1 = args[1]
+    #     src2 = args[2]
+    #     dest = args[3]
+    #
+    #     r1 = self.value_from(src1)
+    #     r2 = self.value_from(src2)
+    #
+    #     r = r1 - r2
+    #     self.set_value(dest, r)
 
     def op_subq(self, *args):
         """
@@ -205,15 +209,15 @@ class VM(object):
     #     r = r1 + r2
     #     idx3 = int(dest[1:])
     #     self.R[idx3] = r
-        # src1 = args[1]
-        # src2 = args[2]
-        # dest = args[3]
-        #
-        # r1 = self.value_from(src1)
-        # r2 = self.value_from(src2)
-        #
-        # r = r1 + r2
-        # self.set_value(dest, r)
+    # src1 = args[1]
+    # src2 = args[2]
+    # dest = args[3]
+    #
+    # r1 = self.value_from(src1)
+    # r2 = self.value_from(src2)
+    #
+    # r = r1 + r2
+    # self.set_value(dest, r)
 
     def op_addq(self, *args):
         """
@@ -253,6 +257,11 @@ class VM(object):
         # self.set_value(dest, r)
 
     def op_jmp(self, *args):
+        """
+        
+        :param args:
+        :return:
+        """
         l = args[1]
 
         self.set_pc(l)
@@ -283,23 +292,106 @@ class VM(object):
         """
         self.pc = self.get_label_num(label)
 
-    def op_cjmp(self, *args):
+    # def op_cjmp(self, *args):
+    #     """
+    #     cjmp r1 l1 l2
+    #     if r1 > 0: jmp l1
+    #     if r1 < 0: jmp l2
+    #     :param args:
+    #     :return:
+    #     """
+    #     cond = args[1]
+    #     l1 = args[2]
+    #     l2 = args[3]
+    #
+    #     r = self.value_from(cond)
+    #     if r > 0:
+    #         self.set_pc(l1)
+    #     else:
+    #         self.set_pc(l2)
+
+    def op_rrmovq(self, *args):
         """
-        cjmp r1 l1 l2
+        mrcmp src1 src2
         if r1 > 0: jmp l1
         if r1 < 0: jmp l2
         :param args:
         :return:
         """
-        cond = args[1]
-        l1 = args[2]
-        l2 = args[3]
+        reg1 = args[1]
+        reg2 = args[2]
 
-        r = self.value_from(cond)
-        if r > 0:
-            self.set_pc(l1)
+        idx1 = int(reg1[1:])
+        idx2 = int(reg2[1:])
+
+        self.R[idx1] = self.R[idx2]
+
+    def op_mrcmp(self, *args):
+        """
+        mrcmp src1 src2
+        if r1 > 0: jmp l1
+        if r1 < 0: jmp l2
+        :param args:
+        :return:
+        """
+        mem = args[1]
+        reg = args[2]
+
+        v1 = self.memery.get(mem)
+
+        idx = int(reg[1:])
+        v2 = self.R[idx]
+
+        # 结果
+        r = v1 - v2
+        if r == 0:
+            self.rf = 0
+        elif r > 0:
+            self.rf = 1
         else:
-            self.set_pc(l2)
+            self.rf = -1
+
+        # r = self.value_from(cond)
+        # if r > 0:
+        #     self.set_pc(l1)
+        # else:
+        #     self.set_pc(l2)
+
+    def op_rmcmp(self, *args):
+        """
+        rmcmp src1 src2
+        if r1 > 0: jmp l1
+        if r1 < 0: jmp l2
+        :param args:
+        :return:
+        """
+        reg = args[1]
+        mem = args[2]
+
+        v1 = self.memery.get(mem)
+
+        idx = int(reg[1:])
+        v2 = self.R[idx]
+
+        # 结果
+        r = v1 - v2
+        if r == 0:
+            self.rf = 0
+        elif r > 0:
+            self.rf = 1
+        else:
+            self.rf = -1
+
+    def op_blt(self, *args):
+        """
+        blt L0
+        :param args:
+        :return:
+        """
+        label = args[1]
+
+        if self.rf == -1:
+            self.set_pc(label)
 
     def op_ldrb(self, *args):
         pass
@@ -329,13 +421,13 @@ class VM(object):
         c = code.split('[', 1)[1].split(']')[0]
         return c
 
-    def op_mov(self, *args):
-        dest = args[1]
-        src1 = args[2]
-
-        r1 = self.value_from(src1)
-
-        self.set_value(dest, r1)
+    # def op_mov(self, *args):
+    #     dest = args[1]
+    #     src1 = args[2]
+    #
+    #     r1 = self.value_from(src1)
+    #
+    #     self.set_value(dest, r1)
 
     def op_irmovq(self, *args):
         """
@@ -377,17 +469,21 @@ class VM(object):
         # index = self.index_memery(src)
         # value = self.memery[index]
 
-
         # self.set_value(dest, r1)
 
-
     def op_mrmovq(self, *args):
-        dest = args[1]
-        src1 = args[2]
+        """
+        mrmovq dest src
+        :param args:
+        :return:
+        """
+        reg = args[1]
+        mem = args[2]
 
-        r1 = self.value_from(src1)
+        idx = int(reg[1:])
 
-        self.set_value(dest, r1)
+        self.R[idx] = self.memery.get(mem)
+
 
     def op_db(self, *args):
         dest = args[1]
@@ -452,18 +548,27 @@ class VM(object):
             'irmovq': self.op_irmovq,
             'rmmovq': self.op_rmmovq,
             'mrmovq': self.op_mrmovq,
-            'ldrb': self.op_ldrb,
-            'subq': self.op_subq,
-            'cjmp': self.op_cjmp,
-            'print': self.op_print,
-            'push': self.op_push,
-            'pop': self.op_pop,
-            'jmp': self.op_jmp,
-            'times': self.op_times,
+            'rrmovq': self.op_rrmovq,
+
+            'mrcmp': self.op_mrcmp,
+            'rmcmp': self.op_rmcmp,
+
+            'blt': self.op_blt,
             'addq': self.op_addq,
-            'db': self.op_db,
-            'call': self.op_call,
-            'ret': self.op_ret,
+
+            'jmp': self.op_jmp,
+
+            # 'ldrb': self.op_ldrb,
+            # 'subq': self.op_subq,
+            # # 'cjmp': self.op_cjmp,
+            # 'print': self.op_print,
+            # 'push': self.op_push,
+            # 'pop': self.op_pop,
+            #
+            # 'times': self.op_times,
+            # 'db': self.op_db,
+            # 'call': self.op_call,
+            # 'ret': self.op_ret,
         }
 
         self.status = VMState.run
@@ -478,6 +583,11 @@ class VM(object):
             instr = self.next_instr()
             args = instr.split(' ')
             op = args[0]
+
+            # label
+            # if op[0] == 'L':
+            #     continue
+
             f = m.get(op)
             if f:
                 f(*args)

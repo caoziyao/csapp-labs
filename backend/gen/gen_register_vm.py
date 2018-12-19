@@ -7,12 +7,19 @@
 @desc:
 """
 # from lang.common import Kind
+from enum import Enum
 from common.keywords import Keywords
 from common.tokentype import Type
 from common.label_type import LabelType
 from backend.gen.assem import Assem
 from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
     ExpMoreThen
+
+
+class TypeArg(Enum):
+    memery = 1
+    regist = 2
+    number = 3
 
 
 class CodeRen(object):
@@ -98,27 +105,82 @@ class CodeRen(object):
 
         return r
 
+    def type_of_arg(self, arg):
+        """
+        #0 寄存器
+        id
+        1
+        :param arg:
+        :return:
+        """
+        if isinstance(arg, ID):
+            return TypeArg.memery
+
+        else:
+            if isinstance(arg, Number):
+                return TypeArg.number
+            else:
+                return TypeArg.regist
+
     def gen_var(self, ir):
         """
+        todo
         mov dest src
         :param ir:
         :return:
         """
-        result = ir.result  # #0  left
-        x = ir.x  # number  right
-        if isinstance(x, str):
-            v = x
-        else:
-            v = x.value
+        left = ir.result  # #0  left
+        right = ir.x  # number  right
 
-        if isinstance(result, ID):
-            rx = self.gen_register(v)
-            self.emit(self.asm.rmmovq(result.value, rx))
-        else:
-            rx = self.gen_register(result)
-            # self.codes.append('mov [{}] {}'.format(result.value, rx))
-            # self.emit(self.asm.rmmovq(result.value, rx))
-            self.emit(self.asm.irmovq(rx, v))
+        ltype = self.type_of_arg(left)
+        rtype = self.type_of_arg(right)
+
+        if rtype == TypeArg.memery:
+            # 右值是 Id
+            rv = right.value
+            if ltype == TypeArg.regist:
+                lv = self.gen_register(left)
+                self.emit(self.asm.mrmovq(lv, rv))
+
+        if rtype == TypeArg.regist:
+            # 右值是 寄存器
+            rv = self.gen_register(right)
+
+            if ltype == TypeArg.regist:
+                lv = self.gen_register(left)
+                self.emit(self.asm.rrmovq(lv, rv))
+
+            if ltype == TypeArg.memery:
+                lv = left.value
+                self.emit(self.asm.rmmovq(lv, rv))
+
+        if rtype == TypeArg.number:
+            # 右值是 立即数
+            rv = right
+
+            if ltype == TypeArg.regist:
+                # 左值是寄存器
+                lv = self.gen_register(left)
+                self.emit(self.asm.irmovq(lv, rv))
+            if ltype == TypeArg.memery:
+                # 左值是 memery
+                lv = left.value
+                self.emit(self.asm.imovq(lv, rv))
+
+        #
+        # if isinstance(x, str):
+        #     v = x
+        # else:
+        #     v = x.value
+        #
+        # if isinstance(result, ID):
+        #     rx = self.gen_register(v)
+        #     self.emit(self.asm.rmmovq(result.value, rx))
+        # else:
+        #     rx = self.gen_register(result)
+        #     # self.codes.append('mov [{}] {}'.format(result.value, rx))
+        #     # self.emit(self.asm.rmmovq(result.value, rx))
+        #     self.emit(self.asm.irmovq(rx, v))
 
     def gen_number(self, ir):
         """
@@ -309,11 +371,11 @@ class CodeRen(object):
 
         if isinstance(left, ID):
             rr = self.gen_register(right)
-            self.emit(self.asm.cmp(left.value, rr))
+            self.emit(self.asm.mrcmp(left.value, rr))
         else:
             rl = self.gen_register(left)
             rr = self.gen_register(right)
-            self.emit(self.asm.cmp(rl, rr))
+            self.emit(self.asm.rrcmp(rl, rr))
 
         # rr = self.gen_register(result)
         # rx = self.gen_register(x)
@@ -323,6 +385,25 @@ class CodeRen(object):
         # self.emit(self.asm.subq(ry, rx, rr))
 
     def gen_goto(self, ir):
+        """
+        goto label
+        :param ir:
+        :return:
+        """
+        label = ir.label
+        # cond = ir.condition
+
+        # _type = cond.type
+        l = self.get_label(label)
+
+        self.emit(self.asm.jmp(l))
+        # if _type == Type.less_then:
+        #     self.emit(self.asm.blt(l))
+        #
+        # elif _type == Type.more_then:
+        #     self.emit(self.asm.bgt(l))
+
+    def gen_cmdgoto(self, ir):
         """
         goto label
         :param ir:
@@ -363,7 +444,6 @@ class CodeRen(object):
         #     self.idx_label += 1
         #
         # return r
-
 
     def gen_undefind(self, ir):
         """
@@ -456,6 +536,7 @@ class CodeRen(object):
             Type.more_then: self.gen_more_then,
             Type.less_then: self.gen_less_then,
             Type.goto: self.gen_goto,
+            Type.cmdgoto: self.gen_cmdgoto,
             LabelType.label: self.gen_label,
 
         }

@@ -37,6 +37,15 @@ class Assem(object):
         """
         return 'irmovq {} {}'.format(r1, im)
 
+    def imovq(self, number, memery):
+        """
+        im -> r1
+        :param r: 寄存器
+        :param im: 立即数
+        :return:
+        """
+        return 'immovq {} {}'.format(memery, number)
+
     def rmmovq(self, memery, r1):
         """
         r1 -> memery
@@ -91,14 +100,44 @@ class Assem(object):
         """
         return 'subq {} {} {}'.format(dest, src1, src2)
 
-    def cmp(self, src1, src2):
+    # def cmp(self, src1, src2):
+    #     """
+    #     cmp src1 src2
+    #     如果 src1 - src2 = 0 则 zf 置位
+    #     src1 > src2  则 sf 置位
+    #     :return:
+    #     """
+    #     return 'cmp {} {}'.format(src1, src2)
+
+    def mrcmp(self, src1, src2):
         """
+        memery reg
         cmp src1 src2
         如果 src1 - src2 = 0 则 zf 置位
         src1 > src2  则 sf 置位
         :return:
         """
-        return 'cmp {} {}'.format(src1, src2)
+        return 'mrcmp {} {}'.format(src1, src2)
+
+    def rrcmp(self, src1, src2):
+        """
+        reg reg
+        cmp src1 src2
+        如果 src1 - src2 = 0 则 zf 置位
+        src1 > src2  则 sf 置位
+        :return:
+        """
+        return 'rrcmp {} {}'.format(src1, src2)
+
+    def rmcmp(self, src1, src2):
+        """
+        reg memery
+        cmp src1 src2
+        如果 src1 - src2 = 0 则 zf 置位
+        src1 > src2  则 sf 置位
+        :return:
+        """
+        return 'rmcmp {} {}'.format(src1, src2)
 
     def blt(self, tag):
         """

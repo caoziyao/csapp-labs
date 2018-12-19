@@ -25,9 +25,9 @@ def exper_test():
     """
     :return:
     """
-    # s1 = 'a = (6 + 2) * 1 * (3 + 1) '
+    s1 = 'a = (6 + 2) * 1 * (3 + 1) '
     # s1 = 'a = 2'
-    s1 = 'a < 2'
+    # s1 = 'a < 2'
     t1 = lexical_analysis(s1)
     root = syntax_analysis(t1)
     print('expr', root)
@@ -36,7 +36,7 @@ def exper_test():
 
 
 def for_test():
-    s2 = 'for ( a = 1; a < 3; a = a + 2)  { b =  3 }'
+    s2 = 'for ( a = 1; a < 6; a = a + 1)  { b = a + 3 }'
     t2 = lexical_analysis(s2)
     root = syntax_analysis(t2)
     print('expr', root)
@@ -63,10 +63,11 @@ def main():
         print(b)
 
     #
-    # vm = VM(b)
-    # r, m = vm.run()
-    #
-    # print(m)
+    vm = VM(bs)
+    r, m = vm.run()
+
+    print('========')
+    print(m)
 
 
 if __name__ == '__main__':
