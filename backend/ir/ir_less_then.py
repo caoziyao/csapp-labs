@@ -38,4 +38,4 @@ class IRLessThen(object):
 
         quads.append(q)
 
-        return res
+        return q

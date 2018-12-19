@@ -5,6 +5,9 @@
 @contact: wyzycao@gmail.com
 @time: 2018/9/29 
 @desc:
+
+
+
 """
 
 
@@ -67,24 +70,52 @@ class Assem(object):
         """
         return 'jmp {}'.format(dest)
 
-    def addq(self, r1, r2, r3):
+    def addq(self, dest, src1, src2):
         """
-        r1 + r2 -> r3
-        todo: r1 + r2 -> r1
+        addq dest src1 src2
         :param r1: 寄存器 r1
         :param r2: 寄存器 r2
         :param r2: 寄存器 r3
         :return:
         """
-        return 'addq {} {} {}'.format(r1, r2, r3)
+        return 'addq {} {} {}'.format(dest, src1, src2)
 
-    def subq(self, r1, r2, r3):
+    def subq(self, dest, src1, src2):
         """
-        r1 - r2 -> r3
-        todo: r1 - r2 -> r1
+        subq dest src1 src2
+
         :param r1: 寄存器 r1
         :param r2: 寄存器 r2
         :param r2: 寄存器 r3
         :return:
         """
-        return 'subq {} {} {}'.format(r1, r2, r3)
+        return 'subq {} {} {}'.format(dest, src1, src2)
+
+    def cmp(self, src1, src2):
+        """
+        cmp src1 src2
+        如果 src1 - src2 = 0 则 zf 置位
+        src1 > src2  则 sf 置位
+        :return:
+        """
+        return 'cmp {} {}'.format(src1, src2)
+
+    def blt(self, tag):
+        """
+        | LT      | N不等于V               | 带符号数小于   |
+        <
+        ble tag
+        如果 N不等于V，跳转
+        :return:
+        """
+        return 'blt {} '.format(tag)
+
+    def bgt(self, tag):
+        """
+        GT      | Z清零且（N等于V）     | 带符号数大于   |
+        >
+        bge tag
+        如果 Z清零且（N等于V），跳转
+        :return:
+        """
+        return 'bgt {} '.format(tag)

@@ -54,13 +54,13 @@ class IRFor(object):
 
         # condition
         tag_done = CommonVar().get_tmp_var()
-        IRTree(quads).gen(test_expr)
-        q1 = QuadGoto(tag_done)
+        t1 = IRTree(quads).gen(test_expr)
+        q1 = QuadGoto(tag_done, condition=t1)
         quads.append(q1)
 
         # loop tag
         tag_loop = CommonVar().get_tmp_var()
-        start = QuadLabel(LabelType.forloop, tag_loop)
+        start = QuadLabel(LabelType.label, tag_loop)
         quads.append(start)
 
         # body
@@ -68,12 +68,12 @@ class IRFor(object):
         IRTree(quads).gen(update_stmt)
 
         # condition
-        IRTree(quads).gen(test_expr)
-        q2 = QuadGoto(tag_loop)
+        t2 = IRTree(quads).gen(test_expr)
+        q2 = QuadGoto(tag_loop, condition=t2)
         quads.append(q2)
 
         # done
-        end = QuadLabel(LabelType.fordone, tag_done)
+        end = QuadLabel(LabelType.label, tag_done)
         quads.append(end)
 
         # exp = IRExpression()

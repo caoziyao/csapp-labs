@@ -51,12 +51,16 @@ def main():
     ir = IRTree(quads)
     ir.gen(root)
 
+    print('========')
     for t in quads:
         print(t)
     #
     gen = CodeRen()
-    b = gen.gen(quads)
-    print(b)
+    bs = gen.gen(quads)
+
+    print('========')
+    for b in bs:
+        print(b)
 
     #
     # vm = VM(b)

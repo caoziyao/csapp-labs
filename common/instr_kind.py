@@ -69,9 +69,10 @@ class QuadLessThen(BaseQuad):
 
 class QuadGoto(BaseQuad):
 
-    def __init__(self, label):
+    def __init__(self, label, condition=None):
         self.type = Type.goto
         self.label = label
+        self.condition = condition
         # self.right = x
         # self.y = y
 
@@ -84,6 +85,23 @@ class QuadGoto(BaseQuad):
 
 
 
+class QuadCondition(BaseQuad):
+
+    def __init__(self, op, condition, x='', y=''):
+        self.type = op
+        self.condition = condition
+        self.x = x
+        self.y = y
+
+    # def __str__(self, level=0):
+    #     ret = '{} {} {}'.format(self.condition, self.type.name, self.x)
+    #     # ret = "\t" * level + repr(self.type.name) + "\n"
+    #     # ret += self.x
+    #     # ret +=  self.y
+    #     return ret
+
+
+
 class QuadFor(BaseQuad):
 
     def __init__(self, init_stmt=None, test_expr=None, update_stmt=None, code=None):
@@ -93,14 +111,6 @@ class QuadFor(BaseQuad):
         self.update_stmt = update_stmt
         self.code = code
 
-
-class QuadCondition(BaseQuad):
-
-    def __init__(self, op, condition, x='', y=''):
-        self.type = op
-        self.condition = condition
-        self.x = x
-        self.y = y
 
 
 class QuadLabel(BaseQuad):

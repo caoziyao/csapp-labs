@@ -12,10 +12,13 @@ from enum import Enum, unique
 
 @unique
 class LabelType(Enum):
-    forloop = 0    # for loop
-    fordone = 1      # for done
 
-    whilestart = 2  # while start
-    whileend = 3    # while end
+    label = 0
 
-    kdef_name = 4   # def name
+    forloop = 1    # for loop
+    fordone = 2      # for done
+
+    whilestart = 3  # while start
+    whileend = 4    # while end
+
+    kdef_name = 5   # def name

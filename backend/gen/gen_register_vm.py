@@ -14,6 +14,7 @@ from backend.gen.assem import Assem
 from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
     ExpMoreThen
 
+
 class CodeRen(object):
 
     def __init__(self):
@@ -77,7 +78,7 @@ class CodeRen(object):
 
         return r
 
-    def gen_label(self, label=''):
+    def get_label(self, label=''):
         # global label_index
         # global label_map
 
@@ -103,8 +104,8 @@ class CodeRen(object):
         :param ir:
         :return:
         """
-        result = ir.result  # #0
-        x = ir.x        # number
+        result = ir.result  # #0  left
+        x = ir.x  # number  right
         if isinstance(x, str):
             v = x
         else:
@@ -166,7 +167,7 @@ class CodeRen(object):
         # self.codes.append('plus {} {} {}'.format(rx, ry, rr))
         self.emit(self.asm.addq(rr, rx, ry))
 
-    def gen_minus(self, ir):
+    def gen_sub(self, ir):
         """
         subq dest src1 src2
         :param ir:
@@ -280,7 +281,7 @@ class CodeRen(object):
         l1 = self.gen_label(label)
         self.emit(self.asm.label(l1))
 
-    def gen_is_more_then(self, ir):
+    def gen_more_then(self, ir):
         """
         x > y  -> r
         :param ir:
@@ -297,22 +298,72 @@ class CodeRen(object):
         # self.codes.append('cmp {} {} {}'.format(rx, ry, rr))
         self.emit(self.asm.subq(rx, ry, rr))
 
-    def gen_is_less_then(self, ir):
+    def gen_less_then(self, ir):
         """
-        r1 - r2  -> r
+        left < right
         :param ir:
         :return:
         """
-        result = ir.result
-        x = ir.x
-        y = ir.y
+        left = ir.left
+        right = ir.right
 
-        rr = self.gen_register(result)
-        rx = self.gen_register(x)
-        ry = self.gen_register(y)
+        if isinstance(left, ID):
+            rr = self.gen_register(right)
+            self.emit(self.asm.cmp(left.value, rr))
+        else:
+            rl = self.gen_register(left)
+            rr = self.gen_register(right)
+            self.emit(self.asm.cmp(rl, rr))
 
-        # self.codes.append('cmp {} {} {}'.format(ry, rx, rr))
-        self.emit(self.asm.subq(ry, rx, rr))
+        # rr = self.gen_register(result)
+        # rx = self.gen_register(x)
+        # ry = self.gen_register(y)
+        #
+        # # self.codes.append('cmp {} {} {}'.format(ry, rx, rr))
+        # self.emit(self.asm.subq(ry, rx, rr))
+
+    def gen_goto(self, ir):
+        """
+        goto label
+        :param ir:
+        :return:
+        """
+        label = ir.label
+        cond = ir.condition
+
+        _type = cond.type
+        l = self.get_label(label)
+
+        if _type == Type.less_then:
+            self.emit(self.asm.blt(l))
+
+        elif _type == Type.more_then:
+            self.emit(self.asm.bgt(l))
+
+    def gen_label(self, ir=None):
+        """
+        lable
+        :param ir:
+        :return:
+        """
+        l = self.get_label(ir.label)
+        self.emit(self.asm.label(l))
+        # if label:
+        #     # 存在临时变量
+        #     r = self.label_map.get(label, None)
+        #     if r is None:
+        #         # 没有则生成并做映射
+        #         r = 'L{}'.format(self.idx_label)
+        #         self.idx_label += 1
+        #         self.label_map.update({
+        #             label: r
+        #         })
+        # else:
+        #     r = 'L{}'.format(self.idx_label)
+        #     self.idx_label += 1
+        #
+        # return r
+
 
     def gen_undefind(self, ir):
         """
@@ -370,13 +421,13 @@ class CodeRen(object):
             # Kind.number: self.gen_number,
             # Kind.times: self.gen_times,
             # Kind.plus: self.gen_plus,
-            # Kind.minus: self.gen_minus,
+            # Kind.sub: self.gen_sub,
             # Kind.id: self.gen_id,
             # Kind.print: self.gen_print,
             # Kind.string: self.gen_string,
             # Kind.k_if: self.gen_kif,
-            # Kind.is_more_then: self.gen_is_more_then,
-            # Kind.is_less_then: self.gen_is_less_then,
+            # Kind.is_more_then: self.gen_more_then,
+            # Kind.is_less_then: self.gen_less_then,
             # Kind.kwhile: self.gen_kwhile,
             # Kind.kwhile_start: self.gen_kwhile_start,
             # Kind.undefind: self.gen_undefind,
@@ -399,11 +450,14 @@ class CodeRen(object):
             Type.number: self.gen_number,
             Type.times: self.gen_times,
             Type.add: self.gen_plus,
-            Type.sub: self.gen_minus,
+            Type.sub: self.gen_sub,
             Type.id: self.gen_id,
             Type.string: self.gen_string,
-            Type.more_then: self.gen_is_more_then,
-            Type.less_then: self.gen_is_less_then,
+            Type.more_then: self.gen_more_then,
+            Type.less_then: self.gen_less_then,
+            Type.goto: self.gen_goto,
+            LabelType.label: self.gen_label,
+
         }
         t = ir.type
         f = m.get(t, None)
