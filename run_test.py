@@ -15,9 +15,10 @@ import unittest
 from tests.test_case.parse.test_parse import TestParse
 from tests.test_case.test_points import TestPoints
 from tests.test_case.graphics.test_graphics import TestGraphics
+from tests.test_case.test_keywords import TestKeywords
 
 # test_cases = (TestParse, TestPoints)
-test_cases = (TestGraphics, )
+test_cases = ( TestKeywords, )
 
 def get_covdir():
     basedir = os.path.abspath(os.path.dirname(__file__))

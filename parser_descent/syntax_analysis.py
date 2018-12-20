@@ -14,7 +14,7 @@ from common.tokentype import Type
 from parser_descent.parse.stmt_parse import StmtParse
 from parser_descent.parse.forparse import ForParse
 from parser_descent.token_list import TokenList
-
+from parser_descent.parse.ifparse import IfParse
 
 def syntax_analysis(token_list):
     """
@@ -32,6 +32,9 @@ def syntax_analysis(token_list):
     elif kind == Type.keyword and value == 'for':
         p = ForParse(tokens)
         root = p.parse_for()
+    elif kind == Type.keyword and value == 'if':
+        p = IfParse(tokens)
+        root =p.parse_if()
     else:
         raise Exception('unknow')
 

@@ -258,7 +258,7 @@ class VM(object):
 
     def op_jmp(self, *args):
         """
-        
+
         :param args:
         :return:
         """
@@ -382,6 +382,31 @@ class VM(object):
         else:
             self.rf = -1
 
+    def op_ircmp(self, *args):
+        """
+        ircmp src1 src2
+        if r1 > 0: jmp l1
+        if r1 < 0: jmp l2
+        :param args:
+        :return:
+        """
+        number = int(args[1])
+        reg = args[2]
+
+        v1 = number
+
+        idx = int(reg[1:])
+        v2 = self.R[idx]
+
+        # 结果
+        r = v1 - v2
+        if r == 0:
+            self.rf = 0
+        elif r > 0:
+            self.rf = 1
+        else:
+            self.rf = -1
+
     def op_blt(self, *args):
         """
         blt L0
@@ -396,21 +421,21 @@ class VM(object):
     def op_ldrb(self, *args):
         pass
 
-    def is_register(self, r):
+    # def is_register(self, r):
+    #
+    #     if isinstance(r, str):
+    #         if r[0] == 'r':
+    #             return True
+    #
+    #     return False
 
-        if isinstance(r, str):
-            if r[0] == 'r':
-                return True
-
-        return False
-
-    def is_memery(self, r):
-
-        if isinstance(r, str):
-            if r[0] == '[':
-                return True
-
-        return False
+    # def is_memery(self, r):
+    #
+    #     if isinstance(r, str):
+    #         if r[0] == '[':
+    #             return True
+    #
+    #     return False
 
     def index_memery(self, code):
         """
@@ -484,12 +509,11 @@ class VM(object):
 
         self.R[idx] = self.memery.get(mem)
 
-
-    def op_db(self, *args):
-        dest = args[1]
-        src1 = args[2]
-
-        self.set_value(dest, src1)
+    # def op_db(self, *args):
+    #     dest = args[1]
+    #     src1 = args[2]
+    #
+    #     self.set_value(dest, src1)
 
     def op_call(self, *args):
         func_name = args[1]
@@ -552,11 +576,13 @@ class VM(object):
 
             'mrcmp': self.op_mrcmp,
             'rmcmp': self.op_rmcmp,
+            'ircmp': self.op_ircmp,
 
             'blt': self.op_blt,
             'addq': self.op_addq,
 
             'jmp': self.op_jmp,
+            'times': self.op_times,
 
             # 'ldrb': self.op_ldrb,
             # 'subq': self.op_subq,
@@ -565,7 +591,7 @@ class VM(object):
             # 'push': self.op_push,
             # 'pop': self.op_pop,
             #
-            # 'times': self.op_times,
+
             # 'db': self.op_db,
             # 'call': self.op_call,
             # 'ret': self.op_ret,
@@ -574,9 +600,6 @@ class VM(object):
         self.status = VMState.run
         l = len(self.instrs)
         while True:
-
-            # if self.status == VMState.idle:
-            #     break
             if self.pc >= l - 1:
                 break
 
@@ -585,13 +608,13 @@ class VM(object):
             op = args[0]
 
             # label
-            # if op[0] == 'L':
-            #     continue
+            if op[0] == 'L':
+                continue
 
             f = m.get(op)
             if f:
                 f(*args)
-            # else:
-            #     raise Exception('not fund {}'.format(instr))
+            else:
+                raise Exception('not fund {}'.format(instr))
 
         return self.R, self.memery

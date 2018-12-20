@@ -25,8 +25,8 @@ def exper_test():
     """
     :return:
     """
-    s1 = 'a = (6 + 2) * 1 * (3 + 1) '
-    # s1 = 'a = 2'
+    s1 = 'a = (10 + 1) * 1 * (3 + 1) '
+    # s1 = 'a = 12'
     # s1 = 'a < 2'
     t1 = lexical_analysis(s1)
     root = syntax_analysis(t1)
@@ -36,7 +36,15 @@ def exper_test():
 
 
 def for_test():
-    s2 = 'for ( a = 1; a < 6; a = a + 1)  { b = a + 3 }'
+    s2 = 'for ( a = 1; a < 19; a = a + 1)  { b = a * 2 }'
+    t2 = lexical_analysis(s2)
+    root = syntax_analysis(t2)
+    print('expr', root)
+
+    return root
+
+def if_test():
+    s2 = 'if ( 9 < 4)  { b = 3 } else { b = 2 }'
     t2 = lexical_analysis(s2)
     root = syntax_analysis(t2)
     print('expr', root)
@@ -45,7 +53,7 @@ def for_test():
 
 
 def main():
-    root = for_test()
+    root = if_test()
 
     quads = []
     ir = IRTree(quads)
@@ -62,7 +70,7 @@ def main():
     for b in bs:
         print(b)
 
-    #
+
     vm = VM(bs)
     r, m = vm.run()
 

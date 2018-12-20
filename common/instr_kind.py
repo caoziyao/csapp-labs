@@ -30,42 +30,33 @@ class QuadExpr(object):
 
     def __str__(self, level=0):
         ret = '{} {} {} {}'.format(self.result, self.x, self.type.name, self.y)
-        # ret = "\t" * level + repr(self.type.name) + "\n"
-        # ret += self.x
-        # ret +=  self.y
         return ret
 
 
 class QuadAssign(BaseQuad):
 
-    def __init__(self, result, x):
+    def __init__(self, left, right):
         self.type = Type.assign
-        self.result = result
-        self.x = x
+        self.left = left
+        self.right = right
         # self.y = y
 
     def __str__(self, level=0):
-        ret = '{} {} {}'.format(self.result, self.type.name, self.x)
-        # ret = "\t" * level + repr(self.type.name) + "\n"
-        # ret += self.x
-        # ret +=  self.y
+        ret = '{} {} {}'.format(self.left, self.type.name, self.right)
         return ret
 
 
 class QuadLessThen(BaseQuad):
 
-    def __init__(self, result, x):
+    def __init__(self, left, right):
         self.type = Type.less_then
-        self.left = result
-        self.right = x
-        # self.y = y
+        self.left = left
+        self.right = right
 
     def __str__(self, level=0):
         ret = '{} {} {}'.format(self.left, self.type.name, self.right)
-        # ret = "\t" * level + repr(self.type.name) + "\n"
-        # ret += self.x
-        # ret +=  self.y
         return ret
+
 
 class QuadGoto(BaseQuad):
 
@@ -73,15 +64,11 @@ class QuadGoto(BaseQuad):
         self.type = Type.goto
         self.label = label
         self.condition = condition
-        # self.right = x
-        # self.y = y
 
     def __str__(self, level=0):
         ret = '{} {} '.format(self.type.name, self.label)
-        # ret = "\t" * level + repr(self.type.name) + "\n"
-        # ret += self.x
-        # ret +=  self.y
         return ret
+
 
 class QuadCmpGoto(BaseQuad):
 
@@ -89,15 +76,11 @@ class QuadCmpGoto(BaseQuad):
         self.type = Type.cmdgoto
         self.label = label
         self.condition = condition
-        # self.right = x
-        # self.y = y
 
     def __str__(self, level=0):
         ret = '{} {} '.format(self.type.name, self.label)
-        # ret = "\t" * level + repr(self.type.name) + "\n"
-        # ret += self.x
-        # ret +=  self.y
         return ret
+
 
 class QuadCondition(BaseQuad):
 
@@ -106,14 +89,6 @@ class QuadCondition(BaseQuad):
         self.condition = condition
         self.x = x
         self.y = y
-
-    # def __str__(self, level=0):
-    #     ret = '{} {} {}'.format(self.condition, self.type.name, self.x)
-    #     # ret = "\t" * level + repr(self.type.name) + "\n"
-    #     # ret += self.x
-    #     # ret +=  self.y
-    #     return ret
-
 
 
 class QuadFor(BaseQuad):
@@ -126,13 +101,10 @@ class QuadFor(BaseQuad):
         self.code = code
 
 
-
 class QuadLabel(BaseQuad):
 
     def __init__(self, op, label):
         self.type = op
-        # self.condition = condition
-        # self.body = body
         self.label = label
 
     def __str__(self, level=0):
@@ -144,8 +116,6 @@ class QuadFunctionLabel(BaseQuad):
 
     def __init__(self, op, func_name):
         self.type = op
-        # self.condition = condition
-        # self.body = body
         self.func_name = func_name
 
 
@@ -165,7 +135,6 @@ class QuadDef(BaseQuad):
         self.args = args
         self.body = body
         self.func_name = func_name
-        # self.end = end
 
 
 class QuadCall(BaseQuad):

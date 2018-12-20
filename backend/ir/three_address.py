@@ -19,6 +19,7 @@ from backend.ir.ir_expression import IRExpression
 from backend.ir.ir_assign import IRAssgin
 from backend.ir.ir_less_then import IRLessThen
 from backend.ir.ir_for import IRFor
+from backend.ir.ir_if import IRIf
 
 class IRTree(object):
 
@@ -213,6 +214,7 @@ class IRTree(object):
 
         d = {
             'for': IRFor().gen_instr_for,
+            'if': IRIf().gen,
         }
         f = d.get(value, None)
         if f:

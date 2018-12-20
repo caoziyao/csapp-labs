@@ -9,8 +9,9 @@
 from parser_descent.src.commont.utils import is_space
 from common.tokentype import Token, Type
 from parser_descent.symbol_table import SysmbolTable
+from common.keywords import Keywords
 
-sysmbol_idx = 0
+# sysmbol_idx = 0
 
 
 def string_token(current_index, codes):
@@ -38,12 +39,37 @@ def string_token(current_index, codes):
     return i + current_index, token
 
 
+def number_token(current_index, codes):
+    """
+    12
+    :return: 12
+    """
+    codes = codes[current_index:]
+
+    i = 0
+    l = len(codes)
+
+    value = ''
+    while i < l:
+        c = codes[i]
+        i += 1
+
+        if c.isdigit():
+            value += c
+        else:
+            break
+
+    token = Token(Type.number, int(value))
+
+    return i + current_index - 1, token
+
+
 def identify_keyword_token(current_index, codes):
     """
     var
     :return: var
     """
-    global sysmbol_idx
+    # global sysmbol_idx
     codes = codes[current_index:]
 
     i = 0
@@ -59,18 +85,19 @@ def identify_keyword_token(current_index, codes):
         else:
             value += c
 
-    m = ['var', 'if', 'while', 'for', 'print']
+    # m = ['var', 'if', 'while', 'for', 'print', 'else']
+    m = Keywords.keywords()
 
     if value in m:
         token = Token(Type.keyword, value)
     else:
-        token = Token(Type.id, value, sysmbol_idx)
+        token = Token(Type.id, value, 0)
         d = {
             'type': Type.id,
             'name': value
         }
-        SysmbolTable[sysmbol_idx] = d
-        sysmbol_idx += 1
+        SysmbolTable[value] = d
+        # sysmbol_idx += 1
 
     return i + current_index - 1, token
 
@@ -147,17 +174,15 @@ def next_token(current_index, codes):
     """
     codes = codes[current_index:]
 
-    i = 0
-    value = ''
-    c = codes[i]
-    i += 1
+    c = codes[0]
+    i = 1
 
     if c.isalpha() or c == '_':
         # token += c
         i, token = identify_keyword_token(i - 1, codes)
     elif c.isdigit():
         # number
-        value += c
+        i, token = number_token(i - 1, codes)
     elif c == '"':
         # string
         i, token = string_token(i - 1, codes)
@@ -171,9 +196,9 @@ def next_token(current_index, codes):
         # error
         raise Exception('error next_token')
 
-    if value.isdigit():
-        value = int(value)
-        token = Token(Type.number, value)
+    # if value.isdigit():
+    #     value = int(value)
+    #     token = Token(Type.number, value)
 
     return i + current_index, token
 

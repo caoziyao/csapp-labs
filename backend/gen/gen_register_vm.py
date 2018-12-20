@@ -129,8 +129,8 @@ class CodeRen(object):
         :param ir:
         :return:
         """
-        left = ir.result  # #0  left
-        right = ir.x  # number  right
+        left = ir.left  # #0  left
+        right = ir.right  # number  right
 
         ltype = self.type_of_arg(left)
         rtype = self.type_of_arg(right)
@@ -166,21 +166,6 @@ class CodeRen(object):
                 # 左值是 memery
                 lv = left.value
                 self.emit(self.asm.imovq(lv, rv))
-
-        #
-        # if isinstance(x, str):
-        #     v = x
-        # else:
-        #     v = x.value
-        #
-        # if isinstance(result, ID):
-        #     rx = self.gen_register(v)
-        #     self.emit(self.asm.rmmovq(result.value, rx))
-        # else:
-        #     rx = self.gen_register(result)
-        #     # self.codes.append('mov [{}] {}'.format(result.value, rx))
-        #     # self.emit(self.asm.rmmovq(result.value, rx))
-        #     self.emit(self.asm.irmovq(rx, v))
 
     def gen_number(self, ir):
         """
@@ -369,13 +354,43 @@ class CodeRen(object):
         left = ir.left
         right = ir.right
 
-        if isinstance(left, ID):
-            rr = self.gen_register(right)
-            self.emit(self.asm.mrcmp(left.value, rr))
-        else:
-            rl = self.gen_register(left)
-            rr = self.gen_register(right)
-            self.emit(self.asm.rrcmp(rl, rr))
+        ltype = self.type_of_arg(left)
+        rtype = self.type_of_arg(right)
+
+        if ltype == TypeArg.memery:
+            lv = left.value
+
+            if rtype == TypeArg.regist:
+                rv = self.gen_register(right)
+                self.emit(self.asm.mrcmp(lv, rv))
+
+            if rtype == TypeArg.number:
+                rv = right
+                self.emit(self.asm.micmp(lv, rv))
+
+        if ltype == TypeArg.regist:
+            lv = self.gen_register(left)
+
+            if rtype == TypeArg.regist:
+                rv = self.gen_register(right)
+                self.emit(self.asm.rrcmp(lv, rv))
+
+
+        if ltype == TypeArg.number:
+            lv = left
+
+            if rtype == TypeArg.regist:
+                rv = self.gen_register(right)
+                self.emit(self.asm.ircmp(lv, rv))
+
+
+        # if isinstance(left, ID):
+        #     rr = self.gen_register(right)
+        #     self.emit(self.asm.mrcmp(left.value, rr))
+        # else:
+        #     rl = self.gen_register(left)
+        #     rr = self.gen_register(right)
+        #     self.emit(self.asm.rrcmp(rl, rr))
 
         # rr = self.gen_register(result)
         # rx = self.gen_register(x)
@@ -429,21 +444,6 @@ class CodeRen(object):
         """
         l = self.get_label(ir.label)
         self.emit(self.asm.label(l))
-        # if label:
-        #     # 存在临时变量
-        #     r = self.label_map.get(label, None)
-        #     if r is None:
-        #         # 没有则生成并做映射
-        #         r = 'L{}'.format(self.idx_label)
-        #         self.idx_label += 1
-        #         self.label_map.update({
-        #             label: r
-        #         })
-        # else:
-        #     r = 'L{}'.format(self.idx_label)
-        #     self.idx_label += 1
-        #
-        # return r
 
     def gen_undefind(self, ir):
         """
@@ -518,13 +518,13 @@ class CodeRen(object):
             LabelType.whilestart: self.gen_kwhile_start,
             LabelType.kdef_name: self.gen_kdef_name,
 
-            Keywords.kdef: self.gen_kdef,
-            Keywords.call: self.gen_call,
-            # Keywords.var: self.gen_var,
-            Keywords.print: self.gen_print,
-            Keywords.kif: self.gen_kif,
-            Keywords.kwhile: self.gen_kwhile,
-            Keywords.undefind: self.gen_undefind,
+            # Keywords.kdef: self.gen_kdef,
+            # Keywords.call: self.gen_call,
+            # # Keywords.var: self.gen_var,
+            # Keywords.print: self.gen_print,
+            # Keywords.kif: self.gen_kif,
+            # Keywords.kwhile: self.gen_kwhile,
+            # Keywords.undefind: self.gen_undefind,
 
             Type.assign: self.gen_var,
             Type.number: self.gen_number,

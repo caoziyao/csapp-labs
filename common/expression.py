@@ -34,9 +34,17 @@ class ID(object):
 
     def __str__(self, level=0):
         ret = "\t" * level + repr(self.value) + "\n"
-        # for child in self.children:
         return ret
 
+
+class String(object):
+    def __init__(self, value):
+        self.type = Type.string
+        self.value = value
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        return ret
 
 #############################
 
@@ -147,6 +155,31 @@ class ExpFor(Node):
         ret += 'test_expr' + self.test_expr.__str__(level + 1)
         ret += 'update_stmt' + self.update_stmt.__str__(level + 1)
         ret += 'code' + self.code.__str__(level + 1)
+        return ret
+
+
+class ExpIf(Node):
+    """
+    if (testExpression) {
+        // statement(s) inside the body of if
+    }
+    else {
+        // statement(s) inside the body of else
+    }
+    """
+
+    def __init__(self, test_expr=None, if_stmt=None, else_stmt=None):
+        self.type = Type.keyword
+        self.value = 'if'
+        self.test_expr = test_expr
+        self.if_stmt = if_stmt
+        self.else_stmt = else_stmt
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.value) + "\n"
+        ret += 'test_expr' + self.test_expr.__str__(level + 1)
+        ret += 'if_stmt' + self.if_stmt.__str__(level + 1)
+        ret += 'else_stmt' + self.else_stmt.__str__(level + 1)
         return ret
 
 # class ExprCondition(Node):

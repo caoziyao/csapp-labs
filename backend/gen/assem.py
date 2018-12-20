@@ -119,6 +119,16 @@ class Assem(object):
         """
         return 'mrcmp {} {}'.format(src1, src2)
 
+    def micmp(self, src1, src2):
+        """
+        micmp memery number
+        cmp src1 src2
+        如果 src1 - src2 = 0 则 zf 置位
+        src1 > src2  则 sf 置位
+        :return:
+        """
+        return 'micmp {} {}'.format(src1, src2)
+
     def rrcmp(self, src1, src2):
         """
         reg reg
@@ -128,6 +138,16 @@ class Assem(object):
         :return:
         """
         return 'rrcmp {} {}'.format(src1, src2)
+
+    def ircmp(self, src1, src2):
+        """
+        ircmp number reg
+        cmp src1 src2
+        如果 src1 - src2 = 0 则 zf 置位
+        src1 > src2  则 sf 置位
+        :return:
+        """
+        return 'ircmp {} {}'.format(src1, src2)
 
     def rmcmp(self, src1, src2):
         """

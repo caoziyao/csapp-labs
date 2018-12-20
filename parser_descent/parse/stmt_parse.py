@@ -9,7 +9,7 @@
 
 from common.tokentype import Type
 from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
-    ExpMoreThen
+    ExpMoreThen, String
 
 
 class StmtParse(object):
@@ -144,6 +144,8 @@ class StmtParse(object):
     def parse_stmt(self):
         """
         a = 1 + 2 * 3
+        1 < 2
+        a > 3
         :param token_list:
         :return:
         """
@@ -156,15 +158,24 @@ class StmtParse(object):
         kind = assign.type
         value = assign.value
 
+        if a.type == Type.number:
+            left = Number(a.value)
+        elif a.type == Type.id:
+            left = ID(a.value)
+        elif a.type == Type.string:
+            left = String(a.value)
+        else:
+            raise Exception('unknnow')
+
         if kind == Type.assign:
             res = self.parse_expr()
-            root = ExpAssgin(ID(a.value), res)
+            root = ExpAssgin(left, res)
         elif kind == Type.less_then:
             res = self.parse_expr()
-            root = ExpLessThen(ID(a.value), res)
+            root = ExpLessThen(left, res)
         elif kind == Type.more_then:
             res = self.parse_expr()
-            root = ExpMoreThen(ID(a.value), res)
+            root = ExpMoreThen(left, res)
         else:
             raise Exception('expect = but {}'.format(value))
 
