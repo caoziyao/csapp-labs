@@ -9,7 +9,7 @@
 """
 from lang.common import is_leaf
 from lang.common import Kind
-from common.instr_kind import (
+from compiler.common import (
     QuadPrint, QuadLabel, Quad, QuadWhile, QuadDef,
     QuadCall, QuadCondition, QuadFunctionLabel
 )

@@ -7,7 +7,7 @@
 @desc:
 """
 from parser_descent.src.commont.utils import is_space
-from common.tokentype import Token, Type
+from compiler.common.tokentype import Token, Type
 
 
 def string_token(current_index, codes):

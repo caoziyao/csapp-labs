@@ -7,9 +7,8 @@
 @desc:
 """
 
-import unittest
 from tests.test_case.base import BaseCase
-from common.keywords import Keywords
+from compiler.common import Keywords
 
 
 class TestKeywords(BaseCase):

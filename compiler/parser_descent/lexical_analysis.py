@@ -6,12 +6,10 @@
 @time: 2018/12/5 
 @desc:
 """
-from parser_descent.src.commont.utils import is_space
-from common.tokentype import Token, Type
-from parser_descent.symbol_table import SysmbolTable
-from common.keywords import Keywords
-
-# sysmbol_idx = 0
+from compiler.parser_descent.src.commont.utils import is_space
+from compiler.common.tokentype import Token, Type
+from compiler.parser_descent.symbol_table import SysmbolTable
+from compiler.common.keywords import Keywords
 
 
 def string_token(current_index, codes):

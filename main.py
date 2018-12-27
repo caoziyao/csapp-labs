@@ -14,10 +14,10 @@
 # from lang.common import Kind
 
 
-from parser_descent.lexical_analysis import lexical_analysis
-from parser_descent.syntax_analysis import syntax_analysis
-from backend.ir.three_address import IRTree
-from backend.gen.gen_register_vm import CodeRen
+from compiler.parser_descent.lexical_analysis import lexical_analysis
+from compiler.parser_descent.syntax_analysis import syntax_analysis
+from compiler.backend.ir.three_address import IRTree
+from compiler.backend.gen.gen_register_vm import CodeRen
 from vm.vm_register import VM
 
 
@@ -53,7 +53,7 @@ def if_test():
 
 
 def main():
-    root = if_test()
+    root = exper_test()
 
     quads = []
     ir = IRTree(quads)

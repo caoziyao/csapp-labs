@@ -8,12 +8,10 @@
 """
 # from lang.common import Kind
 from enum import Enum
-from common.keywords import Keywords
-from common.tokentype import Type
-from common.label_type import LabelType
-from backend.gen.assem import Assem
-from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
-    ExpMoreThen
+from compiler.common.tokentype import Type
+from compiler.common.label_type import LabelType
+from compiler.backend.gen.assem import Assem
+from compiler.common.expression import Number, ID
 
 
 class TypeArg(Enum):

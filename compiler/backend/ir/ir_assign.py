@@ -6,16 +6,10 @@
 @time: 2018/12/13 
 @desc:
 """
-from common.utils import is_leaf
-from common.expression import Type
-from common.keywords import Keywords
-from common.label_type import LabelType
-from common.instr_kind import (
-    QuadPrint, QuadLabel, QuadAssign, QuadWhile, QuadDef,
-    QuadCall, QuadCondition, QuadFunctionLabel, QuadExpr, QuadFor
+from compiler.common.instr_kind import (
+    QuadAssign
 )
-from backend.ir.base_ir import CommonVar
-from backend.ir.ir_expression import IRExpression
+from compiler.backend.ir.ir_expression import IRExpression
 
 class IRAssgin(object):
 

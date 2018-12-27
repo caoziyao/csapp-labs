@@ -10,8 +10,8 @@
 每个非终结符一个分析函数
 用 前看符号 指导生成式规则的选择
 """
-from common.tokentype import Type
-from common.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
+from compiler.common.tokentype import Type
+from compiler.common.expression import ExpInt, ExpAdd, ExpTimes, Kind, ExpDiv
 
 current_index = 0
 

@@ -7,19 +7,11 @@
 @desc:
 三地址码
 """
-from common.utils import is_leaf
-from common.expression import Type
-from common.keywords import Keywords
-from common.label_type import LabelType
-from common.instr_kind import (
-    QuadPrint, QuadLabel, QuadAssign, QuadWhile, QuadDef,
-    QuadCall, QuadCondition, QuadFunctionLabel, QuadExpr, QuadFor
-)
-from backend.ir.ir_expression import IRExpression
-from backend.ir.ir_assign import IRAssgin
-from backend.ir.ir_less_then import IRLessThen
-from backend.ir.ir_for import IRFor
-from backend.ir.ir_if import IRIf
+from compiler.common.expression import Type
+from compiler.backend.ir.ir_assign import IRAssgin
+from compiler.backend.ir.ir_less_then import IRLessThen
+from compiler.backend.ir.ir_for import IRFor
+from compiler.backend.ir.ir_if import IRIf
 
 class IRTree(object):
 

@@ -6,7 +6,7 @@
 @time: 2018/9/24 
 @desc:
 """
-from common.tokentype import Type
+from compiler.common.tokentype import Type
 
 def is_leaf(node):
     """

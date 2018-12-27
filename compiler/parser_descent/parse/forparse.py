@@ -7,9 +7,9 @@
 @desc:
 """
 
-from common.tokentype import Type
-from parser_descent.parse.stmt_parse import StmtParse
-from common.expression import ExpFor
+from compiler.common.tokentype import Type
+from compiler.parser_descent.parse.stmt_parse import StmtParse
+from compiler.common.expression import ExpFor
 
 
 class ForParse(object):
@@ -17,20 +17,6 @@ class ForParse(object):
     def __init__(self, tokens):
         self.tokens = tokens
         self.stm_parse = StmtParse(tokens)
-
-    def valid_keyword(self, token, name):
-        """
-
-        :param name:
-        :return:
-        """
-        kind = token.type
-        value = token.value
-
-        if kind == Type.keyword and value == name:
-            return True
-        else:
-            return False
 
     def parse_for(self):
         """

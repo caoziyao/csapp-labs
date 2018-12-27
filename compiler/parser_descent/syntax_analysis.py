@@ -10,11 +10,11 @@ descent_parsing 递归下降
 每个非终结符构造一个分析函数
 用前看符号指导产生式规则的规则
 """
-from common.tokentype import Type
-from parser_descent.parse.stmt_parse import StmtParse
-from parser_descent.parse.forparse import ForParse
-from parser_descent.token_list import TokenList
-from parser_descent.parse.ifparse import IfParse
+from compiler.common.tokentype import Type
+from compiler.parser_descent.parse.stmt_parse import StmtParse
+from compiler.parser_descent.parse.forparse import ForParse
+from compiler.parser_descent.token_list import TokenList
+from compiler.parser_descent.parse.ifparse import IfParse
 
 def syntax_analysis(token_list):
     """

@@ -7,8 +7,8 @@
 @desc:
 """
 
-from common.tokentype import Type
-from common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
+from compiler.common.tokentype import Type
+from compiler.common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
     ExpMoreThen, String
 
 
@@ -21,19 +21,6 @@ class StmtParse(object):
         """
         self.tokens = tokens
 
-    def valid_keyword(self, token, name):
-        """
-
-        :param name:
-        :return:
-        """
-        kind = token.type
-        value = token.value
-
-        if kind == Type.keyword and value == name:
-            return True
-        else:
-            return False
 
     def parse_factor(self):
         """

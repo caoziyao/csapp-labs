@@ -7,17 +7,11 @@
 @desc:
 """
 
-from common.utils import is_leaf
-from common.expression import Type
-from common.keywords import Keywords
-from common.label_type import LabelType
-from common.instr_kind import (
-    QuadPrint, QuadLabel, QuadAssign, QuadCmpGoto, QuadGoto, QuadLessThen,
-    QuadCall, QuadCondition, QuadFunctionLabel, QuadExpr, QuadFor
+from compiler.common.label_type import LabelType
+from compiler.common.instr_kind import (
+    QuadLabel, QuadCmpGoto, QuadGoto
 )
-from backend.ir.base_ir import CommonVar
-from backend.ir.ir_expression import IRExpression
-from backend.ir.ir_assign import IRAssgin
+from compiler.backend.ir.base_ir import CommonVar
 
 
 class IRIf(object):
@@ -41,8 +35,7 @@ class IRIf(object):
         done:
         :return:
         """
-        from backend.ir.three_address import IRTree
-        from backend.ir.ir_expression import IRExpression
+        from compiler.backend.ir.three_address import IRTree
 
         test_expr = node.test_expr
         if_stmt = node.if_stmt

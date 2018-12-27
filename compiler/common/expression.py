@@ -9,7 +9,7 @@
 优美打印
 """
 
-from common.tokentype import Type
+from compiler.common.tokentype import Type
 
 
 class Number(object):

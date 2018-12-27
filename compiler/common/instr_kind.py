@@ -7,8 +7,8 @@
 @desc:
 三地址码
 """
-from common.expression import Type
-from common.keywords import Keywords
+from compiler.common.expression import Type
+from compiler.common.keywords import Keywords
 
 
 class BaseQuad(object):

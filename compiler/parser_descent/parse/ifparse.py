@@ -7,9 +7,9 @@
 @desc:
 """
 
-from common.tokentype import Type
-from parser_descent.parse.stmt_parse import StmtParse
-from common.expression import ExpIf
+from compiler.common.tokentype import Type
+from compiler.parser_descent.parse.stmt_parse import StmtParse
+from compiler.common.expression import ExpIf
 
 
 class IfParse(object):
@@ -17,20 +17,6 @@ class IfParse(object):
     def __init__(self, tokens):
         self.tokens = tokens
         self.stm_parse = StmtParse(tokens)
-
-    def valid_keyword(self, token, name):
-        """
-
-        :param name:
-        :return:
-        """
-        kind = token.type
-        value = token.value
-
-        if kind == Type.keyword and value == name:
-            return True
-        else:
-            return False
 
     def parse_if(self):
         """
@@ -88,31 +74,3 @@ class IfParse(object):
             raise Exception('expect } but {}'.format(t.value))
 
         return e
-        #     # for ( ; ; ;) {}
-        #     match(t, 'for')  # for
-        #     match(t, '(')  # (
-        #     optexpr()  #
-        #     match(t, ';')  # ;
-        #     optexpr()  #
-        #     match(t, ';')  # ;
-        #     optexpr()  #
-        #     match(t, ';')  # ;
-        #     match(t, ')')  # )
-        #     match(t, '{')  # {
-        #     optexpr()  #
-        #     match(t, '}')  # }
-        #
-        # elif kind == Type.id:
-        #     optexpr()
-
-        # tokens.get_token()  # id
-        # assign = tokens.get_token()  # =
-        # kind = assign.type
-        # value = assign.value
-
-        # if kind == Type.assign:
-        #     # expr = exprself.parse_expr()
-        # else:
-        #     raise Exception('expect = but {}'.format(value))
-        #
-        # print('expr', expr)

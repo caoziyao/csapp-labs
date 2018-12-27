@@ -6,7 +6,6 @@
 @time: 2018/12/14 
 @desc:
 """
-from common.utils import is_leaf
 
 
 class CommonVar(object):

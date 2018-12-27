@@ -5,10 +5,9 @@
 @contact: wyzycao@gmail.com
 @time: 2018/9/29 
 @desc:
-
-
-
 """
+
+from compiler.backend.gen.opcodes import opcodes
 
 
 class Assem(object):
