@@ -50,7 +50,7 @@ def arr_test():
 
 
 def main():
-    root = arr_test()
+    root = if_test()
 
     # quads = []
     # ir = IRTree(quads)

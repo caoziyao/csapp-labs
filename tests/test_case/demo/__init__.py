@@ -6,3 +6,5 @@
 @time: 2018/9/8 
 @desc:
 """
+
+from .test_demo import TestDemoCase

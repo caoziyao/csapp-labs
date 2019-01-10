@@ -19,7 +19,7 @@ class StmtParse(object):
         """
         self.tokens = tokens
 
-        
+
 
     def parse_stmt(self):
         """
@@ -51,13 +51,12 @@ class StmtParse(object):
 
             n = tokens.current()
 
-            if n.type == Type.number:
-                res = ExprParse(tokens).parse_expr()
-            elif n.type == Type.bracketLeft:
+            if n.type == Type.bracketLeft:
                 res = ArrayExpr(tokens).parse_arr()
 
+
             else:
-                raise Exception('expect [] exper but {}'.format(value))
+                res = ExprParse(tokens).parse_expr()
 
             root = ExpAssgin(left, res)
         elif kind == Type.less_then:

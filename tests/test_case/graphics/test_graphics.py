@@ -14,6 +14,7 @@ from graphics.graphics import Graphics
 
 class TestGraphics(BaseCase):
 
+    @unittest.skipIf(True, "I don't want to run this case.")
     def test_drawchar(self):
         """
         :return:

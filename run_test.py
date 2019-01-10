@@ -1,17 +1,9 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/11/30 
-@desc:
-"""
 
 import os
 
 import coverage
 import unittest
-from tests import test_cases
 
 
 def get_covdir():
@@ -22,11 +14,6 @@ def get_covdir():
 
 def load_tests(loader, standard_tests, pattern):
     """
-    discover
-    :param loader:
-    :param standard_tests:
-    :param pattern:
-    :return:
     """
     # top level directory cached on loader instance
     this_dir = os.path.dirname(__file__)
@@ -35,14 +22,11 @@ def load_tests(loader, standard_tests, pattern):
     return standard_tests
 
 
-def load_test_cases(loader, tests, pattern):
+def tests_from_case(loader, tests, pattern):
     """
-    Case
-    :param loader:
-    :param tests:
-    :param pattern:
     :return:
     """
+    from tests import test_cases
     suite = unittest.TestSuite()
 
     for test_class in test_cases:
@@ -51,17 +35,38 @@ def load_test_cases(loader, tests, pattern):
     return suite
 
 
+def test_from_module(loader, pattern=None):
+    """
+    :return:
+    """
+    from tests.test_case import demo
+    from tests.test_case import graphics
+    suite = unittest.TestSuite()
+
+    tests = loader.loadTestsFromModule(demo)
+    suite.addTests(tests)
+    return suite
+
+
+def tests_from_dir(loader):
+    """
+    :return:
+    """
+    start_dir = os.path.join('tests')
+    package_tests = loader.discover(start_dir=start_dir)
+    return package_tests
+
+
 def run_test():
     loader = unittest.TestLoader()
 
-    suite = load_test_cases(loader, None, None)
-
+    suite = tests_from_dir(loader)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 
 
 def cov_start():
-    cov = coverage.coverage(branch=True, include=['vm/*', 'zvm/*'])
+    cov = coverage.coverage(branch=True, include=['compiler/*', 'vm/*'])
     cov.start()
     return cov
 
