@@ -127,8 +127,8 @@ class CodeRen(object):
         :param ir:
         :return:
         """
-        left = ir.left  # #0  left
-        right = ir.right  # number  right
+        left = ir.arg1  # #0  left
+        right = ir.arg2  # number  right
 
         ltype = self.type_of_arg(left)
         rtype = self.type_of_arg(right)
@@ -349,8 +349,8 @@ class CodeRen(object):
         :param ir:
         :return:
         """
-        left = ir.left
-        right = ir.right
+        left = ir.arg1
+        right = ir.arg2
 
         ltype = self.type_of_arg(left)
         rtype = self.type_of_arg(right)
@@ -425,7 +425,7 @@ class CodeRen(object):
         label = ir.label
         cond = ir.condition
 
-        _type = cond.type
+        _type = cond.op
         l = self.get_label(label)
 
         if _type == Type.less_then:
@@ -538,7 +538,7 @@ class CodeRen(object):
             LabelType.label: self.gen_label,
 
         }
-        t = ir.type
+        t = ir.op
         f = m.get(t, None)
         if f:
             f(ir)

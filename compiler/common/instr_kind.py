@@ -1,91 +1,109 @@
 # coding: utf-8
 """
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/23
-@desc:
 三地址码
+
+x = y op z
+x = op z
+x = y
+goto L
+if x goto L
+if x relop y goto L
+
+param x1
+param x2
+...
+param xn
+call p, n
+y = call p, n
+
+x = y[i]
+x[i] = y
+
+x = &y
+x = *y
+*x = y
+
 """
 from compiler.common.expression import Type
 from compiler.common.keywords import Keywords
 
 
 class BaseQuad(object):
-    pass
-    # def __init__(self, op, result, x, y=''):
-    #     self.type = op
-    #     self.result = result
-    #     self.x = x
-    #     self.y = y
+
+    def __init__(self, op=None, result=None, arg1=None, arg2=None):
+        self.op = op
+        self.result = result
+        self.arg1 = arg1
+        self.arg2 = arg2
 
 
 class QuadExpr(object):
 
     def __init__(self, op, result, x, y):
-        self.type = op
+        self.op = op
         self.result = result
         self.x = x
         self.y = y
 
     def __str__(self, level=0):
-        ret = '{} {} {} {}'.format(self.result, self.x, self.type.name, self.y)
+        ret = '{} {} {} {}'.format(self.result, self.x, self.op.name, self.y)
         return ret
 
 
 class QuadAssign(BaseQuad):
 
-    def __init__(self, left, right):
-        self.type = Type.assign
-        self.left = left
-        self.right = right
-        # self.y = y
+    def __init__(self, arg1=None, arg2=None):
+        super(QuadAssign, self).__init__()
+        self.op = Type.assign
+        self.arg1 = arg1
+        self.arg2 = arg2
 
     def __str__(self, level=0):
-        ret = '{} {} {}'.format(self.left, self.type.name, self.right)
+        ret = '{} {} {}'.format(self.arg1, self.op.name, self.arg2)
         return ret
 
 
 class QuadLessThen(BaseQuad):
 
-    def __init__(self, left, right):
-        self.type = Type.less_then
-        self.left = left
-        self.right = right
+    def __init__(self, arg1=None, arg2=None):
+        super(QuadLessThen, self).__init__()
+        self.op = Type.less_then
+        self.arg1 = arg1
+        self.arg2 = arg2
 
     def __str__(self, level=0):
-        ret = '{} {} {}'.format(self.left, self.type.name, self.right)
+        ret = '{} {} {}'.format(self.arg1, self.op.name, self.arg2)
         return ret
 
 
 class QuadGoto(BaseQuad):
 
     def __init__(self, label, condition=None):
-        self.type = Type.goto
+        self.op = Type.goto
         self.label = label
         self.condition = condition
 
     def __str__(self, level=0):
-        ret = '{} {} '.format(self.type.name, self.label)
+        ret = '{} {} '.format(self.op.name, self.label)
         return ret
 
 
 class QuadCmpGoto(BaseQuad):
 
     def __init__(self, label, condition=None):
-        self.type = Type.cmdgoto
+        self.op = Type.cmdgoto
         self.label = label
         self.condition = condition
 
     def __str__(self, level=0):
-        ret = '{} {} '.format(self.type.name, self.label)
+        ret = '{} {} '.format(self.op.name, self.label)
         return ret
 
 
 class QuadCondition(BaseQuad):
 
     def __init__(self, op, condition, x='', y=''):
-        self.type = op
+        self.op = op
         self.condition = condition
         self.x = x
         self.y = y
@@ -94,7 +112,7 @@ class QuadCondition(BaseQuad):
 class QuadFor(BaseQuad):
 
     def __init__(self, init_stmt=None, test_expr=None, update_stmt=None, code=None):
-        self.type = Keywords.kfor
+        self.op = Keywords.kfor
         self.init_stmt = init_stmt
         self.test_expr = test_expr
         self.update_stmt = update_stmt
@@ -104,25 +122,25 @@ class QuadFor(BaseQuad):
 class QuadLabel(BaseQuad):
 
     def __init__(self, op, label):
-        self.type = op
+        self.op = op
         self.label = label
 
     def __str__(self, level=0):
-        ret = 'tag:{} {}'.format(self.type.name, self.label)
+        ret = 'tag:{} {}'.format(self.op.name, self.label)
         return ret
 
 
 class QuadFunctionLabel(BaseQuad):
 
     def __init__(self, op, func_name):
-        self.type = op
+        self.op = op
         self.func_name = func_name
 
 
 class QuadWhile(BaseQuad):
 
     def __init__(self, op, condition, body, start):
-        self.type = op
+        self.op = op
         self.condition = condition
         self.body = body
         self.start = start
@@ -131,7 +149,7 @@ class QuadWhile(BaseQuad):
 class QuadDef(BaseQuad):
 
     def __init__(self, op, args, body, func_name):
-        self.type = op
+        self.op = op
         self.args = args
         self.body = body
         self.func_name = func_name
@@ -140,7 +158,7 @@ class QuadDef(BaseQuad):
 class QuadCall(BaseQuad):
 
     def __init__(self, op, args, func_name):
-        self.type = op
+        self.op = op
         self.args = args
         self.func_name = func_name
 
@@ -148,7 +166,7 @@ class QuadCall(BaseQuad):
 class QuadPrint(BaseQuad):
 
     def __init__(self, op, value=''):
-        self.type = op
+        self.op = op
         self.value = value
 #
 #

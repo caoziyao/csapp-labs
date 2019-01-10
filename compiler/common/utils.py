@@ -20,3 +20,17 @@ def is_leaf(node):
         return True
     else:
         return False
+
+
+def is_space(char):
+    """
+    \r\n\t
+    :param char:
+    :return:
+    """
+    c = char
+    if c in ' \r\n\t':
+        return True
+    else:
+        return False
+

@@ -6,7 +6,7 @@
 @time: 2018/12/5 
 @desc:
 """
-from compiler.parser_descent.src.commont.utils import is_space
+from compiler.common.utils import is_space
 from compiler.common.tokentype import Token, Type
 from compiler.parser_descent.symbol_table import SysmbolTable
 from compiler.common.keywords import Keywords
@@ -140,6 +140,8 @@ def parentheses_token(current_index, codes):
         ')': Token(Type.parenthesesRight, value),
         '{': Token(Type.braceLeft, value),
         '}': Token(Type.braceRight, value),
+        '[': Token(Type.bracketLeft, value),
+        ']': Token(Type.bracketRight, value),
     }
 
     token = m[value]
@@ -186,7 +188,7 @@ def next_token(current_index, codes):
         i, token = string_token(i - 1, codes)
     elif c in '+-*/=><':
         i, token = operate_token(i - 1, codes)
-    elif c in '(){}':
+    elif c in '(){}[]':
         i, token = parentheses_token(i - 1, codes)
     elif c == ';':
         i, token = semicolon_token(i - 1, codes)

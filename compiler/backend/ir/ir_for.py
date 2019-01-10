@@ -37,7 +37,7 @@ class IRFor(object):
         :param node:
         :return:
         """
-        from compiler.backend.ir import IRTree
+        from compiler.backend.ir.three_address import IRTree
 
         init_stmt = node.init_stmt
         update_stmt = node.update_stmt

@@ -27,7 +27,7 @@ class IRAssgin(object):
         res = e.gen_expression(expr, quads)
 
         # t = self.get_tmp_var()
-        q = QuadAssign(idf, res)
+        q = QuadAssign(arg1=idf, arg2=res)
 
         quads.append(q)
         # return q

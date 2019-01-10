@@ -28,7 +28,7 @@ class IRLessThen(object):
         res = e.gen_expression(expr, quads)
 
         # t = self.get_tmp_var()
-        q = QuadLessThen(node.left, res)
+        q = QuadLessThen(arg1=node.left, arg2=res)
 
         quads.append(q)
 

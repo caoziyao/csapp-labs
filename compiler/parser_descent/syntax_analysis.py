@@ -1,10 +1,5 @@
 # coding: utf-8
 """
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/12/6 
-@desc:
 descent_parsing 递归下降
 算法基本思想
 每个非终结符构造一个分析函数

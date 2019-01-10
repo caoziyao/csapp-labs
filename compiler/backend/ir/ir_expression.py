@@ -25,7 +25,7 @@ class IRExpression(object):
             # 叶子节点
             # t = self.get_tmp_var()
             t = CommonVar().get_tmp_var()
-            q = QuadAssign(t, node)
+            q = QuadAssign(arg1=t, arg2=node)
             # self.quads.append(q)
             quads.append(q)
             return t

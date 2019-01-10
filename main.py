@@ -1,18 +1,4 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/20 
-@desc:
-"""
-# from lang.lexer import lexer
-# from lang.parser import parser
-# from vm import VM
-# from backend.ir.three_address import IRTree
-# from backend.gen import CodeRen
-# from lang.common import Kind
-
 
 from compiler.parser_descent.lexical_analysis import lexical_analysis
 from compiler.parser_descent.syntax_analysis import syntax_analysis
@@ -25,7 +11,8 @@ def exper_test():
     """
     :return:
     """
-    s1 = 'a = (10 + 1) * 1 * (3 + 1) '
+    # s1 = 'a = (10 + 1) * 1 * (3 + 1) '
+    s1 = 'a = 1 + 2 '
     # s1 = 'a = 12'
     # s1 = 'a < 2'
     t1 = lexical_analysis(s1)
@@ -43,6 +30,7 @@ def for_test():
 
     return root
 
+
 def if_test():
     s2 = 'if ( 9 < 4)  { b = 3 } else { b = 2 }'
     t2 = lexical_analysis(s2)
@@ -52,30 +40,38 @@ def if_test():
     return root
 
 
+def arr_test():
+    s2 = 'a = []'
+    t2 = lexical_analysis(s2)
+    root = syntax_analysis(t2)
+    print('expr', root)
+
+    return root
+
+
 def main():
-    root = exper_test()
+    root = arr_test()
 
-    quads = []
-    ir = IRTree(quads)
-    ir.gen(root)
-
-    print('========')
-    for t in quads:
-        print(t)
+    # quads = []
+    # ir = IRTree(quads)
+    # ir.gen(root)
     #
-    gen = CodeRen()
-    bs = gen.gen(quads)
-
-    print('========')
-    for b in bs:
-        print(b)
-
-
-    vm = VM(bs)
-    r, m = vm.run()
-
-    print('========')
-    print(m)
+    # print('========')
+    # for t in quads:
+    #     print(t)
+    # #
+    # gen = CodeRen()
+    # bs = gen.gen(quads)
+    #
+    # print('========')
+    # for b in bs:
+    #     print(b)
+    #
+    # vm = VM(bs)
+    # r, m = vm.run()
+    #
+    # print('========')
+    # print(m)
 
 
 if __name__ == '__main__':
