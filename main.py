@@ -16,6 +16,8 @@ def exper_test():
     # s1 = 'a = 12'
     # s1 = 'a < 2'
     t1 = lexical_analysis(s1)
+
+    print('token_list', t1)
     root = syntax_analysis(t1)
     print('expr', root)
 

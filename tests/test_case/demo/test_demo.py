@@ -1,11 +1,5 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/2 
-@desc:
-"""
+
 import unittest
 from tests.test_case.base import BaseCase
 
@@ -13,7 +7,8 @@ class TestDemoCase(BaseCase):
 
     def test_demo(self):
         """test_demo"""
-        print('test_demo')
+        # print('test_demo')
+        pass
 
     @unittest.skip("I don't want to run this case.")
     def test_divide(self):

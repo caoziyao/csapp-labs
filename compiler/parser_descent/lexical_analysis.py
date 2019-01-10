@@ -224,6 +224,5 @@ def lexical_analysis(codes):
 
         token_list.append(token)
 
-    print(token_list)
-    print('SysmbolTable', SysmbolTable)
+    # print('SysmbolTable', SysmbolTable)
     return token_list
