@@ -19,8 +19,6 @@ class StmtParse(object):
         """
         self.tokens = tokens
 
-
-
     def parse_stmt(self):
         """
         a = 1 + 2 * 3
@@ -32,6 +30,8 @@ class StmtParse(object):
         tokens = self.tokens
 
         a = tokens.get_token()
+
+
 
         # id
         assign = tokens.get_token()  # =

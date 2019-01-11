@@ -45,14 +45,15 @@ def if_test():
 def arr_test():
     s2 = 'a = []'
     t2 = lexical_analysis(s2)
+    print('t2', t2)
     root = syntax_analysis(t2)
-    print('expr', root)
+    # print('expr', root)
 
-    return root
+    # return root
 
 
 def main():
-    root = if_test()
+    root = arr_test()
 
     # quads = []
     # ir = IRTree(quads)

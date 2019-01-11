@@ -11,6 +11,66 @@ from compiler.parser_descent.parse.forparse import ForParse
 from compiler.parser_descent.token_list import TokenList
 from compiler.parser_descent.parse.ifparse import IfParse
 
+
+def parse_if(tokens):
+    """
+    tokens: TokenList
+    :param tokens:
+    :return:
+    """
+    p = IfParse(tokens)
+    root = p.parse_if()
+
+    return root
+
+
+def parse_for(tokens):
+    """
+    tokens: TokenList
+    :param tokens:
+    :return:
+    """
+    p = ForParse(tokens)
+    root = p.parse_for()
+
+    return root
+
+
+def parse_keyword(tokens):
+    """
+    tokens: TokenList
+    :param tokens:
+    :return:
+    """
+    t = tokens.current()
+    kind = t.type
+    value = t.value
+    if value == 'for':
+        root = parse_for(tokens)
+    elif value == 'if':
+        root = parse_if(tokens)
+
+    else:
+        raise Exception('unkonw kw')
+
+    return root
+
+
+def parse_stmt(tokens):
+    """
+    tokens: TokenList
+    :param tokens:
+    :return:
+    """
+    parse = StmtParse(tokens)
+    root = parse.parse_stmt()
+    return root
+
+
+def parse_expr():
+    pass
+
+
 def syntax_analysis(token_list):
     """
     :param token_list:
@@ -22,15 +82,10 @@ def syntax_analysis(token_list):
     value = t.value
 
     if kind == Type.id:
-        parse = StmtParse(tokens)
-        root = parse.parse_stmt()
-    elif kind == Type.keyword and value == 'for':
-        p = ForParse(tokens)
-        root = p.parse_for()
-    elif kind == Type.keyword and value == 'if':
-        p = IfParse(tokens)
-        root =p.parse_if()
+        root = parse_stmt(tokens)
+    elif kind == Type.keyword:
+        root = parse_keyword(tokens)
     else:
-        raise Exception('unknow')
+        raise Exception('unknow syntax_analysis')
 
     return root
