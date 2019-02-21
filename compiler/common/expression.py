@@ -1,9 +1,5 @@
 # coding: utf-8
 """
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/21 
 @desc:
 抽象语法树数据结构]
 优美打印
@@ -33,7 +29,7 @@ class ID(object):
         self.value = value
 
     def __str__(self, level=0):
-        ret = "\t" * level + repr(self.value) + "\n"
+        ret = "\t" * level + 'id:' + repr(self.value) + "\n"
         return ret
 
 
@@ -43,8 +39,19 @@ class String(object):
         self.value = value
 
     def __str__(self, level=0):
-        ret = "\t" * level + repr(self.value) + "\n"
+        ret = "\t" * level + 'string:' + repr(self.value) + "\n"
         return ret
+
+
+class Array(object):
+    def __init__(self, value_list):
+        self.type = Type.array
+        self.value_list = value_list
+
+    def __str__(self, level=0):
+        ret = "\t" * level + 'array:' + repr(self.value_list) + "\n"
+        return ret
+
 
 #############################
 

@@ -12,16 +12,16 @@ def exper_test():
     :return:
     """
     # s1 = 'a = (10 + 1) * 1 * (3 + 1) '
-    s1 = 'a = 1 + 2 '
+    s1 = 'a = 1 + 2 * 4'
     # s1 = 'a = 12'
     # s1 = 'a < 2'
     t1 = lexical_analysis(s1)
 
     print('token_list', t1)
-    root = syntax_analysis(t1)
-    print('expr', root)
-
-    return root
+    # root = syntax_analysis(t1)
+    # print('expr', root)
+    #
+    # return root
 
 
 def for_test():
@@ -43,11 +43,11 @@ def if_test():
 
 
 def arr_test():
-    s2 = 'a = []'
+    s2 = 'a = [1, 3, 14]'
     t2 = lexical_analysis(s2)
     print('t2', t2)
     root = syntax_analysis(t2)
-    # print('expr', root)
+    print('expr', root)
 
     # return root
 

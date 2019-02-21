@@ -35,6 +35,7 @@ class Type(Enum):
     semicolon = 21          # ;
     goto = 22               # goto
     cmdgoto = 23               # ncmdgoto
+    array = 24               # array
 
 
 class Token():

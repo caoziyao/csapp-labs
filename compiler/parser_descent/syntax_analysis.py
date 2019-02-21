@@ -10,6 +10,10 @@ from compiler.parser_descent.parse.stmt_parse import StmtParse
 from compiler.parser_descent.parse.forparse import ForParse
 from compiler.parser_descent.token_list import TokenList
 from compiler.parser_descent.parse.ifparse import IfParse
+from compiler.parser_descent.token_list import TokenList
+from compiler.common.tokentype import Type
+from compiler.common.expression import (Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
+                                        ExpMoreThen, String)
 
 
 def parse_if(tokens):
@@ -65,10 +69,6 @@ def parse_stmt(tokens):
     parse = StmtParse(tokens)
     root = parse.parse_stmt()
     return root
-
-
-def parse_expr():
-    pass
 
 
 def syntax_analysis(token_list):

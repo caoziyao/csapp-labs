@@ -55,11 +55,16 @@ def number_token(current_index, codes):
         if c.isdigit():
             value += c
         else:
+            i -= 1
             break
 
     token = Token(Type.number, int(value))
 
-    return i + current_index - 1, token
+    # if i == l:
+    #     idx = i + current_index
+    # else:
+    #     idx = i + current_index - 1
+    return i + current_index, token
 
 
 def identify_keyword_token(current_index, codes):
@@ -161,6 +166,7 @@ def semicolon_token(current_index, codes):
 
     m = {
         ';': Token(Type.semicolon, value),
+        ',': Token(Type.comma, value),
     }
 
     token = m[value]
@@ -190,7 +196,7 @@ def next_token(current_index, codes):
         i, token = operate_token(i - 1, codes)
     elif c in '(){}[]':
         i, token = parentheses_token(i - 1, codes)
-    elif c == ';':
+    elif c in ',;':
         i, token = semicolon_token(i - 1, codes)
     else:
         # error

@@ -1,11 +1,4 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/12/4 
-@desc:
-"""
 
 from zvm.cpu.cpu import CPU
 from zvm.zvm import ZVM

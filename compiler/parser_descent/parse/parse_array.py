@@ -1,8 +1,7 @@
 # coding: utf-8
 
 from compiler.common.tokentype import Type
-from compiler.common.expression import Number, ID, ExpAdd, ExpTimes, ExpAssgin, ExpDiv, ExpSub, ExpLessThen, \
-    ExpMoreThen, String
+from compiler.common.expression import Array
 
 
 class ArrayExpr(object):
@@ -16,11 +15,16 @@ class ArrayExpr(object):
 
     def parse_arr(self):
         """
-        []
-        表达式 expr ::= term { (+|-) term }*
+        todo array
         :return:
         """
-        tokens = self.tokens
-        root = None
+        tl = self.tokens
+        tokens = tl.tokens[1:-1]
+
+        l = []
+        for i in tokens:
+            if i.type == Type.number:
+                l.append(i)
+        root = Array(l)
 
         return root
