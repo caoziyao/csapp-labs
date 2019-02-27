@@ -1,11 +1,8 @@
 # coding: utf-8
-
-
-from tests.test_case.graphics.test_graphics import TestGraphics
-
-test_cases = [
-]
-
-__all__ = [
-    test_cases
-]
+"""
+@author: csy
+@license: (C) Copyright 2017-2018
+@contact: wyzycao@gmail.com
+@time: 2019/2/27 
+@desc:
+"""
