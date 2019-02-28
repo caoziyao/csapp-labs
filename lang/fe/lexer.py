@@ -20,6 +20,9 @@ tokens = (
     'R_BRACE',  # {
     'IS_MORE_THEN',  # >
     'IS_LESS_THEN',  # <
+
+    'l_square_bracket', # [
+    'r_square_bracket', # ]
     # 'IS_MORE_THEN_OR_EQUAL',      # >=
     # 'IS_LESS_THEN_OR_EQUAL',      # <=
 )
@@ -39,6 +42,8 @@ t_L_BRACE = r'\{'
 t_R_BRACE = r'\}'
 t_IS_MORE_THEN = r'\>'
 t_IS_LESS_THEN = r'\<'
+t_l_square_bracket = r'\['
+t_r_square_bracket = r'\]'
 # t_IS_MORE_THEN_OR_EQUAL = r'\>='
 # t_IS_LESS_THEN_OR_EQUAL = r'\<='
 

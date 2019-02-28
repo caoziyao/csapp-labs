@@ -28,31 +28,34 @@ class Kind(Enum):
     kdef_name = 31  # def start
     kdef_end = 32  # def end
 
+    array = 33  # array
+    array_decalr = 34  # array
+
     undefind = 101  # undefind
     # condition = 102  # if else
 
     print = 103  # print
 
-    # register todo
-    mov = 201
-    ldrb = 202
-    ldr = 203
-    strb = 204
-    str = 205
-
-    push = 206
-    pop = 207
-
-    call = 208
-    ret = 209
-
-    jmp = 210
-    jmpn = 211
-    jmpz = 212
-    jmpo = 213
-
-    comp = 214
-    cjmp = 215
+    # # register todo
+    # mov = 201
+    # ldrb = 202
+    # ldr = 203
+    # strb = 204
+    # str = 205
+    #
+    # push = 206
+    # pop = 207
+    #
+    # call = 208
+    # ret = 209
+    #
+    # jmp = 210
+    # jmpn = 211
+    # jmpz = 212
+    # jmpo = 213
+    #
+    # comp = 214
+    # cjmp = 215
 
 
 class Number(object):
@@ -218,14 +221,6 @@ class ExprDiv(Node):
         self.right = right  # class Exp
 
 
-# class ExprAssignment(Node):
-#
-#     def __init__(self, left, right):
-#         self.type = Kind.assignment
-#         self.left = left  # class Exp
-#         self.right = right  # class Exp
-
-
 class ExprPrint(Node):
 
     def __init__(self, left, right):
@@ -242,23 +237,42 @@ class ExprVar(Node):
         self.right = right  # class Exp
 
 
-class ExprCondition(Node):
-    """
-    if
-    """
+class ExprIf(Node):
 
-    def __init__(self, condition, left, right):
+    def __init__(self, condition, if_code, else_code=None):
         self.type = Kind.k_if
         self.condition = condition
-        self.left = left  # class Exp
-        self.right = right  # class Exp
+        self.if_code = if_code
+        self.else_code = else_code
 
     def __str__(self, level=0):
         ret = "\t" * level + repr(self.type.name) + "\n"
         ret += self.condition.__str__(level + 1)
-        ret += self.left.__str__(level + 1)
-        ret += self.right.__str__(level + 1)
+        ret += 'if_code:' + self.if_code.__str__(level + 1)
+
+        if self.else_code:
+            ret += 'else_code:' + self.else_code.__str__(level + 1)
         return ret
+
+
+#
+# class ExprCondition(Node):
+#     """
+#     if
+#     """
+#
+#     def __init__(self, condition, left, right):
+#         self.type = Kind.k_if
+#         self.condition = condition
+#         self.left = left  # class Exp
+#         self.right = right  # class Exp
+#
+#     def __str__(self, level=0):
+#         ret = "\t" * level + repr(self.type.name) + "\n"
+#         ret += self.condition.__str__(level + 1)
+#         ret += self.left.__str__(level + 1)
+#         ret += self.right.__str__(level + 1)
+#         return ret
 
 
 class ExprWhile(Node):
@@ -276,20 +290,21 @@ class ExprWhile(Node):
         return ret
 
 
-class ExprIsMoreThen(Node):
-
-    def __init__(self, left, right):
-        self.type = Kind.is_more_then
-        self.left = left  # class Exp
-        self.right = right  # class Exp
-
-
-class ExprIsLessThen(Node):
-
-    def __init__(self, left, right):
-        self.type = Kind.is_less_then
-        self.left = left  # class Exp
-        self.right = right  # class Exp
+#
+# class ExprIsMoreThen(Node):
+#
+#     def __init__(self, left, right):
+#         self.type = Kind.is_more_then
+#         self.left = left  # class Exp
+#         self.right = right  # class Exp
+#
+#
+# class ExprIsLessThen(Node):
+#
+#     def __init__(self, left, right):
+#         self.type = Kind.is_less_then
+#         self.left = left  # class Exp
+#         self.right = right  # class Exp
 
 
 class ExprDef(Node):
@@ -307,3 +322,32 @@ class ExprCall(Node):
         self.type = Kind.call
         self.func_name = func_name
         self.args = args
+
+
+class ExprArrayDeclar(Node):
+
+    def __init__(self, array_name):
+        self.type = Kind.array_decalr
+        # self.type = _type
+        self.array_name = array_name
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.type.name) + "\n"
+        ret += self.array_name
+        return ret
+
+
+class ExprArrayAccess(Node):
+
+    def __init__(self, array_name, index):
+        self.type = Kind.array
+        # self.type = _type
+        self.array_name = array_name
+        self.index = index
+
+    def __str__(self, level=0):
+        ret = "\t" * level + repr(self.type.name) + "\n"
+        ret += self.array_name
+        ret += ' '
+        ret += str(self.index)
+        return ret

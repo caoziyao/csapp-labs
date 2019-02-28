@@ -12,10 +12,10 @@ from lang.fe.experssion import (
 )
 #
 #
-# def p_statement_assign(p):
-#     'statement : ID EQUAL expression'
-#     # names[p[1]] = p[3]
-#     p[0] = ExprVar(ID(p[1]), p[3])
+def p_statement_assign(p):
+    'statement : ID EQUAL expression'
+    # names[p[1]] = p[3]
+    p[0] = ExprVar(ID(p[1]), p[3])
 #
 #
 # def p_statement_var_assign(p):

@@ -11,6 +11,9 @@ from ply.yacc import yacc
 from lang.fe.lexer import tokens
 # from lang.fe.lexer import
 from lang.fe.parser.parse_calc import *
+from lang.fe.parser.parse_if import *
+from lang.fe.parser.parse_statement import *
+from lang.fe.parser.parse_array import *
 # from lang.fe.parser.parse_print import *
 # from lang.fe.parser.parse_condition import *
 # from lang.fe.parser import *

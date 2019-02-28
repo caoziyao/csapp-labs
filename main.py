@@ -7,7 +7,12 @@ from lang.fe.parser import parser
 
 def atest1():
     # Test it out
-    t = parser.parse('3 + 4')
+    # t = parser.parse('3 + 4')
+    # t = parser.parse('if ( 3 + 4 ) { 1 +  2 } else { 4 + 5 }')
+    # t = parser.parse('if ( a = 3 + 4 ) { 1 +  2 }')
+    # t = parser.parse('a = 3 + 4')
+    t = parser.parse('a = []')
+    # t = parser.parse('a [ 2 ]')
     print(t)
 
 

@@ -1,15 +1,9 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/28 
-@desc:
-"""
 
-from lang.fe.experssion import (
-    ExprCondition, ExprIsLessThen, ExprIsMoreThen
-)
+#
+# from lang.fe.experssion import (
+#     ExprCondition, ExprIsLessThen, ExprIsMoreThen
+# )
 
 #
 # # if (2 > 1) {a = 2} else {a = 1}
