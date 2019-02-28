@@ -18,3 +18,7 @@ class TestParse(BaseTest):
     def test_parse_array(self):
         t = parser.parse('a = []')
         t = parser.parse('a[ 2 ]')
+
+    def test_func(self):
+        parser.parse('def main() { a + 2 }')
+        parser.parse('def main(a) { a + 2 }')

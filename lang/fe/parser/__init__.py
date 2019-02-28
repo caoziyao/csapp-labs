@@ -16,7 +16,7 @@ from lang.fe.parser.parse_if import *
 from lang.fe.parser.parse_array import *
 # from lang.fe.parser.parse_print import *
 # from lang.fe.parser.parse_condition import *
-# from lang.fe.parser import *
+from lang.fe.parser.parse_func import *
 # from lang.fe.parser import *
 # from lang.fe.parser.parse_def import *
 

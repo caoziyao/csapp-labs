@@ -1,24 +1,29 @@
 # coding: utf-8
 
+from lang.fe import parser
+from lang.mid.expression import IRExpression
 
-from lang.fe.lexer import lexer
-from lang.fe.parser import parser
 
-
-def atest1():
-    # Test it out
-    # t = parser.parse('a + 4')
-    t = parser.parse('a * 4 + a * 2 * b')
-    # t = parser.parse('if ( 3 + 4 ) { 1 +  2 } else { 4 + 5 }')
-    # t = parser.parse('if ( a = 3 + 4 ) { 1 +  2 }')
-    # t = parser.parse('a = 3 + 4')
-    # t = parser.parse('a = []')
-    # t = parser.parse('a [ 2 ]')
-    print(t)
+def parse_code(code):
+    """
+    :param code:
+    :return:
+    """
+    t = parser.parse(code)
+    return t
 
 
 def main():
-    atest1()
+    root = parse_code('def main() { a = 1 + 2 }')
+    print(root)
+
+    # e = IRExpression()
+    #
+    # qs = []
+    # e.gen_expression(root, qs)
+    #
+    # for q in qs:
+    #     print(q)
 
 
 if __name__ == '__main__':
