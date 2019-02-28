@@ -29,7 +29,7 @@ class Kind(Enum):
     kdef_end = 32  # def end
 
     array = 33  # array
-    array_decalr = 34  # array
+    array_access = 34  # array
 
     undefind = 101  # undefind
     # condition = 102  # if else
@@ -324,10 +324,10 @@ class ExprCall(Node):
         self.args = args
 
 
-class ExprArrayDeclar(Node):
+class ExprArray(Node):
 
     def __init__(self, array_name):
-        self.type = Kind.array_decalr
+        self.type = Kind.array
         # self.type = _type
         self.array_name = array_name
 
@@ -340,7 +340,7 @@ class ExprArrayDeclar(Node):
 class ExprArrayAccess(Node):
 
     def __init__(self, array_name, index):
-        self.type = Kind.array
+        self.type = Kind.array_access
         # self.type = _type
         self.array_name = array_name
         self.index = index
@@ -348,6 +348,6 @@ class ExprArrayAccess(Node):
     def __str__(self, level=0):
         ret = "\t" * level + repr(self.type.name) + "\n"
         ret += self.array_name
-        ret += ' '
+        ret += 'index '
         ret += str(self.index)
         return ret

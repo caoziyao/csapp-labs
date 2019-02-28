@@ -1,17 +1,18 @@
 # coding: utf-8
 
 from lang.fe.experssion import (
-    Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, ID, ExprIf, ExprArrayDeclar, ExprArrayAccess)
+    Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, ID, ExprArray, ExprArrayAccess)
+
 
 
 def p_array_declar(p):
-    'array : ID EQUAL l_square_bracket  r_square_bracket'
-    name = p[1]
-    p[0] = ExprArrayDeclar(name)
+    'expression : l_square_bracket  r_square_bracket'
+    name = ''
+    p[0] = ExprArray(name)
 
 
 def p_array_access(p):
-    'array : ID l_square_bracket NUMBER r_square_bracket'
+    'expression : ID l_square_bracket NUMBER r_square_bracket'
     name = p[1]
     index = p[3]
     p[0] = ExprArrayAccess(name, index)

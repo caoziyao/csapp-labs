@@ -8,7 +8,7 @@
 """
 
 from lang.fe.experssion import (
-    Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, ID, )
+    Number, ExprPlus, ExprMinus, ExprDiv, ExprTimes, ID, ExprVar, ExprArray)
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),
@@ -21,7 +21,9 @@ def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
-                  | expression DIVIDE expression'''
+                  | expression DIVIDE expression
+                  | expression EQUAL expression
+    '''
     if p[2] == '+':
         p[0] = ExprPlus(p[1], p[3])
     elif p[2] == '-':
@@ -30,6 +32,8 @@ def p_expression_binop(p):
         p[0] = ExprTimes(p[1], p[3])
     elif p[2] == '/':
         p[0] = ExprDiv(p[1], p[3])
+    elif p[2] == '=':
+        p[0] = ExprVar(p[1], p[3])
 
 
 def p_expression_uminus(p):
@@ -50,6 +54,7 @@ def p_expression_number(p):
 def p_expression_name(p):
     "expression : ID"
     p[0] = ID(p[1])
+
 
 
 def p_error(p):

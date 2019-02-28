@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "leftPLUSMINUSleftTIMESDIVIDErightUMINUSCALL COMMENT DEF DIVIDE DOUBLE_EQUAL ELSE EQUAL FALSE ID IF IS_LESS_THEN IS_MORE_THEN LPAREN L_BRACE MINUS NUMBER PLUS PRINT RPAREN R_BRACE STRING THEN TIMES TRUE VAR WHILE l_square_bracket r_square_bracketarray : ID EQUAL l_square_bracket  r_square_bracketcondition : IF LPAREN statement RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACEarray : ID l_square_bracket NUMBER r_square_bracketcondition : IF LPAREN statement RPAREN L_BRACE expression R_BRACEstatement : ID EQUAL expressionexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : '-' expression %prec UMINUSexpression : LPAREN expression RPARENexpression : NUMBERexpression : ID"
+_lr_signature = "leftPLUSMINUSleftTIMESDIVIDErightUMINUSCALL COMMENT DEF DIVIDE DOUBLE_EQUAL ELSE EQUAL FALSE ID IF IS_LESS_THEN IS_MORE_THEN LPAREN L_BRACE MINUS NUMBER PLUS PRINT RPAREN R_BRACE STRING THEN TIMES TRUE VAR WHILE l_square_bracket r_square_bracketexpression : IF LPAREN expression RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACEexpression : l_square_bracket  r_square_bracketexpression : ID l_square_bracket NUMBER r_square_bracketexpression : IF LPAREN expression RPAREN L_BRACE expression R_BRACEexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  | expression EQUAL expression\n    expression : '-' expression %prec UMINUSexpression : LPAREN expression RPARENexpression : NUMBERexpression : ID"
     
-_lr_action_items = {'ID':([0,],[2,]),'$end':([1,7,8,],[0,-1,-3,]),'EQUAL':([2,],[3,]),'l_square_bracket':([2,3,],[4,5,]),'NUMBER':([4,],[6,]),'r_square_bracket':([5,6,],[7,8,]),}
+_lr_action_items = {'IF':([0,3,7,8,9,10,11,12,13,28,32,],[2,2,2,2,2,2,2,2,2,2,2,]),'l_square_bracket':([0,3,5,7,8,9,10,11,12,13,28,32,],[4,4,16,4,4,4,4,4,4,4,4,4,]),'ID':([0,3,7,8,9,10,11,12,13,28,32,],[5,5,5,5,5,5,5,5,5,5,5,]),'-':([0,3,7,8,9,10,11,12,13,28,32,],[7,7,7,7,7,7,7,7,7,7,7,]),'LPAREN':([0,2,3,7,8,9,10,11,12,13,28,32,],[3,13,3,3,3,3,3,3,3,3,3,3,]),'NUMBER':([0,3,7,8,9,10,11,12,13,16,28,32,],[6,6,6,6,6,6,6,6,6,25,6,6,]),'$end':([1,5,6,15,17,18,19,20,21,22,24,27,30,34,],[0,-13,-12,-2,-10,-5,-6,-7,-8,-9,-11,-3,-4,-1,]),'PLUS':([1,5,6,14,15,17,18,19,20,21,22,23,24,27,29,30,33,34,],[8,-13,-12,8,-2,-10,-5,-6,-7,-8,8,8,-11,-3,8,-4,8,-1,]),'MINUS':([1,5,6,14,15,17,18,19,20,21,22,23,24,27,29,30,33,34,],[9,-13,-12,9,-2,-10,-5,-6,-7,-8,9,9,-11,-3,9,-4,9,-1,]),'TIMES':([1,5,6,14,15,17,18,19,20,21,22,23,24,27,29,30,33,34,],[10,-13,-12,10,-2,-10,10,10,-7,-8,10,10,-11,-3,10,-4,10,-1,]),'DIVIDE':([1,5,6,14,15,17,18,19,20,21,22,23,24,27,29,30,33,34,],[11,-13,-12,11,-2,-10,11,11,-7,-8,11,11,-11,-3,11,-4,11,-1,]),'EQUAL':([1,5,6,14,15,17,18,19,20,21,22,23,24,27,29,30,33,34,],[12,-13,-12,12,-2,-10,-5,-6,-7,-8,12,12,-11,-3,12,-4,12,-1,]),'r_square_bracket':([4,25,],[15,27,]),'RPAREN':([5,6,14,15,17,18,19,20,21,22,23,24,27,30,34,],[-13,-12,24,-2,-10,-5,-6,-7,-8,-9,26,-11,-3,-4,-1,]),'R_BRACE':([5,6,15,17,18,19,20,21,22,24,27,29,30,33,34,],[-13,-12,-2,-10,-5,-6,-7,-8,-9,-11,-3,30,-4,34,-1,]),'L_BRACE':([26,31,],[28,32,]),'ELSE':([30,],[31,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'array':([0,],[1,]),}
+_lr_goto_items = {'expression':([0,3,7,8,9,10,11,12,13,28,32,],[1,14,17,18,19,20,21,22,23,29,33,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,18 +26,18 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> array","S'",1,None,None,None),
-  ('array -> ID EQUAL l_square_bracket r_square_bracket','array',4,'p_array_declar','parse_array.py',8),
-  ('condition -> IF LPAREN statement RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACE','condition',11,'p_condition_if','parse_if.py',8),
-  ('array -> ID l_square_bracket NUMBER r_square_bracket','array',4,'p_array_access','parse_array.py',14),
-  ('condition -> IF LPAREN statement RPAREN L_BRACE expression R_BRACE','condition',7,'p_condition_if_else','parse_if.py',16),
-  ('statement -> ID EQUAL expression','statement',3,'p_statement_assign','parse_statement.py',16),
+  ("S' -> expression","S'",1,None,None,None),
+  ('expression -> IF LPAREN expression RPAREN L_BRACE expression R_BRACE ELSE L_BRACE expression R_BRACE','expression',11,'p_condition_if','parse_if.py',7),
+  ('expression -> l_square_bracket r_square_bracket','expression',2,'p_array_declar','parse_array.py',9),
+  ('expression -> ID l_square_bracket NUMBER r_square_bracket','expression',4,'p_array_access','parse_array.py',15),
+  ('expression -> IF LPAREN expression RPAREN L_BRACE expression R_BRACE','expression',7,'p_condition_if_else','parse_if.py',16),
   ('expression -> expression PLUS expression','expression',3,'p_expression_binop','parse_calc.py',21),
   ('expression -> expression MINUS expression','expression',3,'p_expression_binop','parse_calc.py',22),
   ('expression -> expression TIMES expression','expression',3,'p_expression_binop','parse_calc.py',23),
   ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','parse_calc.py',24),
-  ('expression -> - expression','expression',2,'p_expression_uminus','parse_calc.py',36),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','parse_calc.py',41),
-  ('expression -> NUMBER','expression',1,'p_expression_number','parse_calc.py',46),
-  ('expression -> ID','expression',1,'p_expression_name','parse_calc.py',51),
+  ('expression -> expression EQUAL expression','expression',3,'p_expression_binop','parse_calc.py',25),
+  ('expression -> - expression','expression',2,'p_expression_uminus','parse_calc.py',40),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','parse_calc.py',45),
+  ('expression -> NUMBER','expression',1,'p_expression_number','parse_calc.py',50),
+  ('expression -> ID','expression',1,'p_expression_name','parse_calc.py',55),
 ]
