@@ -1,7 +1,8 @@
 # coding: utf-8
 
 from lang.fe import parser
-from lang.mid.expression import IRExpression
+# from lang.mid.expression import IRExpression
+from lang.mid import IRTree
 
 
 def parse_code(code):
@@ -15,15 +16,19 @@ def parse_code(code):
 
 def main():
     root = parse_code('def main() { a = 1 + 2 }')
+    # root = parse_code('b = a + 23')
+
+
+    print('-----fe------')
     print(root)
 
-    # e = IRExpression()
-    #
     # qs = []
-    # e.gen_expression(root, qs)
-    #
-    # for q in qs:
-    #     print(q)
+    e = IRTree()
+    qs = e.gen_three(root)
+
+    print('-----ir------')
+    for q in qs:
+        print(q)
 
 
 if __name__ == '__main__':

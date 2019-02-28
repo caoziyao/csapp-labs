@@ -1,12 +1,5 @@
 # coding: utf-8
-"""
-@author: csy
-@license: (C) Copyright 2017-2018
-@contact: wyzycao@gmail.com
-@time: 2018/9/25 
-@desc:
-三地址码
-"""
+
 from compiler.common.expression import Type
 from compiler.backend.ir.ir_assign import IRAssgin
 from compiler.backend.ir.ir_less_then import IRLessThen

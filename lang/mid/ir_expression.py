@@ -12,6 +12,7 @@ from .quad_assign import QuadAssign
 from .quad_expr import QuadExpr
 
 
+
 class IRExpression(object):
 
     def gen_expression(self, node, quads):
