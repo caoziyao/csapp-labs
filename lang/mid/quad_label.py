@@ -9,5 +9,5 @@ class QuadLabel(object):
         self.label = label
 
     def __str__(self, level=0):
-        ret = 'tag:{} {}'.format(self.op.name, self.label)
+        ret = 'tag: {}'.format(self.label)
         return ret

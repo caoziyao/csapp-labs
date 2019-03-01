@@ -15,12 +15,11 @@ def parse_code(code):
 
 
 def main():
-    root = parse_code('def main() { a = 1 + 2 }')
+    root = parse_code('def main() { a = 1 + 2}')
     # root = parse_code('b = a + 23')
 
-
     print('-----fe------')
-    print(root)
+    # print(root)
 
     # qs = []
     e = IRTree()

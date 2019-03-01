@@ -26,14 +26,15 @@ class IRTree(object):
         :param node:
         :return:
         """
+        qs = []
+
         args = node.args
         body = node.body
         fname = node.func_name.value
         fname = 'func_{}'.format(fname)
 
         # fname:
-        # qfname = QuadLabel(Kind.kdef_name, fname)
-        # self.quads.append(qfname)
+        qfname = QuadLabel(Kind.kdef_name, fname)
 
         # args
         # ra = []
@@ -49,14 +50,15 @@ class IRTree(object):
 
         ir_args = []
         ir_body = self.gen_expression(body)
-
         # end
         # t2 = self.get_tmp_var()
         # end = QuadLabel(Kind.kdef_end, t2)
 
-        q = QuadFunc(Kind.kdef, ir_args, ir_body, fname)
+        # q = QuadFunc(Kind.kdef, ir_args, ir_body, fname)
 
-        qs = [q, ]
+        qs.append(qfname)
+        qs.extend(ir_args)
+        qs.extend(ir_body)
         return qs
 
     def gen_expression(self, node):

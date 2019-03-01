@@ -23,6 +23,7 @@ tokens = (
 
     'l_square_bracket', # [
     'r_square_bracket', # ]
+    'SEMICOLON',
     # 'IS_MORE_THEN_OR_EQUAL',      # >=
     # 'IS_LESS_THEN_OR_EQUAL',      # <=
 )
@@ -44,6 +45,7 @@ t_IS_MORE_THEN = r'\>'
 t_IS_LESS_THEN = r'\<'
 t_l_square_bracket = r'\['
 t_r_square_bracket = r'\]'
+t_SEMICOLON = r'\;'
 # t_IS_MORE_THEN_OR_EQUAL = r'\>='
 # t_IS_LESS_THEN_OR_EQUAL = r'\<='
 
